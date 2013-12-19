@@ -1,7 +1,0 @@
-%ul.nav.nav-pills.nav-stacked
-  %li{class: controller_name == "accounts" ? "active" : nil}=link_to "Options", edit_account_path(@account.owner, @account)
-  %li{class: controller_name == "permissions" ? "active" : nil}= link_to "Collaborators" , user_account_permissions_path(@account.owner, @account)
-
-=# link_to "license" , license_user_account_path(account.owner.username,account.slug)
-=# link_to "readme" , readme_user_account_path(account.owner.username,account.slug)
-              
