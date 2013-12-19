@@ -36,7 +36,6 @@ GEM
       multi_json (~> 1.0)
     acts-as-taggable-on (2.4.1)
       rails (>= 3, < 5)
-    angularjs-rails (1.2.5)
     annotate (2.6.0)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
@@ -234,7 +233,6 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   agent_orange!
-  angularjs-rails
   annotate (>= 2.5.0)
   aws-s3
   aws-sdk

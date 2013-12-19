@@ -22,7 +22,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
   gem "chardinjs-rails"
-  gem 'angularjs-rails'
 end
 gem 'haml'
 gem 'haml-rails'

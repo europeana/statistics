@@ -1,0 +1,51 @@
+Connecting to database specified by database.yml
+  [1m[36m (21.9ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (71.9ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.8ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to Core (20131001130537)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (134.7ms)[0m  [1mCREATE TABLE "accounts" ("id" serial primary key, "name" character varying(255), "slug" character varying(255), "description" text, "license" character varying(255), "created_by" integer, "updated_by" integer, "api_token" text, "domain" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (60.0ms)[0m  CREATE INDEX "index_accounts_on_slug" ON "accounts" ("slug")
+  [1m[36m (99.4ms)[0m  [1mCREATE TABLE "permissions" ("id" serial primary key, "user_id" integer, "account_id" integer, "role" character varying(255), "email" character varying(255), "created_by" integer, "updated_by" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (45.0ms)[0m  CREATE INDEX "index_permissions_on_account_id" ON "permissions" ("account_id")
+  [1m[36m (41.7ms)[0m  [1mCREATE INDEX "index_permissions_on_user_id" ON "permissions" ("user_id")[0m
+  [1m[35m (132.6ms)[0m  CREATE TABLE "users" ("id" serial primary key, "name" character varying(255), "username" character varying(255), "email" character varying(255) DEFAULT '' NOT NULL, "slug" character varying(255), "bio" text, "time_zone" character varying(255), "url" text, "company" character varying(255), "location" character varying(255), "gravatar_email" character varying(255), "public_email" character varying(255), "encrypted_password" character varying(255) DEFAULT '' NOT NULL, "reset_password_token" character varying(255), "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" character varying(255), "last_sign_in_ip" character varying(255), "confirmation_token" character varying(255), "authentication_token" character varying(255), "confirmed_at" timestamp, "confirmation_sent_at" timestamp, "unconfirmed_email" character varying(255), "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (64.7ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (53.2ms)[0m  CREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")
+  [1m[36m (67.8ms)[0m  [1mCREATE INDEX "index_users_on_slug" ON "users" ("slug")[0m
+  [1m[35m (94.7ms)[0m  CREATE TABLE "core_visits" ("id" serial primary key, "current_user_id" integer, "visitable_type" character varying(255), "visitable_id" integer, "path_from" text, "path_to" text, "http_method" text, "ip" character varying(255), "lang" character varying(255), "caller_host" text, "is_bot" boolean, "os" text, "os_version" text, "device_genre" text, "device_brand" text, "device_model" text, "browser" text, "browser_version" text, "created_at" timestamp NOT NULL, "raw_user_agent" text, "updated_at" timestamp NOT NULL, "browser_genre" character varying(255), "day_of_week" character varying(255), "day" integer, "month" integer, "year" integer, "hour" integer, "account_id" integer) 
+  [1m[36m (111.9ms)[0m  [1mCREATE TABLE "core_files" ("id" serial primary key, "account_id" integer, "genre" character varying(255), "slug" character varying(255), "file_file_name" character varying(255), "file_content_type" character varying(255), "file_file_size" character varying(255), "is_pending" boolean, "content" text, "error_log" text, "category" character varying(255), "created_by" integer, "updated_by" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (65.1ms)[0m  CREATE INDEX "index_core_files_on_slug" ON "core_files" ("slug")
+  [1m[36m (91.3ms)[0m  [1mCREATE TABLE "core_alerts" ("id" serial primary key, "account_id" integer, "alertable_id" integer, "alertable_type" character varying(255), "action" character varying(255), "description" text, "updated_by" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (100.8ms)[0m  CREATE TABLE "versions" ("id" serial primary key, "item_type" character varying(255) NOT NULL, "item_id" integer NOT NULL, "event" character varying(255) NOT NULL, "whodunnit" character varying(255), "object" text, "created_at" timestamp) 
+  [1m[36m (42.9ms)[0m  [1mCREATE INDEX "index_versions_on_item_type_and_item_id" ON "versions" ("item_type", "item_id")[0m
+  [1m[35m (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131001130537')
+  [1m[36m (15.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddColsToCoreFiles (20131215164815)
+  [1m[35m (5.3ms)[0m  BEGIN
+  [1m[36m (1.2ms)[0m  [1mALTER TABLE "core_files" ADD COLUMN "commit_message" text[0m
+  [1m[35m (0.7ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131215164815')
+  [1m[36m (8.1ms)[0m  [1mCOMMIT[0m
+Migrating to CreateCoreOauths (20131215194910)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (123.6ms)[0m  [1mCREATE TABLE "core_oauths" ("id" serial primary key, "account_id" integer, "app" character varying(255), "token" character varying(255), "refresh_token" character varying(255), "token_expires_at" timestamp, "created_by" integer, "updated_by" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (0.5ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131215194910')
+  [1m[36m (24.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddColsToCoreOauths (20131215195941)
+  [1m[35m (0.7ms)[0m  BEGIN
+  [1m[36m (1.1ms)[0m  [1mALTER TABLE "core_oauths" ADD COLUMN "user_id" integer[0m
+  [1m[35m (1.3ms)[0m  ALTER TABLE "core_oauths" DROP "account_id"
+  [1m[36m (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20131215195941')[0m
+  [1m[35m (11.3ms)[0m  COMMIT
+Migrating to AddCols39ToCoreOauths (20131216131120)
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35m (1.2ms)[0m  ALTER TABLE "core_oauths" ADD COLUMN "name" character varying(255)
+  [1m[36m (1.0ms)[0m  [1mALTER TABLE "core_oauths" ADD COLUMN "email" character varying(255)[0m
+  [1m[35m (0.6ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131216131120')
+  [1m[36m (11.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateDataGaAccounts (20131218052244)
+  [1m[35m (0.6ms)[0m  BEGIN
+  [1m[36m (102.6ms)[0m  [1mCREATE TABLE "data_ga_accounts" ("id" serial primary key, "user_id" integer, "core_oauth_id" integer, "name" character varying(255), "account_id" character varying(255), "profile_id" character varying(255), "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131218052244')
+  [1m[36m (12.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.6ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
