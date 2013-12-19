@@ -1,0 +1,51 @@
+.row
+  .col-sm-3
+    = image_tag @user.gravatar(100)
+    %h4= @user.name
+    %p.lead{style: "font-size: 1.1em;"}= @user.username
+    %hr
+    %span.glyphicon.glyphicon-bookmark
+    = @user.company
+    %br
+    %span.glyphicon.glyphicon-map-marker.f11
+    = @user.location
+    %br
+    %span.glyphicon.glyphicon-link.f11
+    = link_to @user.url, @user.url, target: "_blank"
+    %br
+    %span.glyphicon.glyphicon-dashboard.f11
+    Joined on
+    = smart_date(@user.created_at)
+    %hr
+    = @user.bio
+  .col-sm-4
+    - if @shared_accounts.first.present?
+      .panel.panel-default
+        .panel-heading 
+          %b Repositories you contribute to
+        .panel-body
+          %table.table.table-condensed.f12
+            - @shared_accounts.each do |account|
+              %tr
+                %td
+                  %span.glyphicon.glyphicon-briefcase
+                  &nbsp;
+                  = link_to account.owner.username, user_path(account.owner.username)
+                  = "/"
+                  %b= link_to account.name, user_account_path(account.owner.username, account.slug)
+    %br
+    - if @my_accounts.first.present?
+      .panel.panel-default
+        .panel-heading 
+          %b My Repositories
+        .panel-body
+          - if @my_accounts.first.present?
+            %table.table.table-condensed.f12
+              - @my_accounts.each do |account|
+                %tr
+                  %td
+                    %span.glyphicon.glyphicon-briefcase
+                    &nbsp;
+                    = link_to account.name, user_account_path(account.owner.username,account.slug)
+          - else
+            .f11.gray No repositories created yet.

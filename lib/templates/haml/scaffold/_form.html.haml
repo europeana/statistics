@@ -1,0 +1,7 @@
+= simple_form_for(@<%= singular_table_name %>, html: {class: 'form-vertical', role: "form"}) do |f|
+  = f.error_notification
+<%- attributes.each do |attribute| -%>
+  = f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %>, placeholder: "", input_html: {}, hint: "", label_html: {}, required: true
+  <%- end -%>
+  = f.button :submit, (@<%= singular_table_name %>.id.present? ? 'Update' : 'Add'), class: "btn btn-success"
+  = link_to "Cancel", nil, style: "font-size: 11px;"

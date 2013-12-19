@@ -1,0 +1,45 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li.active Settings
+
+.row
+  .col-sm-2=render partial: "users/sidebar"
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading Profile
+      .panel-body
+        = form_for(@user, url: update_user_path(@user.username), :html => { method: :put,  role: "form" }) do |f|
+          .form-group
+            %label Name
+            = f.text_field :name, class: "form-control"
+          .form-group
+            %label URL
+            = f.text_field :url, class: "form-control"
+          .form-group
+            %label Company
+            = f.text_field :company, class: "form-control"
+          .form-group
+            %label Location
+            = f.text_field :location, class: "form-control"
+          .form-group
+            %label Gravatar Email
+            = f.text_field :gravatar_email, class: "form-control"
+          .form-group
+            %label 
+              = image_tag current_user.gravatar(30), class: "img-thumbnail"
+              = link_to "Change your avatar at Gravatar.com", "https://en.gravatar.com/", target: "_blank", class: "f11"
+          - if 1 == 2
+            .form-group
+              %label About
+              = f.text_area :bio, class: "form-control text_area_animate", "expand-height" => "200", rows: "2"
+            .form-group
+              %label Time Zone
+              = f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, {include_blank: true}, {class: "chosen-select"}
+          
+          .form-group
+            %label 
+            = f.submit "Save", class: "btn btn-success"
+        
+        
+    

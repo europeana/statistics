@@ -1,0 +1,27 @@
+.jumbotron
+  %h1 Marketing stuff!
+  %p.lead Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.
+  %p
+    %a.btn.btn-lg.btn-success{:href => "#", :role => "button"} Get started today
+
+.row
+  .col-lg-4
+    %h2 Safari bug warning!
+    %p.text-danger Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.
+    %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    %p
+      %a.btn.btn-primary{:href => "#", :role => "button"} View details &raquo;
+  .col-lg-4
+    %h2 Heading
+    %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    %p
+      %a.btn.btn-primary{:href => "#", :role => "button"} View details &raquo;
+  .col-lg-4
+    %h2 Sign In?
+    = simple_form_for :user, url: "/login" do |f|
+      - if notice
+        .alert.alert-danger
+          = notice    
+      = f.input :username, label: 'Your username'
+      = f.input :password
+      = f.button :submit, "Login!", class: "btn btn-success"
