@@ -1,0 +1,38 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li= link_to @account.owner.username, user_path(@account.owner)
+    %li= link_to @account.slug, user_account_path(@account.owner, @account.slug)
+    - if @folder.present?
+      - if @folder != "_"
+        %li= link_to @folder, user_account_core_files_path(@account.owner, @account.slug, folder_id: @folder)
+    %li.active= @core_file.file_file_name
+.row
+  .col-sm-12
+    .panel.panel-info
+      .panel-heading
+        = image_tag @core_file.updator.gravatar
+        = link_to @core_file.updator.username, user_path(@core_file.updator.username)
+        %span.gray= "-- #{@core_file.commit_message}"
+        .pull-right
+          updated
+          = time_ago_in_words(@core_file.updated_at)
+          ago
+    .panel.panel-default
+      .panel-heading
+        %i.glyphicon.glyphicon-list-alt
+        &nbsp;
+        %b= @core_file.file_file_name
+        %span.pull-right
+          = link_to "Edit", edit_user_account_core_file_path(@account.owner, @account.slug, folder_id: @folder, file_id: @core_file.slug), class: "btn btn-default btn-xs"
+          = link_to "Raw", raw_user_account_core_file_path(@account.owner, @account.slug, folder_id: @folder, file_id: @core_file.slug), class: "btn btn-default btn-xs"
+          - if !@disable_delete
+            = link_to "Delete", delete_user_account_core_file_path(@account.owner, @account.slug, folder_id: @folder, file_id: @core_file.slug),  confirm: 'Are you sure?', class: "btn btn-danger btn-xs"
+      .panel-content{style: "padding: 10px;"}        
+        %input#search_in_hands_grid{:placeholder => "Search", :type => "text"}      
+        #grid{style: "height: 250px;"}
+
+:javascript
+  var content =   eval(#{@core_file.content});
+  handsontable_with_filter("#grid", content, true);
+

@@ -1,0 +1,19 @@
+= content_for :title do
+  = link_to "PykHub", root_url
+
+.row
+  .col-sm-12
+    .well
+      = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|
+        %legend
+          %h4 Resend confirmation instructions
+        .form-group
+          .col-lg-12
+            .input-group
+              %span.input-group-addon= "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+              = f.text_field :email, class: "form-control", placeholder:"Email", id: "email"
+        .form-group
+          .col-lg-3= f.submit "Resend confirmation instructions", class: "btn btn-success"
+      %br  
+      = render "devise/shared/links"
+      %br

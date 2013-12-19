@@ -1,0 +1,57 @@
+
+// Handontable filter css
+.changeType {
+border: 1px solid #bbb;
+color: #bbb;
+background: #eee;
+border-radius: 2px;
+padding: 2px;
+font-size: 9px;
+
+float: right;
+line-height: 9px;
+margin: 3px 3px 0 0;
+}
+
+.changeType:hover {
+border: 1px solid #777;
+color: #777;
+cursor: pointer;
+}
+
+.changeType.pressed {
+background-color: #999;
+}
+
+.changeTypeMenu {
+position: absolute;
+border: 1px solid #ccc;
+margin-top: 18px;
+box-shadow: 0 1px 3px -1px #323232;
+background: white;
+padding: 0;
+display: none;
+z-index: 10;
+}
+
+.changeTypeMenu li{
+text-align: left;
+list-style: none;
+padding: 2px 20px;
+cursor: pointer;
+}
+
+.changeTypeMenu li.active:before {
+content: "\2714";
+margin-left: -15px;
+margin-right: 3px;
+}
+
+.changeTypeMenu li:hover {
+background: #eee;
+}
+
+.handsontable .pass {
+  background: blue;
+  color: white;
+}

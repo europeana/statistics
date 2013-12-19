@@ -1,0 +1,57 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li.active New Repository
+.row
+  .col-sm-2
+  = form_for @account, :html => { :class => 'form-inline' } do |f|
+    .row
+      .col-sm-12
+        .row
+          .col-sm-2
+            .form-group
+              %label.control-label Owner
+              %br
+              .input-group
+                = f.text_field :created_by, class: "form-control", value: current_user.username, disabled: true
+                %span.input-group-addon= "<b>/</b>".html_safe
+          .col-sm-4
+            .form-group
+              %label.control-label Repository name
+              %br
+              = f.text_field :name, class: "form-control", style: "width: 300px;", autofocus: true 
+          .col-sm-6    
+
+      
+      .col-sm-2      
+      .col-sm-10
+        %p.f12.gray
+          &nbsp; Great repository names are short and memorable. No spaces allowed.    
+            
+    .row
+      .col-sm-2      
+      .col-sm-10        
+        .form-group
+          %br
+          %label.control-label 
+            Description
+            %span.thin (Optional)
+          %br
+          = f.text_area :description, class: "form-control text_area_animate", "expand-height" => "50", rows: "1", style: "width: 700px;"  
+        %hr
+        %table
+          %tr
+            %td.top
+              %span.glyphicon.glyphicon-eye-open.gray
+            %td &nbsp;&nbsp;
+            %td
+              %p All repositories are publicly visible.
+        %hr
+        .form-group
+          %label.control-label Add a license
+          %br
+          = select_tag :license, options_for_select({"None" => "None", "Apache v2 license" => "Apachev2","MIT" => "mit", "BSD" => "bsd"})
+        %hr
+        = f.submit "Create repository", class: "btn btn-success"
+
+      

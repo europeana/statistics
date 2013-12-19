@@ -1,0 +1,12 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li= link_to @account.owner.username, user_path(@account.owner)
+    %li= link_to @account.slug, user_account_path(@account.owner, @account.slug)
+    %li= link_to @folder, user_account_core_files_path(@account.owner, @account.slug, folder_id: @folder)
+    %li.active Pull data from APIs
+.row
+  .col-sm-12
+    .panel.panel-default
+      .panel-heading{style: "background: #F2F2F2;"} Pull data from APIs
+      .panel-content{style: "padding: 10px;"}

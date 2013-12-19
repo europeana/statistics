@@ -1,0 +1,33 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li= link_to @account.owner.username, user_path(@account.owner)
+    %li.active= @account.name
+.row
+  .col-sm-10
+    %p.lead= @account.description
+    %div{style: "border: 1px #CFCFCF solid; background: #F6F6F6; padding: 4px;"}
+      %table.table.table-condensed.table-border.f12{style: "background: white; margin-bottom: 2px;"}
+        %tr
+          %td.col-sm-6= link_to "<i class='glyphicon glyphicon-folder-close'></i>&nbsp;&nbsp;data".html_safe, user_account_core_files_path(@account.owner, @account.slug, folder_id: "data")
+          %td.col-sm-4
+          %td.col-sm-2
+        %tr
+          %td.col-sm-6= link_to "<i class='glyphicon glyphicon-list-alt'></i>&nbsp;&nbsp;README.md".html_safe, readme_user_account_core_file_path(@account.owner, @account.slug)
+          %td.f11.gray.col-sm-4= @readme.commit_message
+          %td.f11.gray.col-sm-2= "#{time_ago_in_words(@readme.updated_at)} ago"
+        %tr
+          %td.col-sm-6= link_to "<i class='glyphicon glyphicon-list-alt'></i>&nbsp;&nbsp;License.md".html_safe, license_user_account_core_file_path(@account.owner, @account.slug)
+          %td.f11.gray.col-sm-4= @license.commit_message
+          %td.f11.gray.col-sm-2= "#{time_ago_in_words(@license.updated_at)} ago"
+    %br
+    %div{style: "border: 1px #CFCFCF solid; background: #F6F6F6; padding: 4px;"}
+      %h5 README.md
+      %hr
+      = @readme.content
+  .col-sm-2
+    %ul.nav.nav-pills.nav-stacked
+      %li.active=link_to "Repository", user_account_path(@account.owner.username,@account.slug)
+      - if @is_admin
+        %li=link_to "Settings", edit_account_path(@account.owner.username,@account.slug)
+        %li= link_to "Collaborators" , user_account_permissions_path(@account.owner.username, @account.slug)

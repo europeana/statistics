@@ -1,0 +1,36 @@
+.container
+  .row.f12
+    .col-sm-12
+      %hr
+    .col-sm-6
+      &copy
+      Pykih Software LLP
+      &nbsp;&nbsp;
+      = link_to "Contact", "www.pykih.com/contact"
+    .col-sm-6
+      .pull-right
+        = link_to "Blog", "www.pykih.com/blog"
+        &nbsp;&nbsp;
+        = link_to "About", "www.pykih.com/about"
+
+    
+:javascript
+  
+  if ( typeof gon !== 'undefined' ) {
+
+    $(".form-control").each(function(index) {      
+
+      var mix = $( this ).attr("id").split("_");
+      var current_id = $( this ).attr("id");
+      var e_array = mix.shift();
+      var e_name = mix.join("_");
+
+      if ( typeof gon["errors"][e_name] !== 'undefined' ) {
+        $.each(gon["errors"][e_name], function(index) {      
+          $("#"+ current_id).after("&nbsp<span class='label label-danger'>" + this + "</span>");
+          $("#"+current_id).closest(".form-group").addClass("has-error");
+        });      
+      }
+      
+    });  
+  }

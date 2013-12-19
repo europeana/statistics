@@ -1,0 +1,25 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: project_dev
+  host: localhost
+  pool: 5
+  username: ritvvijparrikh
+  password: 
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: project_test
+  host: localhost
+  pool: 5
+  username: ritvvijparrikh
+  password: 
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: project_prod
+  pool: 5
+  username: ritvvijparrikh
+  password:

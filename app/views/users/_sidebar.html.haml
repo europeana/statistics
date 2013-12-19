@@ -1,0 +1,4 @@
+%ul.nav.nav-pills.nav-stacked
+  %li{class: (controller_name == "users" and action_name == "edit") ? "active" : nil}=link_to "Profile", edit_user_path
+  %li{class: controller_name == "registrations" ? "active" : nil}=link_to "Account Settings", edit_user_registration_path
+  %li{class: action_name == "integrations" ? "active" : nil }= link_to "Integrations", integrations_user_path

@@ -1,0 +1,17 @@
+Dear #{@name},
+%br
+%br
+You've entered #{@email}! as the contact email address. To complete the process, we just need to verify that this email address belongs to you. Simply click the link below.
+%br
+%br
+= link_to 'Verify Now >', confirmation_url(@resource, :confirmation_token => @token)
+%br
+%br
+Wondering why you got this email?
+%br
+It's sent when someone adds or changes a contact email address for an Apple ID account. If you didn't do this, don't worry. Your email address cannot be used as a contact address without your verification.
+%br
+%br
+Thanks,
+%br
+Pykih Customer Support

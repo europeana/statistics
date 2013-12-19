@@ -1,0 +1,45 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li= link_to "Home", root_url
+    %li= link_to @account.owner.username, user_path(@account.owner)
+    %li= link_to @account.slug, user_account_path(@account.owner, @account.slug)
+    %li= link_to @folder, user_account_core_files_path(@account.owner, @account.slug, folder_id: @folder)
+    %li.active New Data Set
+.row
+  .col-sm-10
+    .panel.panel-default
+      = form_for(@core_file, url: create_user_account_core_files_path(@account.owner, @account.slug, folder_id: @folder), :html => { method: :post,  role: "form" }) do |f|
+        .panel-heading{style: "background: #F2F2F2;"}
+          .form-group= f.text_field :file_file_name, class: "form-control", placeholder: "File Name"
+        .panel-content{style: "padding: 10px;"}
+          .form-group
+            - if @editor == "text"
+              = f.text_area :content, class: "form-control"
+            - elsif @editor == "csv"
+              %button#transpose_hands_grid Transpose
+              |                             
+              %input#search_in_hands_grid{:placeholder => "Search", :type => "text"}
+              #grid{style: "height: 250px;"}
+          .form-group
+            %label Commit Message
+            = f.text_field :commit_message, class: "form-control"
+            = f.hidden_field :account_id, value: @account.id
+            = f.hidden_field :file_content_type, value: "csv"
+            = f.hidden_field :category, value: @folder
+            = f.text_area :content, value: "", id: "content", hidden: true
+          .form-group
+            = f.submit "Create", class: "btn btn-success", id: "submit"
+  .col-sm-2
+    %h5 Pull data from DataStore
+    .data-store{style: "height: 500px; background: red; overflow-y: scroll;"}
+      %br
+    = link_to "Pull data", nil, class: "btn btn-success"
+
+:javascript
+  
+  handsontable_with_filter("#grid", [], false);
+
+  $('#submit').click(function() {
+    var rowList = $("#grid").handsontable("getData");
+    $('#content').val(JSON.stringify(rowList));
+  });

@@ -1,0 +1,47 @@
+= content_for :breadcrumb do
+  %ol.breadcrumb
+    %li.active Home
+
+- if @new_user
+  .row
+    .col-sm-8{style: "margin-bottom: 200px;"}
+      %h1 Welcome to PykHub
+      %p.lead dalfkna ldfna lfknad flkadnf ladknf aldkfn adlkf nadlfk andfl kadnf lakdnf adlkfna dlkfnad lkfnad lfknad lfkadn flkadn fladknf aldkfn alkfnadlkfnadlfkn adlkfnadl fknadl fknadlf ad
+      = link_to "Create your first repository", new_accounts_path, class: "btn btn-success btn-lg"
+- else  
+  .row
+    .col-sm-8
+      %br
+    .col-sm-4
+      - if @shared_accounts.first.present?
+        .panel.panel-default
+          .panel-heading 
+            %b Repositories you contribute to
+          .panel-body
+            %table.table.table-condensed.f12
+              - @shared_accounts.each do |account|
+                %tr
+                  %td
+                    %span.glyphicon.glyphicon-briefcase
+                    &nbsp;
+                    = link_to account.owner.username, user_path(account.owner.username)
+                    = "/"
+                    %b= link_to account.name, user_account_path(account.owner.username, account.slug)
+      %br
+      .panel.panel-default
+        .panel-heading 
+          %b My Repositories
+          .pull-right
+            = link_to "New Repository", new_accounts_path, class: "btn btn-success btn-xs"
+        .panel-body
+          - if @my_accounts.first.present?
+            %table.table.table-condensed.f12
+              - @my_accounts.each do |account|
+                %tr
+                  %td
+                    %span.glyphicon.glyphicon-briefcase
+                    &nbsp;
+                    = link_to account.name, user_account_path(account.owner.username, account.slug)
+          - else
+            .f11.gray No repositories created yet.
+          

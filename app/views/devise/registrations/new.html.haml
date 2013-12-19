@@ -1,0 +1,27 @@
+= content_for :title do
+  Sign up
+
+.row
+  .col-lg-12
+    %div{:style => "width: 290px; margin-top: 81px; margin-left: auto; margin-right: auto; display: block;"}
+      .well
+        = form_for(@user, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f|
+          %legend
+            %h4 Sign Up
+          .form-group
+            .col-lg-12= f.text_field :username, class: "form-control",  placeholder:"Name", hint: "Please enter your full name"
+          .form-group
+            .col-lg-12
+              .input-group
+                %span.input-group-addon= "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+                = f.text_field :email, class: "form-control",  placeholder:"Email"
+          .form-group
+            .col-lg-12
+              .input-group
+                %span.input-group-addon= "<span class='glyphicon glyphicon-lock'></span>".html_safe            
+                = f.password_field :password, class: "form-control",  placeholder:"Password", hint: "Minimum 8 Character Password"
+          .form-group
+            .col-lg-3= f.submit "Sign Up", class: "btn btn-success"       
+        %br
+        = render "devise/shared/links"        
+        %br

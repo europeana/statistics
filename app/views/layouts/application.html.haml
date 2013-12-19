@@ -1,0 +1,39 @@
+!!!
+%html{lang: "en"}
+  %head
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    = include_gon
+    = stylesheet_link_tag "application", :media => "screen"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    %title PykHub
+  %body
+    = render partial: "layouts/shared/loading"
+    %header#main-header
+      = render partial: "layouts/shared/navbar"
+      = render partial: "layouts/shared/flash", locals: {flash: flash}
+      - if @is_breadcrumb_enabled
+        .breadcrumb-holder
+          .container
+            = yield(:breadcrumb)
+            = #link_to "What", "#", "data-toggle"=>"chardinjs", "data-intro"=>"This button toggles the overlay, you can click it, even when the overlay is visible", "data-position"=>"right"
+
+            - if @what_is_this_page
+              = link_to "<span class='glyphicon glyphicon-question-sign'></span> What is this page?".html_safe, "#", title: "You new hear, boi?", "data-placement"=>"bottom", id: "title-help", "data-toggle"=>"chardinjs", "data-intro"=>"This button toggles the overlay, you can click it, even when the overlay is visible", "data-position"=>"left"
+      - if @is_toolbar_enabled
+        #toolbar.navbar.navbar-default
+          .container
+            = yield(:toolbar)
+            %ul.nav.navbar-nav.navbar-right
+              %li
+                = link_to "<span class='glyphicon glyphicon-chevron-up'></span>".html_safe, "#", id: "collapse-header","data-placement"=>"bottom", title: "Hide the menus"    
+    .container
+      %br/
+      = yield
+      %br
+      %br
+      %br
+      %br
+    = render partial: "layouts/shared/footer"
+    #scroll-topper
+      %span.glyphicon.glyphicon-chevron-up

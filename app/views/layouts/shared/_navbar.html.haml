@@ -1,0 +1,30 @@
+%nav#main-nav.navbar.navbar-default{role: "navigation"}
+  .container
+    .navbar-header
+      %button#overflow-button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", type: "button"}
+        %span.glyphicon.glyphicon-align-justify.gray-icon
+      = link_to image_tag("/favicon.ico"), root_url, class: "navbar-brand"
+    - if @account.present? and @account.id.present?
+      .navbar-brand
+        = link_to @account.owner.username, user_path(@account.owner)
+        %b /
+        = link_to @account.slug, user_account_path(@account.owner, @account)
+    %ul.nav.navbar-nav
+      %li= yield(:title)
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      %ul.nav.navbar-nav.navbar-right
+        = yield(:right_navbar)
+        %li.dropdown
+          - if current_user.blank?
+            - if controller_name != "sessions"
+              %li= link_to "Sign in", user_session_path
+            - else
+              %li= link_to "Sign up", root_url
+          - else
+            %li
+              %a{href: user_path(current_user)}
+                = image_tag(current_user.gravatar(20))
+                = current_user.username
+            %li= link_to "<b class='glyphicon glyphicon-plus'></b>".html_safe, new_accounts_path
+            %li= link_to "<b class='glyphicon glyphicon-cog'></b>".html_safe, edit_user_path
+            %li= link_to "<b class='glyphicon glyphicon-off'></b>".html_safe, destroy_user_session_path, :method => :delete, style: "font-size: 14px;"

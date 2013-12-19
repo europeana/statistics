@@ -1,0 +1,27 @@
+= content_for :title do
+  = link_to "PykHub", root_url
+.row
+  .col-sm-12
+    - if flash.present?
+      - if flash.first.present?  
+        - error_class_name = "has-error"
+    .panel.panel-default{:style => "width: 290px; margin: 71px 0px 120px 0px; margin-left: auto; margin-right: auto;"}
+      .panel-heading.text-center 
+        %b Sign In
+      .panel-content{style: "padding: 10px;"}
+        %br
+        = form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "form-horizontal"}) do |f|
+          .form-group{class: "#{error_class_name}"}
+            .col-lg-12
+              .input-group
+                %span.input-group-addon= "<span class='glyphicon glyphicon-envelope'></span>".html_safe
+                = f.text_field :email, class: "form-control",  placeholder:"Email"
+          .form-group{class: "#{error_class_name}"}
+            .col-lg-12
+              .input-group
+                %span.input-group-addon= "<span class='glyphicon glyphicon-lock'></span>".html_safe          
+                = f.password_field :password, :required => false, class: "form-control",  placeholder:"Password"
+          .form-group
+            .col-lg-3
+              = f.submit "Sign In", class: "btn btn-success"
+        .f11= render "devise/shared/links"

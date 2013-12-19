@@ -1,0 +1,24 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  c:
+    i: "Successfully invited"
+    s: "Successfully added."
+    f: "Failed to add. Please check errors."
+  u:
+    s: "Successfully updated."
+    f: "Failed to update. Please check errors."
+  d:
+    s: "Successfully deleted."
+    f: "Failed to delete. Please check errors."
+    e: "Successfully expired."
+  permissions:
+    role:
+      A: Administrator
+      C: Collaborator
+  pc_entities:
+    genre:
+      raw: Raw Data Template
+      lang: Language
+      tree: Tree Data

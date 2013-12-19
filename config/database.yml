@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: project_dev
+  host: localhost
+  pool: 5
+  username: afzal
+  password: afzal
+

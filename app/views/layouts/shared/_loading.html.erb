@@ -1,0 +1,92 @@
+<div id="loader">
+  <style>
+#loader{
+position: fixed;
+top: 0;
+bottom: 0;
+right: 0;
+left: 0;
+with: 100%;
+height: 100%;
+background: #eee;
+border-top: 2px solid #222;
+z-index: 99999;
+}
+
+#loader .centered{
+padding-top: 200px;
+}
+
+#loader .centered h1{
+text-align: center;
+text-transform: uppercase;
+color: #222;
+text-shadow: 0 1px #fff;
+font-weight: 100;
+letter-spacing: 3px;
+}
+
+#loader .bars{
+text-align: center;
+}
+
+@-webkit-keyframes bar1{
+0% {
+height: 10px;
+}
+20% {
+height: 100px;
+}
+40% {
+height: 40px;
+}
+60% {
+height: 200px;
+}
+80% {
+height: 150px;
+}
+100% {
+height: 10px;
+}
+}
+
+#loader .bars div{
+display: inline-block;
+background: #222;
+border-bottom: 1px solid #fff;
+padding: 10px;
+width: 20px;
+}
+
+#loader .bars div:nth-child(1){ -webkit-animation: bar1 2s infinite;}
+#loader .bars div:nth-child(7){ -webkit-animation: bar1 4s infinite;}
+#loader .bars div:nth-child(2){ -webkit-animation: bar1 6s infinite;}
+#loader .bars div:nth-child(6){ -webkit-animation: bar1 8s infinite;}
+#loader .bars div:nth-child(3){ -webkit-animation: bar1 10s infinite;}
+#loader .bars div:nth-child(5){ -webkit-animation: bar1 12s infinite;}
+#loader .bars div:nth-child(4){ -webkit-animation: bar1 14s infinite;}
+
+  </style>
+  <div class="centered">
+<h1>Loading</h1>
+<div class="bars">
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+  <div>&nbsp;</div>
+</div>
+  </div>
+  <script>
+window.onload = function(){
+$("#loader .centered").slideUp(function(){
+$("#loader").fadeOut(function(){
+$("#loader").remove();
+});
+});
+};
+  </script>
+</div>

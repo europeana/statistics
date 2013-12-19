@@ -1,0 +1,48 @@
+.wrap{"ng-view" => "ng-view"}
+
+%script{:src => "/components/jquery/jquery.min.js"}    
+%script{:src => "/components/jquery-ui/ui/minified/jquery-ui.custom.min.js"}
+%link{:href => "/css/raw-file-progress-bar.css", :rel => "stylesheet"}
+%script{:src => "js/raw-file-upload.js"}
+:javascript
+  
+  $(document).ready(function() {
+    var settings = {
+        url: "#{raw_upload_path}",
+        method: "POST",
+        allowedTypes:"csv",
+        fileName: "file_name",
+        multiple: false,
+        onSuccess:function(files,data,xhr)
+        {
+          $("textarea").val("");
+          $("textarea").val(data);
+          $("#status").html("<font color='green'>Upload is success</font>");
+     
+        },
+        onError: function(files,status,errMsg)
+        {       
+            $("#status").html("<font color='red'>Upload is Failed</font>");
+        }
+    }
+    
+    $("#mulitplefileuploader").uploadFile(settings);
+  });
+
+  $(document).on('click', 'input[type=file]', function() {
+
+    var title    = $("#title_title").val();
+    var source   = $("#source_source").val();
+    var src_link = $("#src_link_src_link").val();
+
+    
+    if (title.length <= 0) {
+      alert("Title Required");
+      $("#title_title").focus();
+      return false;
+    }
+
+    var values = [{title:title,source:source,src_link:src_link}];
+    $(".ng-pristine").appendTo("<input type='text' value='"+ values +" hidden>")
+      
+  });  
