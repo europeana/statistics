@@ -1,25 +1,24 @@
-- if signed_in?
-  = render partial: "users/dashboard"
-- else
-  = content_for :title do 
-    = link_to "Statistics", root_url
-  = content_for :page_title do
-    Statistics
-  .row.jumbotron
-    .col-sm-9
-      %h1 Statistics
-      %p German Project
-    .col-sm-3
-      = form_for(@user, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "form-horizontal"}) do |f|
-        .form-group
-          .col-lg-12= f.text_field :username, class: "form-control",  placeholder: "Pick a username", autocomplete: :off
-        .form-group
-          .col-lg-12
-            .input-group
-              = f.text_field :email, class: "form-control",  placeholder: "Your email", autocomplete: :off
-        .form-group
-          .col-lg-12
-            .input-group
-              = f.password_field :password, class: "form-control",  placeholder: "Create a password", autocomplete: :off
-        .form-group
-          .col-lg-3= f.submit "Sign Up", class: "btn btn-success"
+.jumbotron
+  %h1 Marketing stuff!
+  %p.lead Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.
+  %p
+    %a.btn.btn-lg.btn-success{:href => "#", :role => "button"} Get started today
+
+.row
+  .col-lg-4
+    %h2 Safari bug warning!
+    %p.text-danger Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.
+    %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    %p
+      %a.btn.btn-primary{:href => "#", :role => "button"} View details &raquo;
+  .col-lg-4
+    %h2 Heading
+    %p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    %p
+      %a.btn.btn-primary{:href => "#", :role => "button"} View details &raquo;
+  .col-lg-4
+    %h2 Sign In?
+    = simple_form_for :user, url: "/login" do |f|
+      = f.input :username, label: 'Your username'
+      = f.input :password
+      = f.button :submit, "Login!", class: "btn btn-success"

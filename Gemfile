@@ -5,9 +5,9 @@ ruby "1.9.3"
 #Basics
 gem 'rails', '3.2.13'
 gem 'pg'
-gem 'gon'
 gem 'jbuilder'
 gem 'tinymce-rails'
+
 
 # User Interface
 group :assets do
@@ -16,6 +16,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
 end
+gem 'simple_form'
 gem 'haml-rails'
 gem "bcrypt-ruby", :require => "bcrypt"
 # Development
