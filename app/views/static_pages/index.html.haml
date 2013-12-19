@@ -19,6 +19,9 @@
   .col-lg-4
     %h2 Sign In?
     = simple_form_for :user, url: "/login" do |f|
+      - if notice
+        .alert.alert-danger
+          = notice    
       = f.input :username, label: 'Your username'
       = f.input :password
       = f.button :submit, "Login!", class: "btn btn-success"

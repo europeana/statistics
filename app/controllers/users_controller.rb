@@ -1,31 +1,20 @@
 class UsersController < ApplicationController
-    
+  
   def login
 
-    if params[:login].present?
+    if params[:action]    
+      username = params[:user][:username]
+      password = params[:user][:password]
+    
+      user = User.authenticate(username,password)
 
-      user = User.authenticate(params[:username],params[:password])
-      notice = ""      
-
-      if !user.blank?
-        if user.verified_tour.nil?
-          notice = "Your account still not verified"          
-        else
-          if user.verified_tour <= 0
-            redirect_to users_login_path, :notice => "Your account is not activated yet !!!"          
-            return
-          end
-          session[:user_id] = user.id
-          session[:user_name] = user.name
-          session[:user_email] = user.email_id
-          if user.admin > 0
-            session[:user_admin] = user.admin
-          end
-          redirect_to tours_path, :notice => "#{notice}"          
-        end
+      if user
+        session[:user_id] = user.id
+        session[:user_name] = user.name
+        session[:user_email] = user.email
+        redirect_to dashboard_path, notice: "Login Successfully"
       else 
-        notice = "Invalid login!!!"  
-        redirect_to users_login_path, :notice => "#{notice}"
+        redirect_to root_url, notice: "Invalid login!!!" 
       end
       
     end

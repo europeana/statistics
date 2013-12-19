@@ -3,7 +3,6 @@ class Core < ActiveRecord::Migration
     
     create_table "users", :force => true do |t|
       t.string   "name"
-      t.string   "username"
       t.string   "email",        :default => "", :null => false
       t.string   "password",     :default => "", :null => false
       t.string   "password",     :default => "", :null => false

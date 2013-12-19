@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   
   #GEMS USED
   #ACCESSORS
-  attr_accessible :email, :password, :remember_me, :name, :authentication_token, :bio, :time_zone, :username, :url, :company, :location, :gravatar_email, :public_email
+  attr_accessible :email, :name, :password
 
   #ASSOCIATIONS
   #VALIDATIONS
@@ -19,8 +19,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.authenticate(email, password)
-    user = find_by_email_id(email)
+  def self.authenticate(username, password)
+    user = find_by_name(username)
     if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)      
       user      
     else
@@ -31,6 +31,6 @@ class User < ActiveRecord::Base
   #UPSERT  
   #JOBS
   #PRIVATE
-  private
+  private  
       
 end

@@ -9,5 +9,11 @@ class ApplicationController < ActionController::Base
   
   #PRIVATE
   private
+  def authenticate_user!
+    if session[:username]
+    else
+      redirect_to root_url, notice:"Please login first"  
+    end
+  end
           
 end
