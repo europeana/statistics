@@ -1,5 +1,0 @@
-class Data::Ga 
-  
-  
-  
-end
