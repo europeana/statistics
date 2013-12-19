@@ -1,41 +1,35 @@
 class UsersController < ApplicationController
-  
-  before_filter :authenticate_user!, except: [:show]
-  before_filter :authorize, except: [:show]
-  
-  def show
-    @is_breadcrumb_enabled = false
-    @my_accounts     = @user.my_accounts
-    @shared_accounts = @user.shared_accounts
-  end
+    
+  def login
 
-  def edit
-  end
-  
-  def integrations
-    @core_oauths = current_user.core_oauths
-    @data_ga_accounts = current_user.data_ga_accounts
-  end
-  
-  def update
-    if @user.update_attributes(params[:user])
-      redirect_to edit_user_path, notice: t("u.s")
-    else
-      gon.errors = @user.errors
-      render action: "edit" 
-    end
-  end
-  
-  private
+    if params[:login].present?
 
-  def authorize
-    if @user.present?
-      if current_user.id != @user.id
-        redirect_to root_url, error: "Permission denied."
+      user = User.authenticate(params[:username],params[:password])
+      notice = ""      
+
+      if !user.blank?
+        if user.verified_tour.nil?
+          notice = "Your account still not verified"          
+        else
+          if user.verified_tour <= 0
+            redirect_to users_login_path, :notice => "Your account is not activated yet !!!"          
+            return
+          end
+          session[:user_id] = user.id
+          session[:user_name] = user.name
+          session[:user_email] = user.email_id
+          if user.admin > 0
+            session[:user_admin] = user.admin
+          end
+          redirect_to tours_path, :notice => "#{notice}"          
+        end
+      else 
+        notice = "Invalid login!!!"  
+        redirect_to users_login_path, :notice => "#{notice}"
       end
-    else
-      @user = current_user
+      
     end
+
   end
 
 end

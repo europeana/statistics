@@ -4,11 +4,12 @@ class Core < ActiveRecord::Migration
     create_table "users", :force => true do |t|
       t.string   "name"
       t.string   "username"
-      t.string   "email",                  :default => "", :null => false
-      t.text     "bio"
-      t.string   "encrypted_password",     :default => "", :null => false
-      t.string   "reset_password_token"
-      t.datetime "reset_password_sent_at"
+      t.string   "email",        :default => "", :null => false
+      t.string   "password",     :default => "", :null => false
+      t.string   "password",     :default => "", :null => false
+      t.string   "password",     :default => "", :null => false
+      t.string   "password_hash"
+      t.string   "password_salt"
       t.datetime "created_at",                             :null => false
       t.datetime "updated_at",                             :null => false
     end

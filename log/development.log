@@ -8462,3 +8462,128 @@ Served asset /js/bootstrap.min.js - 304 Not Modified (0ms)
 Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 16:40:50 +0530
 Served asset /application.js - 304 Not Modified (1ms)
 Connecting to database specified by database.yml
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Processing by StaticPagesController#index as HTML
+  Rendered static_pages/index.html.haml within layouts/application (6.2ms)
+Completed 200 OK in 16ms (Views: 15.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /application.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/bootstrap-theme.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /css/bootstrap-theme.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /css/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/justified-nav.css?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /css/justified-nav.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /application.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/js/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /js/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 16:45:17 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 16:49:16 +0530
+Processing by StaticPagesController#index as HTML
+  Rendered static_pages/index.html.haml within layouts/application (6.4ms)
+Completed 200 OK in 16ms (Views: 15.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /application.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/bootstrap-theme.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /css/bootstrap-theme.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/justified-nav.css?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /css/justified-nav.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /css/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/js/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /js/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 16:49:17 +0530
+Served asset /application.js - 304 Not Modified (1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Processing by StaticPagesController#index as HTML
+  Rendered static_pages/index.html.haml within layouts/application (6.9ms)
+Completed 200 OK in 15ms (Views: 14.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /application.css - 304 Not Modified (3ms)
+
+
+Started GET "/assets/css/bootstrap-theme.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /css/bootstrap-theme.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /css/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/css/justified-nav.css?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /css/justified-nav.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/js/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /js/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 16:51:49 +0530
+Served asset /application.js - 304 Not Modified (1ms)
+Connecting to database specified by database.yml
+  [1m[36m (92.4ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (77.9ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.9ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to Core (20131001130537)
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (162.5ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying(255), "username" character varying(255), "email" character varying(255) DEFAULT '' NOT NULL, "password" character varying(255) DEFAULT '' NOT NULL, "password_hash" character varying(255), "password_salt" character varying(255), "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (87.1ms)[0m  CREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")
+  [1m[36m (0.7ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20131001130537')[0m
+  [1m[35m (18.8ms)[0m  COMMIT
+  [1m[36m (8.6ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
