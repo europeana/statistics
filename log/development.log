@@ -49,3 +49,2514 @@ Migrating to CreateDataGaAccounts (20131218052244)
   [1m[35m (0.4ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20131218052244')
   [1m[36m (12.3ms)[0m  [1mCOMMIT[0m
   [1m[35m (0.6ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Connecting to database specified by database.yml
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 12:41:49 +0530
+Processing by StaticPagesController#index as HTML
+  [1m[36mUser Load (1.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (67.1ms)[0m  [1mINSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"[0m  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:41:50 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "GET"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", nil], ["path_to", "/"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:41:50 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[35m (12.1ms)[0m  COMMIT
+  Rendered static_pages/index.html.haml within layouts/application (69.7ms)
+Compiled nvd3/nv.d3.css  (0ms)  (pid 6021)
+Compiled lib/bootstrap.min.css  (63ms)  (pid 6021)
+Compiled lib/chardinjs.css  (0ms)  (pid 6021)
+Compiled lib/dc.css  (0ms)  (pid 6021)
+Compiled lib/jquery.gridster.css  (0ms)  (pid 6021)
+Compiled chosen.css  (676ms)  (pid 6021)
+Compiled app/helpers.css  (29ms)  (pid 6021)
+Compiled app/sprites.css  (224ms)  (pid 6021)
+Compiled app/user_card.css  (20ms)  (pid 6021)
+Compiled pyk.css  (1531ms)  (pid 6021)
+Compiled vendor/jquery-ui.custom.css  (0ms)  (pid 6021)
+Compiled vendor/jquery.handsontable.full.css  (0ms)  (pid 6021)
+Compiled vendor/pyk/pykui.css  (151ms)  (pid 6021)
+Compiled app/temp.css  (13ms)  (pid 6021)
+Compiled application.css  (1844ms)  (pid 6021)
+Compiled jquery.js  (3ms)  (pid 6021)
+Compiled jquery_ujs.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/colorbrewer.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/crossfilter.js  (1ms)  (pid 6021)
+Compiled nvd3/lib/crossfilter.min.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/d3.v2.js  (7ms)  (pid 6021)
+Compiled nvd3/lib/d3.v2.min.js  (2ms)  (pid 6021)
+Compiled nvd3/lib/d3.v3.js  (8ms)  (pid 6021)
+Compiled nvd3/lib/fisheye.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/hive.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/horizon.js  (0ms)  (pid 6021)
+Compiled nvd3/lib/sankey.js  (0ms)  (pid 6021)
+Compiled nvd3/nv.d3.js  (11ms)  (pid 6021)
+Compiled nvd3/nv.d3.min.js  (1ms)  (pid 6021)
+Compiled nvd3/src/core.js  (0ms)  (pid 6021)
+Compiled nvd3/src/interactiveLayer.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/axis.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/backup/bullet.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/backup/bulletChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/boilerplate.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/bullet.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/bulletChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/cumulativeLineChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/discreteBar.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/discreteBarChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/distribution.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/historicalBar.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/historicalBarChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/indentedTree.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/legend.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/line.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/lineChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/linePlusBarChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/linePlusBarWithFocusChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/lineWithFisheye.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/lineWithFisheyeChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/lineWithFocusChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBar.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBarChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBarHorizontal.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBarHorizontalChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBarTimeSeries.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiBarTimeSeriesChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/multiChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/ohlcBar.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/parallelCoordinates.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/pie.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/pieChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/scatter.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/scatterChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/scatterPlusLineChart.js  (77ms)  (pid 6021)
+Compiled nvd3/src/models/sparkline.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/sparklinePlus.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/stackedArea.js  (0ms)  (pid 6021)
+Compiled nvd3/src/models/stackedAreaChart.js  (0ms)  (pid 6021)
+Compiled nvd3/src/tooltip.js  (0ms)  (pid 6021)
+Compiled nvd3/src/utils.js  (0ms)  (pid 6021)
+Compiled lib/bootstrap.min.js  (0ms)  (pid 6021)
+Compiled lib/chardinjs.min.js  (0ms)  (pid 6021)
+Compiled lib/crossfilter.js  (1ms)  (pid 6021)
+Compiled lib/d3.v3.js  (1ms)  (pid 6021)
+Compiled lib/dc.js  (5ms)  (pid 6021)
+Compiled lib/jquery.gridster.js  (0ms)  (pid 6021)
+Compiled lib/jquery.sparkline.min.js  (0ms)  (pid 6021)
+Compiled lib/markermanager.js  (0ms)  (pid 6021)
+Compiled lib/tinycon.min.js  (0ms)  (pid 6021)
+Compiled lib/topojson.js  (0ms)  (pid 6021)
+Compiled lib/underscore.js  (1ms)  (pid 6021)
+Compiled highcharts/highstock.js  (3ms)  (pid 6021)
+Compiled lib/abstract-chosen.js  (860ms)  (pid 6021)
+Compiled lib/select-parser.js  (253ms)  (pid 6021)
+Compiled chosen.jquery.js  (480ms)  (pid 6021)
+Compiled chosen-jquery.js  (1761ms)  (pid 6021)
+Compiled tinymce/preinit.js  (1ms)  (pid 6021)
+Compiled tinymce/tinymce.jquery.js  (10ms)  (pid 6021)
+Compiled tinymce/jquery.tinymce.js  (0ms)  (pid 6021)
+Compiled tinymce-jquery.js  (203ms)  (pid 6021)
+Compiled pyk.js  (5604ms)  (pid 6021)
+Compiled vendor/app/handsontable.full.js  (4ms)  (pid 6021)
+Compiled vendor/app/jquery-ui.custom.min.js  (63ms)  (pid 6021)
+Compiled vendor/pyk/pykui.js  (0ms)  (pid 6021)
+Compiled application.js  (5789ms)  (pid 6021)
+  Rendered layouts/shared/_loading.html.erb (0.8ms)
+  Rendered layouts/shared/_navbar.html.haml (8.3ms)
+  Rendered layouts/shared/_flash.html.haml (4.9ms)
+  Rendered layouts/shared/_footer.html.haml (4.7ms)
+Completed 200 OK in 8729ms (Views: 8328.6ms | ActiveRecord: 115.1ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /application.css - 200 OK (33ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /pyk.css - 304 Not Modified (36ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/nv.d3.css - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /lib/bootstrap.min.css - 304 Not Modified (6ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /lib/chardinjs.css - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /lib/dc.css - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /lib/jquery.gridster.css - 304 Not Modified (5ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /chosen.css - 304 Not Modified (3ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /app/helpers.css - 304 Not Modified (4ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /app/sprites.css - 304 Not Modified (4ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /app/user_card.css - 304 Not Modified (3ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /vendor/jquery-ui.custom.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /vendor/jquery.handsontable.full.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /vendor/pyk/pykui.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /app/temp.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /jquery.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/lib/colorbrewer.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/lib/crossfilter.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/lib/d3.v2.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:58 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/lib/d3.v3.js - 304 Not Modified (6ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/lib/fisheye.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/lib/hive.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/lib/horizon.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/lib/sankey.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/nv.d3.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/nv.d3.min.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/core.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/interactiveLayer.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/axis.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/boilerplate.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/bullet.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/bulletChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/discreteBar.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/distribution.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/historicalBar.js - 304 Not Modified (91ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/indentedTree.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/legend.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/line.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/lineChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBar.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/multiChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/pie.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/pieChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/scatter.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/scatterChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/sparkline.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/stackedArea.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/tooltip.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /nvd3/src/utils.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/bootstrap.min.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/chardinjs.min.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/crossfilter.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/d3.v3.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/dc.js - 304 Not Modified (5ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/jquery.gridster.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:41:59 +0530
+Served asset /lib/jquery.sparkline.min.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/markermanager.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/tinycon.min.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/topojson.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/underscore.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /highcharts/highstock.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/abstract-chosen.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /lib/select-parser.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /chosen.jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /chosen-jquery.js - 304 Not Modified (8ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /tinymce/preinit.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /tinymce/tinymce.jquery.js - 304 Not Modified (8ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /tinymce/jquery.tinymce.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /tinymce-jquery.js - 304 Not Modified (12ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /pyk.js - 304 Not Modified (219ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /vendor/app/handsontable.full.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /vendor/pyk/pykui.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:00 +0530
+Served asset /application.js - 304 Not Modified (211ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Processing by StaticPagesController#index as HTML
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:42:52 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "GET"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", nil], ["path_to", "/"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:42:52 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[36m (21.5ms)[0m  [1mCOMMIT[0m
+  Rendered static_pages/index.html.haml within layouts/application (8.5ms)
+  Rendered layouts/shared/_loading.html.erb (0.1ms)
+  Rendered layouts/shared/_navbar.html.haml (1.4ms)
+  Rendered layouts/shared/_flash.html.haml (0.2ms)
+  Rendered layouts/shared/_footer.html.haml (0.2ms)
+Completed 200 OK in 198ms (Views: 162.3ms | ActiveRecord: 22.8ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /pyk.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/nv.d3.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/chardinjs.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/dc.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/jquery.gridster.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /chosen.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /app/helpers.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /app/sprites.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /app/user_card.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /vendor/jquery-ui.custom.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /vendor/jquery.handsontable.full.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /vendor/pyk/pykui.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /app/temp.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/colorbrewer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/d3.v2.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/d3.v3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/fisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/hive.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/horizon.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/lib/sankey.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/nv.d3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/nv.d3.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/core.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/interactiveLayer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/axis.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/boilerplate.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/discreteBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/distribution.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/historicalBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/indentedTree.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/legend.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/line.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/lineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 304 Not Modified (80ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/multiChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/pie.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/pieChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/scatter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/scatterChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/sparkline.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/stackedArea.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/tooltip.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /nvd3/src/utils.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/chardinjs.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/d3.v3.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/dc.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/jquery.gridster.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/jquery.sparkline.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/markermanager.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/tinycon.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/topojson.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/underscore.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /highcharts/highstock.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/abstract-chosen.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /lib/select-parser.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /chosen.jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:52 +0530
+Served asset /chosen-jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /tinymce/preinit.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /tinymce/tinymce.jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /tinymce/jquery.tinymce.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /tinymce-jquery.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /pyk.js - 304 Not Modified (18ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /vendor/app/handsontable.full.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /vendor/pyk/pykui.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:42:53 +0530
+Served asset /application.js - 304 Not Modified (19ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 12:44:07 +0530
+Processing by StaticPagesController#index as HTML
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.9ms)[0m  [1mINSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"[0m  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:44:07 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "GET"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", nil], ["path_to", "/"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:44:07 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[35m (20.7ms)[0m  COMMIT
+  Rendered static_pages/index.html.haml within layouts/application (4.8ms)
+  Rendered layouts/shared/_loading.html.erb (0.1ms)
+  Rendered layouts/shared/_navbar.html.haml (1.2ms)
+  Rendered layouts/shared/_flash.html.haml (0.1ms)
+  Rendered layouts/shared/_footer.html.haml (0.2ms)
+Completed 200 OK in 189ms (Views: 156.1ms | ActiveRecord: 22.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /application.css - 200 OK (1ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /pyk.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/nv.d3.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/chardinjs.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/dc.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/jquery.gridster.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /chosen.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /app/helpers.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /app/sprites.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /app/user_card.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /vendor/jquery-ui.custom.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /vendor/jquery.handsontable.full.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /vendor/pyk/pykui.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /app/temp.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/colorbrewer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/d3.v2.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/d3.v3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/fisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/hive.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/horizon.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/lib/sankey.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/nv.d3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/nv.d3.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/core.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/interactiveLayer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/axis.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/boilerplate.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/discreteBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/distribution.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/historicalBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/indentedTree.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/legend.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/line.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/lineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/multiChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/pie.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/pieChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/scatter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/scatterChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/sparkline.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/stackedArea.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/tooltip.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /nvd3/src/utils.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/chardinjs.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/d3.v3.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/dc.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/jquery.gridster.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/jquery.sparkline.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/markermanager.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/tinycon.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/topojson.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/underscore.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /highcharts/highstock.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/abstract-chosen.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:08 +0530
+Served asset /lib/select-parser.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /chosen.jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /chosen-jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /tinymce/preinit.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /tinymce/tinymce.jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /tinymce/jquery.tinymce.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /tinymce-jquery.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /pyk.js - 304 Not Modified (21ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /vendor/app/handsontable.full.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /vendor/pyk/pykui.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:09 +0530
+Served asset /application.js - 304 Not Modified (18ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Processing by StaticPagesController#index as HTML
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:44:18 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "GET"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", nil], ["path_to", "/"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:44:18 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[36m (14.5ms)[0m  [1mCOMMIT[0m
+  Rendered static_pages/index.html.haml within layouts/application (4.8ms)
+  Rendered layouts/shared/_loading.html.erb (0.1ms)
+  Rendered layouts/shared/_navbar.html.haml (1.2ms)
+  Rendered layouts/shared/_flash.html.haml (0.1ms)
+  Rendered layouts/shared/_footer.html.haml (0.1ms)
+Completed 200 OK in 183ms (Views: 156.1ms | ActiveRecord: 15.7ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /application.css - 200 OK (2ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /pyk.css - 200 OK (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/nv.d3.css - 200 OK (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /lib/bootstrap.min.css - 200 OK (0ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /lib/chardinjs.css - 200 OK (0ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /lib/dc.css - 200 OK (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /lib/jquery.gridster.css - 200 OK (0ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /app/helpers.css - 200 OK (0ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /chosen.css - 200 OK (0ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /app/sprites.css - 200 OK (0ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /app/user_card.css - 200 OK (0ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /vendor/jquery-ui.custom.css - 200 OK (0ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /vendor/jquery.handsontable.full.css - 200 OK (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /vendor/pyk/pykui.css - 200 OK (0ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /app/temp.css - 200 OK (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /jquery.js - 200 OK (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /jquery_ujs.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/colorbrewer.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/crossfilter.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/d3.v2.js - 200 OK (1ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/fisheye.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/d3.v3.js - 200 OK (1ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/hive.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/horizon.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/lib/sankey.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/nv.d3.js - 200 OK (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/nv.d3.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/interactiveLayer.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/core.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/axis.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/bullet.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/bulletChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/boilerplate.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:18 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/discreteBar.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/indentedTree.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/distribution.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/historicalBar.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/legend.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/line.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/lineChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBar.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/multiChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/pie.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/pieChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/scatter.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/scatterChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/sparkline.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/stackedArea.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/utils.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/bootstrap.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /nvd3/src/tooltip.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/chardinjs.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/crossfilter.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/d3.v3.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/dc.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/jquery.gridster.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/markermanager.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/tinycon.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/jquery.sparkline.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/topojson.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/underscore.js - 200 OK (0ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /highcharts/highstock.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/abstract-chosen.js - 200 OK (0ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /lib/select-parser.js - 200 OK (0ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /chosen-jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /chosen.jquery.js - 200 OK (0ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /tinymce/preinit.js - 200 OK (0ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /tinymce/jquery.tinymce.js - 200 OK (0ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /tinymce-jquery.js - 200 OK (3ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /tinymce/tinymce.jquery.js - 200 OK (2ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /pyk.js - 200 OK (19ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /vendor/app/handsontable.full.js - 200 OK (0ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 200 OK (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /application.js - 200 OK (18ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:44:19 +0530
+Served asset /vendor/pyk/pykui.js - 200 OK (0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2013-12-19 12:45:10 +0530
+Processing by StaticPagesController#index as HTML
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"[0m  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:45:10 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "GET"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", nil], ["path_to", "/"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:45:10 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[35m (19.4ms)[0m  COMMIT
+  Rendered static_pages/index.html.haml within layouts/application (9.3ms)
+  Rendered layouts/shared/_loading.html.erb (0.1ms)
+  Rendered layouts/shared/_navbar.html.haml (1.4ms)
+  Rendered layouts/shared/_flash.html.haml (0.1ms)
+  Rendered layouts/shared/_footer.html.haml (0.2ms)
+Completed 200 OK in 197ms (Views: 164.3ms | ActiveRecord: 20.6ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:10 +0530
+Served asset /application.css - 200 OK (93ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /pyk.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/nv.d3.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/chardinjs.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/dc.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/jquery.gridster.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /chosen.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /app/helpers.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /app/sprites.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /app/user_card.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /vendor/jquery-ui.custom.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /vendor/jquery.handsontable.full.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /vendor/pyk/pykui.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /app/temp.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/colorbrewer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/d3.v2.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/d3.v3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/fisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/hive.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/horizon.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/lib/sankey.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/nv.d3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/nv.d3.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/core.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/interactiveLayer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/axis.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/boilerplate.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/discreteBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/distribution.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/historicalBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/indentedTree.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/legend.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/line.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/lineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/multiChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/pie.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/pieChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/scatter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/scatterChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/sparkline.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/stackedArea.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/tooltip.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /nvd3/src/utils.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/chardinjs.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/d3.v3.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/dc.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/jquery.gridster.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/jquery.sparkline.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/markermanager.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/tinycon.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/topojson.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/underscore.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /highcharts/highstock.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/abstract-chosen.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /lib/select-parser.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /chosen.jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:11 +0530
+Served asset /chosen-jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /tinymce/preinit.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /tinymce/tinymce.jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /tinymce/jquery.tinymce.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /tinymce-jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /pyk.js - 304 Not Modified (19ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /vendor/app/handsontable.full.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /vendor/pyk/pykui.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:12 +0530
+Served asset /application.js - 304 Not Modified (19ms)
+
+
+Started POST "/users" for 127.0.0.1 at 2013-12-19 12:45:25 +0530
+Processing by RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"PIHMCHvgBfV6rONxlQh12ppJMzVMoo29K2iHWyPOCQA=", "user"=>{"username"=>"", "email"=>"", "password"=>"[FILTERED]"}, "commit"=>"Sign Up"}
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "core_visits" ("account_id", "browser", "browser_genre", "browser_version", "caller_host", "created_at", "current_user_id", "day", "day_of_week", "device_brand", "device_genre", "device_model", "hour", "http_method", "ip", "is_bot", "lang", "month", "os", "os_version", "path_from", "path_to", "raw_user_agent", "updated_at", "visitable_id", "visitable_type", "year") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27) RETURNING "id"  [["account_id", nil], ["browser", "Chrome 31.0.1650.63"], ["browser_genre", "Chrome"], ["browser_version", "31.0.1650.63"], ["caller_host", nil], ["created_at", Thu, 19 Dec 2013 12:45:25 IST +05:30], ["current_user_id", nil], ["day", 19], ["day_of_week", "Thu"], ["device_brand", "PC"], ["device_genre", "Computer"], ["device_model", ""], ["hour", 12], ["http_method", "POST"], ["ip", "127.0.0.1"], ["is_bot", false], ["lang", "en-US,en;q=0.8,da;q=0.6,hi;q=0.4,ms;q=0.2"], ["month", 12], ["os", "Linux i686"], ["os_version", "i686"], ["path_from", "http://localhost:3000/"], ["path_to", "/users"], ["raw_user_agent", "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"], ["updated_at", Thu, 19 Dec 2013 12:45:25 IST +05:30], ["visitable_id", nil], ["visitable_type", nil], ["year", 2013]]
+  [1m[36m (15.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Load (2.1ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("slug" = '' OR "slug" LIKE '--%') ORDER BY LENGTH("slug") DESC, "slug" DESC LIMIT 1[0m
+  [1m[35mUser Exists (0.9ms)[0m  SELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('') LIMIT 1
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE ("slug" = '' OR "slug" LIKE '--%') ORDER BY LENGTH("slug") DESC, "slug" DESC LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT 1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('') LIMIT 1
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  Rendered devise/shared/_links.haml (3.5ms)
+  Rendered devise/registrations/new.html.haml within layouts/application (14.0ms)
+  Rendered layouts/shared/_loading.html.erb (0.1ms)
+  Rendered layouts/shared/_navbar.html.haml (1.4ms)
+  Rendered layouts/shared/_flash.html.haml (0.1ms)
+  Rendered layouts/shared/_footer.html.haml (0.1ms)
+Completed 200 OK in 482ms (Views: 174.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/pyk.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /pyk.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/nv.d3.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/bootstrap.min.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/chardinjs.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/dc.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.gridster.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/jquery.gridster.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /chosen.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/helpers.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /app/helpers.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/sprites.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /app/sprites.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/user_card.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /app/user_card.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery-ui.custom.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /vendor/jquery-ui.custom.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/jquery.handsontable.full.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /vendor/jquery.handsontable.full.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /vendor/pyk/pykui.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/app/temp.css?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /app/temp.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /jquery.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/colorbrewer.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/colorbrewer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/crossfilter.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/crossfilter.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/d3.v2.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v2.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/d3.v2.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/d3.v3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/lib/fisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/fisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/hive.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/hive.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/horizon.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/horizon.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/lib/sankey.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/lib/sankey.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/nv.d3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/nv.d3.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/nvd3/nv.d3.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/nv.d3.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/core.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/core.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/interactiveLayer.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/interactiveLayer.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/axis.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/axis.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/backup/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/backup/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/backup/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/boilerplate.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/boilerplate.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bullet.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/bullet.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/bulletChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/bulletChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/cumulativeLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/cumulativeLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/discreteBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/discreteBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/discreteBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/distribution.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/distribution.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/historicalBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/historicalBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/historicalBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/indentedTree.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/indentedTree.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/legend.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/legend.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/line.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/line.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/lineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/linePlusBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/linePlusBarWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/linePlusBarWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheye.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/lineWithFisheye.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFisheyeChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/lineWithFisheyeChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/lineWithFocusChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/lineWithFocusChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBarChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontal.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBarHorizontal.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarHorizontalChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBarHorizontalChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeries.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBarTimeSeries.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiBarTimeSeriesChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiBarTimeSeriesChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/multiChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/multiChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/ohlcBar.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/ohlcBar.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/parallelCoordinates.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/parallelCoordinates.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pie.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/pie.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/pieChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/pieChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/scatter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/scatterChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/scatterPlusLineChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/scatterPlusLineChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparkline.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/sparkline.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/sparklinePlus.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/sparklinePlus.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedArea.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/stackedArea.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/models/stackedAreaChart.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/models/stackedAreaChart.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/tooltip.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/tooltip.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/nvd3/src/utils.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /nvd3/src/utils.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/bootstrap.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/bootstrap.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/chardinjs.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/chardinjs.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/crossfilter.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/crossfilter.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/d3.v3.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/d3.v3.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/dc.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/dc.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/lib/jquery.gridster.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:26 +0530
+Served asset /lib/jquery.gridster.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/jquery.sparkline.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/jquery.sparkline.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/markermanager.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/markermanager.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/tinycon.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/tinycon.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/topojson.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/topojson.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/underscore.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/underscore.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/highcharts/highstock.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /highcharts/highstock.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/abstract-chosen.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/abstract-chosen.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/lib/select-parser.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /lib/select-parser.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /chosen.jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/chosen-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /chosen-jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/preinit.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /tinymce/preinit.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce/tinymce.jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /tinymce/tinymce.jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tinymce/jquery.tinymce.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /tinymce/jquery.tinymce.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tinymce-jquery.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /tinymce-jquery.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/pyk.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /pyk.js - 304 Not Modified (20ms)
+
+
+Started GET "/assets/vendor/app/handsontable.full.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /vendor/app/handsontable.full.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/app/jquery-ui.custom.min.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /vendor/app/jquery-ui.custom.min.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/vendor/pyk/pykui.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /vendor/pyk/pykui.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-12-19 12:45:27 +0530
+Served asset /application.js - 304 Not Modified (19ms)

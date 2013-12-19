@@ -5,10 +5,8 @@ require 'csv'
 require 'open-uri'
 require 'rubygems'
 require "net/https"
-require "agent_orange"
-require "pyk"
 require 'json'
-require 'g_ruby'
+
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
