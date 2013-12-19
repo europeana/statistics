@@ -16,9 +16,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
 end
-gem 'haml'
 gem 'haml-rails'
-
+gem "bcrypt-ruby", :require => "bcrypt"
 # Development
 group :development do
   gem "better_errors"
