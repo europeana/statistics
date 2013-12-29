@@ -9,13 +9,13 @@
     = csrf_meta_tags
     %title Europeana Statistics Dashboard
   %body
-    .container
+    .container{style: "margin-left: auto; margin-right: auto;"}
       .row#header-strip
         = link_to "Home", root_url, class: "white left"
       .row#header{role: "banner"}
         .logo-and-search
           .logo
-            %h1= link_to image_tag("logo.png"), root_url
+            %h1= link_to image_tag("europeana-logo.png"), root_url
         - if session[:user_name] 
           .query-info= link_to "Logout", "/logout"
       .row
@@ -27,22 +27,17 @@
                 .col-sm-12
                   - flash.each do |name, msg|
                     - if name.to_s == "error"          
-                      .alert.alert-danger{style:"margin-top:40px;"}
-                        = msg
-                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                      %p.message.message-error
+                        %span.icon-alert= msg
                     - elsif name.to_s == "notice"
-                      .alert.alert-success{style:"margin-top:40px;"}
-                        = msg
-                        %a{ class: "close", "data-dismiss" => "alert"} ×
-                    - elsif name.to_s == "warning"
-                      .alert.alert-warning{style:"margin-top:40px;"}
-                        = msg
-                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                      %p.message.message-info
+                        %span.icon-yes= msg
                     - else
-                      .alert.alert-info{style:"margin-top:40px;"}
-                        = msg
-                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                      %p.message.message-info
+                        %span.icon-info= msg
       = yield
+      .row{style: "background: white; height: 50px;"}
+        %br
       .row.footer{role: "contentinfo"}
         .twelve.columns
           .footer-wrapper
@@ -68,28 +63,28 @@
                     %a.europeana{href: "http://pro.europeana.eu/", target: "_self", title: "Europeana Professional"} Professional
               .four.columns
                 %h3
-                  %a.europeana{href: "/portal/usingeuropeana.html", target: "_self", title: "Help"} Help
+                  %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana.html", target: "_self", title: "Help"} Help
                 %ul.footer-links
                   %li
-                    %a.europeana{href: "/portal/usingeuropeana_search.html", target: "_self", title: "Searching Europeana"} Searching Europeana
+                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_search.html", target: "_self", title: "Searching Europeana"} Searching Europeana
                   %li
-                    %a.europeana{href: "/portal/usingeuropeana_explore.html", target: "_self", title: "Exploring Europeana"} Exploring Europeana
+                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_explore.html", target: "_self", title: "Exploring Europeana"} Exploring Europeana
                   %li
-                    %a.europeana{href: "/portal/usingeuropeana_results.html", target: "_self", title: "Results in Europeana"} Results in Europeana
+                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_results.html", target: "_self", title: "Results in Europeana"} Results in Europeana
                   %li
-                    %a.europeana{href: "/portal/usingeuropeana_myeuropeana.html", target: "_self", title: "Using My Europeana"} Using My Europeana
+                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_myeuropeana.html", target: "_self", title: "Using My Europeana"} Using My Europeana
                   %li
-                    %a.europeana{href: "/portal/usingeuropeana_searchwidget.html", target: "_self", title: "Configure your search widget"} Configure your search widget
+                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_searchwidget.html", target: "_self", title: "Configure your search widget"} Configure your search widget
               .four.columns
                 %h3
-                  %a.europeana{href: "/portal/aboutus.html", target: "_self", title: "About us"} About us
+                  %a.europeana{href: "http://www.europeana.eu/portal/aboutus.html", target: "_self", title: "About us"} About us
                 %ul.footer-links
                   %li
-                    %a.europeana{href: "/portal/newcontent.html", target: "_self", title: "New content"} New content
+                    %a.europeana{href: "http://www.europeana.eu/portal/newcontent.html", target: "_self", title: "New content"} New content
                   %li
-                    %a.europeana{href: "/portal/europeana-providers.html", target: "_self", title: "All providers"} All providers
+                    %a.europeana{href: "http://www.europeana.eu/portal/europeana-providers.html", target: "_self", title: "All providers"} All providers
                   %li
-                    %a.europeana{href: "/portal/aboutus_enews.html", target: "_self", title: "Previous newsletters"} Previous newsletters
+                    %a.europeana{href: "http://www.europeana.eu/portal/aboutus_enews.html", target: "_self", title: "Previous newsletters"} Previous newsletters
                   %li
                     %a.europeana{href: "http://pro.europeana.eu/web/guest/news", target: "_self", title: "Press Centre"} Press Centre
                   %li
