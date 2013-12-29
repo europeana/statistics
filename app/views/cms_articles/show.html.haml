@@ -1,0 +1,20 @@
+.row
+  .col-sm-12
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      %li.active= @cms_article.title
+    %h1
+      = @cms_article.title
+      - if current_user.present?
+        %span.pull-right.f11
+          = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn btn-default btn-xs"
+          = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn btn-danger btn-xs"
+    %hr
+    #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
+    #preview.wmd-preview
+          
+:javascript
+  $(document).ready(function() {
+    $("#editor > #input").hide();
+    new WMD("input", "toolbar", { preview: "preview" });
+  });

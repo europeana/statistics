@@ -1,0 +1,40 @@
+- url = create_data_filzs_path
+- if @data_filz.id.present?     
+  - url = update_data_filz_path(@data_filz.slug)
+.row
+  .col-sm-12
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      %li= link_to "Data", data_filzs_path
+      - if @data_filz.id.present?
+        %li.active= @data_filz.file_file_name
+      - else
+        %li.active New
+    .panel.panel-default
+      = form_for(@data_filz, url: url, :html => { role: "form" }) do |f|
+        = f.text_area :content, value: "", id: "content", hidden: true
+        .panel-heading{style: "background: #F2F2F2; height: 55px;"}
+          = f.text_field :file_file_name, class: "col-sm-8 form-control", placeholder: "File Name", autofocus: true, id: "data_file_file_name"
+        .panel-content{style: "padding: 10px;"}
+          .form-group
+            -if @data_filz.errors.present?
+              - @data_filz.errors[:content].each do |c_error|
+                %span.label.label-danger
+                  = c_error
+            #grid{style: "height: 350px;"}
+          .form-group
+            = f.submit "Save", class: "btn btn-success", id: "submit"
+
+
+
+:javascript
+  var content =  eval(#{@data_filz[:content]});
+  content = (content === undefined) ? [] : content;
+
+  handsontable_with_filter("#grid", content, false);
+  $('#submit').click(function() {
+    remove_null_rows("#grid");
+    remove_null_cols("#grid");
+    var rowList = $("#grid").handsontable("getData");
+    $('#content').val(JSON.stringify(rowList));
+  });

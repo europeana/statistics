@@ -1,0 +1,48 @@
+!!!
+%html{lang: "en"}
+  %head
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    %meta{charset: "utf-8"} 
+    = include_gon
+    = stylesheet_link_tag "application", :media => "screen"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    %title Europeana Statistics Dashboard
+  %body{style:"background: #dadada;"}
+    = render partial: "layouts/loading"
+    .container{style:"background-color:white;width:1130px;"}
+      .row
+        .col-sm-12
+          = link_to image_tag("logo.png"), root_url, style: "a:hover{background: none;}"
+          %span.pull-right
+            - if session[:user_name] 
+              = link_to "Logout", "/logout"
+          %hr
+          - if flash.present?
+            - if flash.first.present?
+              .row
+                .col-sm-12
+                  - flash.each do |name, msg|
+                    - if name.to_s == "error"          
+                      .alert.alert-danger{style:"margin-top:40px;"}
+                        = msg
+                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                    - elsif name.to_s == "notice"
+                      .alert.alert-success{style:"margin-top:40px;"}
+                        = msg
+                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                    - elsif name.to_s == "warning"
+                      .alert.alert-warning{style:"margin-top:40px;"}
+                        = msg
+                        %a{ class: "close", "data-dismiss" => "alert"} ×
+                    - else
+                      .alert.alert-info{style:"margin-top:40px;"}
+                        = msg
+                        %a{ class: "close", "data-dismiss" => "alert"} ×
+      = yield
+    #scroll-topper
+      %span.glyphicon.glyphicon-chevron-up
+    .container
+      .row
+        .col-sm-12
+          .pull-right.f11{style: "margin-top: 20px;"}= link_to "Powered by Pykih", "www.pykih.com", target: "_blank", style: "color: gray;"

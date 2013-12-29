@@ -1,0 +1,28 @@
+.row
+  .col-sm-10
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      %li= link_to "Visualizations", viz_vizs_path
+      %li.active New
+    .panel.panel-default
+      = form_for(@viz_viz, url: create_viz_vizs_path, :html => { method: :post,  role: "form" }) do |f|
+        .panel-heading{style: "background: #F2F2F2;"}
+          .form-group= f.text_field :title, class: "form-control", placeholder: "Title", autofocus: true 
+        .panel-content{style: "padding: 10px;"}
+          .form-group
+            %label Data Set
+            %br
+            = f.select :data_filz_id, options_for_select(@data_filzs.map{|z| [z.file_file_name, z.id]})
+          .form-group
+            %label Chart
+            %br
+            = f.select :viz_chart_id, options_for_select(Viz::Viz::CHARTS.map{|z| [z[0], z[0]]})
+          .form-group
+            = f.submit "Create", class: "btn btn-success", id: "submit"
+.row
+  .col-sm-12
+    - Viz::Chart.all.each do |viz|
+      .col-sm-2
+        = image_tag viz.img, class: "col-sm-12"
+        %br
+        .f12= viz.name

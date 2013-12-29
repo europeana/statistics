@@ -1,0 +1,63 @@
+class DataFilzsController < ApplicationController
+  
+  before_filter :authenticate_user!
+  before_filter :find_objects
+  
+  def index
+    @data_filzs = Data::Filz.all
+  end
+    
+  def csv
+    send_data Core::Services.twod_to_csv(JSON.parse(@data_filz.content)), :type => "application/vnd.ms-excel", :filename => "#{@data_filz.file_file_name}.csv", :stream => false
+  end
+  
+  def show
+    redirect_to edit_data_filz_path(file_id: @data_filz)
+  end
+  
+  def new
+    @data_filz = Data::Filz.new
+    @disable_footer = true
+    render action: "form"
+  end
+  
+  def create
+    @data_filz = Data::Filz.new(params[:data_filz])
+    if @data_filz.save
+      flash[:notice] = t("c.s")
+      redirect_to data_filz_path(file_id: @data_filz.slug), :locals => {:flash => flash}
+    else
+      gon.errors = @data_filz.errors 
+      flash[:error] = t("c.f")
+      render action: "form", :locals => {:flash => flash}
+    end
+  end
+  
+  def edit
+    render action: "form"
+  end
+  
+  def update
+    if @data_filz.update_attributes(params[:data_filz])
+      redirect_to data_filz_path(file_id: @data_filz.slug), notice: t("u.s")
+    else
+      gon.errors = @data_filz.errors 
+      flash[:error] = t("c.f")
+      render action: "form", :locals => {:flash => flash}
+    end
+  end
+  
+  def destroy
+    @data_filz.destroy
+    redirect_to data_filzs_path
+  end
+    
+  private
+  
+  def find_objects
+    if params[:file_id].present? 
+      @data_filz = Data::Filz.find(params[:file_id])
+    end
+  end
+  
+end

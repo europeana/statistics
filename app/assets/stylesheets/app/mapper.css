@@ -1,0 +1,36 @@
+.drop-option{
+    height: 20px;
+    width: 130px;
+    line-height: 18px;
+    padding: 0;
+    margin: 2px;
+    font-size: 11px;
+}
+
+.takes-drop{
+    height: 22px;
+    width: 132px;
+    background: #fff;
+    border: 1px dashed #aaa;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 11px;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+}
+
+.active-drop{ background: #ddd;}
+.hover-drop{ box-shadow: 0 0 30px #666 inset;}
+
+#map-mapper h5{
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+#get-pie{
+    float: right;
+    margin-top: -7px;
+}

@@ -1,0 +1,50 @@
+- url = create_cms_articles_path
+- if @cms_article.id
+  - url = update_cms_article_path(@cms_article.slug)
+.row
+  .col-sm-12
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      - if @cms_article.id
+        %li= link_to @cms_article.title, cms_article_path(file_id: @cms_article.slug)
+        %li.active Edit
+      - else
+        %li.active= @cms_article.title
+      
+    .panel.panel-default
+      = form_for(@cms_article, url: url, html: {role: "form"}) do |f|
+        .panel-heading{style: "background: #F2F2F2;"}
+          .form-group= f.text_field :title, class: "form-control", placeholder: "File Name", autofocus: true 
+        .panel-content{style: "padding: 10px;"}
+          .form-group
+            .row  
+              .col-sm-6   
+                #editor
+                  #toolbar.wmd-toolbar
+                  = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+              .col-sm-6
+                %br
+                %br
+                #preview.wmd-preview{:style => "height: 420px; overflow:auto"}  
+          .form-group 
+            - if !@cms_article.is_published
+              = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
+            = f.submit "Publish", class: "btn btn-success", id: "submit"
+
+:javascript
+  $(document).ready(function() {    
+    $("#highlightCode").click(function(){
+      $.SyntaxHighlighter.init({
+      'lineNumbers': false,
+      'debug': true
+      });
+    });  
+    new WMD("input", "toolbar", { preview: "preview" });
+  });
+  var scrolling = function(opt){
+    if(opt=='textarea'){
+      $("#preview").scrollTop($("#input").scrollTop());
+    }else{
+      //$("#source").scrollTop($("#epiceditor-preview").scrollTop());
+    }
+  }

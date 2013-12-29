@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @viz_viz.title
+%p
+  %b Data filz:
+  = @viz_viz.data_filz_id
+%p
+  %b Viz chart:
+  = @viz_viz.viz_chart_id
+%p
+  %b Map:
+  = @viz_viz.map
+%p
+  %b Mapped output:
+  = @viz_viz.mapped_output
+%p
+  %b Settings:
+  = @viz_viz.settings
+
+= link_to 'Edit', edit_viz_viz_path(@viz_viz)
+\|
+= link_to 'Back', viz_vizs_path

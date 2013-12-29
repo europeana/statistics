@@ -1,0 +1,21 @@
+.row
+  .col-sm-2
+    %br
+  .col-sm-10
+    - if current_user.present?
+      .pull-right
+        = link_to "Data", data_filzs_path, class: "btn btn-success btn-xs"
+        = link_to "Viz", viz_vizs_path, class: "btn btn-success btn-xs"
+        = link_to "<i class='glyphicon glyphicon-plus-sign'></i> New article".html_safe, new_cms_articles_path, class: "btn btn-success btn-xs"
+    %table.table.table-condensed
+      %tr
+        %td
+      - if @cms_articles.first.present?
+        - @cms_articles.each do |cms_article|
+          - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
+            %tr
+              %td.col-sm-6
+                = link_to "<i class='glyphicon glyphicon-list-alt'></i>&nbsp;&nbsp;#{cms_article.slug}".html_safe, cms_article_path(cms_article)
+                - if !cms_article.is_published
+                  %span.f11.gray (Draft)
+              %td.f11.gray.col-sm-2= "#{time_ago_in_words(cms_article.updated_at)} ago"

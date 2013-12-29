@@ -1,0 +1,24 @@
+.row
+  .col-sm-12
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      %li= link_to "Visualizations", viz_vizs_path
+      %li= link_to @viz_viz.title, viz_viz_path(file_id: @viz_viz.slug)
+      %li.active Edit    
+    .panel.panel-default
+      .panel-heading
+        %i.glyphicon.glyphicon-list-alt
+        &nbsp;
+        %b= @viz_viz.title
+      .panel-content{style: "padding: 10px;"}
+        .col-sm-6
+          %h5 Transformed output
+          - if 1 == 1
+            - if @mapped_output.present?
+              %table.table.table-condensed.table-hover
+                - @mapped_output[0]["values"].each do |m|
+                  %tr
+                    %td= m["label"]
+                    %td= m["value"]
+        .col-sm-6
+          = "."
