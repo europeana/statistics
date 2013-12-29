@@ -69,7 +69,6 @@ class VizVizsController < ApplicationController
   private
   
   def find_objects
-    @viz_charts = Viz::Chart.all
     @data_filzs = Data::Filz.all
     if params[:file_id].present? 
       @viz_viz = Viz::Viz.find(params[:file_id])

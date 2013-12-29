@@ -16,13 +16,5 @@
           .form-group
             %label Chart
             %br
-            = f.select :viz_chart_id, options_for_select(Viz::Viz::CHARTS.map{|z| [z[0], z[0]]})
-          .form-group
-            = f.submit "Create", class: "btn btn-success", id: "submit"
-.row
-  .col-sm-12
-    - Viz::Chart.all.each do |viz|
-      .col-sm-2
-        = image_tag viz.img, class: "col-sm-12"
-        %br
-        .f12= viz.name
+            = f.select :chart, options_for_select(Viz::Viz::CHARTS.map{|z| [z[0], z[0]]})
+          .form-group= f.submit "Create", class: "btn btn-success", id: "submit"

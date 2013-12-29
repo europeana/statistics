@@ -12,7 +12,6 @@
 //
 //= require pyk
 //= require_tree ./vendor/app/
-//= require_tree ./vendor/pyk/
 //= require_tree ./app/
 //= require vendor/lib/jquery.syntaxhighlighter.min
 //= require vendor/lib/showdown
