@@ -1,7 +1,6 @@
 class VizVizsController < ApplicationController
   
-  before_filter :authenticate_user!, except: [:show, :index]
-  before_filter :find_objects
+  before_filter :authenticate_user!, :find_objects
   
   def index
     @viz_vizs = Viz::Viz.all

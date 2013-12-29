@@ -1,21 +1,24 @@
-.row
-  .col-sm-2
-    %br
-  .col-sm-10
-    - if current_user.present?
+- if current_user.present?
+  .row
+    .col-sm-12
       .pull-right
         = link_to "Data", data_filzs_path, class: "btn btn-success btn-xs"
         = link_to "Viz", viz_vizs_path, class: "btn btn-success btn-xs"
         = link_to "New article".html_safe, new_cms_articles_path, class: "btn btn-success btn-xs"
-    %table.table.table-condensed
-      %tr
-        %td
-      - if @cms_articles.first.present?
-        - @cms_articles.each do |cms_article|
-          - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
-            %tr
-              %td.col-sm-6
-                = link_to "#{cms_article.slug}".html_safe, cms_article_path(cms_article)
-                - if !cms_article.is_published
-                  %span.f11.gray (Draft)
-              %td.f11.gray.col-sm-2= "#{time_ago_in_words(cms_article.updated_at)} ago"
+.row
+  .col-sm-2
+    %br
+  .col-sm-10
+    - i = 0
+    - if @cms_articles.first.present?
+      - @cms_articles.each do |cms_article|
+        - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
+          .box1
+            %h4= link_to cms_article.title, cms_article_path(cms_article)
+            - if !cms_article.is_published
+              %span.f11.gray (Draft)
+            - if current_user.present?
+              .pull-right.f11
+                = link_to "Edit", edit_cms_article_path(file_id: cms_article.slug)
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                = link_to "Delete", delete_cms_article_path(file_id: cms_article.slug),  confirm: 'Are you sure?'

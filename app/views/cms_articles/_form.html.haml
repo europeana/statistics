@@ -9,7 +9,7 @@
         %li= link_to @cms_article.title, cms_article_path(file_id: @cms_article.slug)
         %li.active Edit
       - else
-        %li.active= @cms_article.title
+        %li.active New Article
       
     .panel.panel-default
       = form_for(@cms_article, url: url, html: {role: "form"}) do |f|

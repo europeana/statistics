@@ -4,11 +4,11 @@
       %li= link_to "Home", root_url
       %li.active Data
     .pull-right= link_to "  New".html_safe, new_data_filzs_path, class: "btn btn-success btn-xs"
-    %table.bordered
-      %tr
-        %th Title
-        %th Last updated
-      - if @data_filzs.first.present?
+    - if @data_filzs.first.present?
+      %table.bordered
+        %tr
+          %th Title
+          %th Last updated
         - @data_filzs.each do |data_filz|
           %tr
             %td.col-sm-6= link_to "#{data_filz.file_file_name}", data_filz_path(file_id: data_filz.slug)

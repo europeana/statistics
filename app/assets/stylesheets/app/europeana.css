@@ -209,7 +209,7 @@
 #e2ma_signup_reset_button, .e2ma_signup_form_label, .e2ma_signup_form_required_footnote {
     display: none;
 }
-#e2ma_signup_submit_button, .deans-button-1 {
+#e2ma_signup_submit_button,  .deans-button-1 {
     background-color: #0048ff;
     color: white!important;
     color: #fff;
@@ -1632,4 +1632,14 @@ table {
     -moz-border-radius: 0 0 6px 0;
     -webkit-border-radius: 0 0 6px 0;
     border-radius: 0 0 6px 0;
+}
+
+.box1{
+    padding: 10px;
+    background: #eee;
+    display: inline-block;
+    margin: .5em 1em .5em 1em;
+    width: 100%;
+    height: 200px;
+    width: 21%!important;
 }

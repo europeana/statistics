@@ -1,7 +1,6 @@
 class DataFilzsController < ApplicationController
   
-  before_filter :authenticate_user!
-  before_filter :find_objects
+  before_filter :authenticate_user!, :find_objects
   
   def index
     @data_filzs = Data::Filz.all
