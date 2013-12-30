@@ -10,7 +10,9 @@ class Cms::Article < ActiveRecord::Base
   
   #ASSOCIATIONS
   #VALIDATIONS
-  validate :title, presence: true, uniqueness: true, length: {minimum: 2}
+  validate :title, uniqueness: true, length: {minimum: 2}
+  validates :title, :presence => true
+
   
   #CALLBACKS
   before_create :before_create_set
