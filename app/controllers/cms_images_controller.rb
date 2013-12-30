@@ -20,7 +20,7 @@ class CmsImagesController < ApplicationController
         if params[:cms_image]
           format.html{render action: "new", notice: t("c.s")}
         else          
-          format.json { render json: {error: @cms_image.errors}}
+          format.json { render json: {filename: "", error: @cms_image.errors}}
         end   
       end        
     end

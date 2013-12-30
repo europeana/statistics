@@ -12,8 +12,9 @@ class Cms::Image < ActiveRecord::Base
   
   #ASSOCIATIONS
   #VALIDATIONS
-  validate :title, presence: true, uniqueness: true, length: {minimum: 2}
+  validate :title, presence: true, length: {minimum: 2}
   validates :image_file, :presence => true
+  validate :is_name_unique?  
   
   #CALLBACKS  
   #SCOPES
@@ -22,6 +23,15 @@ class Cms::Image < ActiveRecord::Base
   #UPSERT
   #JOBS
   #PRIVATE
-  private
+  private  
+  def is_name_unique?
+    g = Cms::Image.where(title: self.title).first
+    if g.present?
+      if g.id != self.id or self.id.blank?
+        errors.add(:title, "already taken")
+      end
+    end
+  end
+
     
 end
