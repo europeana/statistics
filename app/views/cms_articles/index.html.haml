@@ -2,7 +2,7 @@
   .row
     .col-sm-12
       .pull-right
-        %a.f11.gray{"data-toggle" => "chardinjs", :href => ""} Help
+        %span.f11.gray{"data-toggle" => "chardinjs", :style => "cursor:pointer;", :onclick => "$('.container').chardinJs('start')"} Help
         = link_to "Data", data_filzs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit data", "data-position" => "left"
         = link_to "Viz", viz_vizs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit visualization", "data-position" => "bottom"
         = link_to "New article", new_cms_articles_path, class: "btn btn-default btn-xs", "data-intro" => "To add article", "data-position" => "top"
@@ -23,5 +23,3 @@
                 = link_to "Edit", edit_cms_article_path(file_id: cms_article.slug)
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 = link_to "Delete", delete_cms_article_path(file_id: cms_article.slug),  confirm: 'Are you sure?'
-:javascript
-  $('.container').chardinJs('start');

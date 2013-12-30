@@ -22,9 +22,7 @@ class Core < ActiveRecord::Migration
       t.text     "url"
     end
 
-    create_table "core_tags", :force => true do |t|      
-      t.integer  "taggable_id"
-      t.string   "taggable_type"
+    create_table "core_tags", :force => true do |t|
       t.string   "genre"
       t.string   "name"
       t.text     "description"

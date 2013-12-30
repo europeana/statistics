@@ -8,3 +8,7 @@ A statistics visualization tool for Europeana-related statistics, such as
 This project is a common effort of Journalism++ and Europeana Foundation.
 The project is based on Datawrapper, an open source tool created by
 Journalism++ (see http://datawrapper.de/ and https://github.com/datawrapper/datawrapper)
+
+### Contributors
+
+* [pykih](http://www.pykih.com)

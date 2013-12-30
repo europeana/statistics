@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131229160410) do
+ActiveRecord::Schema.define(:version => 20131230074337) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20131229160410) do
     t.text     "description"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "slug"
   end
 
   create_table "data_filzs", :force => true do |t|
