@@ -38,7 +38,38 @@
       'lineNumbers': false,
       'debug': true
       });
-    });  
+    });
+
+    $('textarea').inlineattach({
+      uploadFieldName: 'file',
+      downloadFieldName: 'filename',           
+
+      uploadUrl: '#{create_cms_images_path}', 
+      allowedTypes: [
+        'image/jpeg',
+        'image/png',
+        'image/jpg'
+      ],
+
+      customUploadHandler: function(file) { return true; },
+      errorText: "Error uploading file",
+      progressText: '![Uploading file...]()',
+
+      onUploadedFile: function(json) {
+
+        error = json.error;
+
+        $.each(error,function(index,msg) {           
+          alert(msg);
+        });
+
+        return this.progressText = '""';      
+        
+      }
+
+
+    });    
+      
     new WMD("input", "toolbar", { preview: "preview" });
   });
   var scrolling = function(opt){
