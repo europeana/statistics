@@ -34,6 +34,10 @@
 
 :javascript
   $(document).ready(function() {    
+    $.ajaxSetup({ 
+      'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} 
+    });
+
     $("#highlightCode").click(function(){
       $.SyntaxHighlighter.init({
       'lineNumbers': false,
@@ -45,7 +49,7 @@
       uploadFieldName: 'file',
       downloadFieldName: 'filename',           
 
-      uploadUrl: '#{create_cms_images_path}', 
+      uploadUrl: '#{create_cms_images_path}.json', 
       allowedTypes: [
         'image/jpeg',
         'image/png',
@@ -59,12 +63,19 @@
       onUploadedFile: function(json) {
 
         error = json.error;
+        $.each(error,function(index,msg) {        
 
-        $.each(error,function(index,msg) {           
-          alert(msg);
+          var err_msg = "";
+          var img_url = msg[0].split("-->")[1];
+
+          if (confirm(msg)) {
+            err_msg = $("textarea").val().replace('![Uploading file...]()', "![file]("+img_url+")");
+          }else {
+            err_msg = $("textarea").val().replace('![Uploading file...]()', '');
+          }
+          $("textarea").val(err_msg);
+          
         });
-
-        return this.progressText = '""';      
         
       }
 
