@@ -35,12 +35,30 @@ class Viz::Viz < ActiveRecord::Base
 
   def reference_map
     if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
-      JSON.parse("[[\"Data\", \"string\"],[\"Size\", \"number\"]]").invert
+      [["Dimension", "string"],["Size", "number"]]
     elsif self.chart == "Grouped Column Chart" or self.chart == "Stacked Column Chart"
-      JSON.parse("[[\"X\", \"number\"],[\"Y\", \"number\"],[\"Size\", \"number\"],[\"Group\", \"string\"]]").invert
+      [["X", "number"],["Y", "number"],["Size", "number"],["Group", "string"]]
     else
-      JSON.parse("[[\"X\", \"number\"],[\"Y\", \"number\"],[\"Size\", \"number\"]]").invert
+      [["X", "number"],["Y", "number"],["Size", "number"]]
     end
+  end
+  
+  def mapper_1d(headings, map_json, raw_data)
+    transformed_data = [{"key" => "Chart","values" => []}] #json_data
+    h = {}
+    out = []
+    raw_data.each do |row|
+      label = row[headings.index(map_json["Dimension"])]
+      value = row[headings.index(map_json["Size"])]
+      h[label] = h[label].present? ? (h[label].to_f + value.to_f) : value.to_f
+    end
+    if h != {}
+      h.each do |key, val|
+        out << [key, val]
+      end
+      transformed_data[0]["values"].push(out)
+    end  
+    transformed_data.to_json
   end
   
   #UPSERT
@@ -49,12 +67,14 @@ class Viz::Viz < ActiveRecord::Base
   private
   
   def before_save_set
-    if self.map.present?      
+    if self.map.present?     
+      raw_data = JSON.parse(self.data_filz.content) 
       headings = raw_data.shift
       headings = headings.collect{|h| h.split(":").first}
       mapped_output = [{"key" => "Chart","values" => []}] #json_data
+      map_json = JSON.parse(self.map).invert
       if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
-        self.mapped_output = self.mapper_1d(headings)    
+        self.mapped_output = mapper_1d(headings, map_json, raw_data)    
       elsif self.chart == "Grouped Column Chart" or self.chart == "Stacked Column Chart"
         true
       else
@@ -62,33 +82,6 @@ class Viz::Viz < ActiveRecord::Base
       end
     end      
     true
-  end
-    
-  def mapper_1d(headings)
-    JSON.parse(self.data_filz.content).each do |row|
-      h = {}
-      label = row[headings.index(reference_map["Dimension"])]
-      value = row[headings.index(reference_map["Size"])]
-      el = false
-      transformed_data[0]["values"].each_with_index do |set, i|
-        if set["label"] == label
-          el = i
-        end
-      end
-      unless el
-        h["label"] = label
-        h["value"] = value.to_i
-        transformed_data[0]["values"].push(h);
-      else
-        hash = transformed_data[0]["values"][el]
-        hash["value"] += value.to_i
-        transformed_data[0]["values"][el] = hash
-      end
-      if h != {}
-        transformed_data[0]["values"].push(h);
-      end
-    end
-    transformed_data.to_json
   end
   
 end

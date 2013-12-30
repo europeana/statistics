@@ -3,13 +3,15 @@
     %ol.breadcrumb
       %li= link_to "Home", root_url
       %li.active Data
-    .pull-right= link_to "  New".html_safe, new_data_filzs_path, class: "btn btn-success btn-xs"
+    .pull-right= link_to "New", new_data_filzs_path, class: "btn btn-success btn-xs"
     - if @data_filzs.first.present?
       %table.bordered
         %tr
           %th Title
           %th Last updated
+          %th
         - @data_filzs.each do |data_filz|
           %tr
             %td.col-sm-6= link_to "#{data_filz.file_file_name}", data_filz_path(file_id: data_filz.slug)
             %td.f11.gray.col-sm-2= "#{time_ago_in_words(data_filz.updated_at)} ago"
+            %td.f11= link_to "CSV", csv_data_filz_path(file_id: data_filz.slug)

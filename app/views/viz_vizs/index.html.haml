@@ -3,16 +3,13 @@
     %ol.breadcrumb
       %li= link_to "Home", root_url
       %li.active Visualizations
-    .pull-right= link_to "  New".html_safe, new_viz_vizs_path, class: "btn btn-success btn-xs"
+    .pull-right= link_to "New", new_viz_vizs_path, class: "btn btn-success btn-xs"
     .panel.panel-default
       .panel-content{style: "padding: 10px;"}
-        %table.table.table-condensed
+        %table
           %tr
-            
-            %td
-            %td
           - if @viz_vizs.first.present?
             - @viz_vizs.each do |viz|
               %tr
-                %td.col-sm-6= link_to " &nbsp;&nbsp;#{viz.title}".html_safe, viz_viz_path(file_id: viz.slug)
+                %td.col-sm-6= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
                 %td.f11.gray.col-sm-2= "#{time_ago_in_words(viz.updated_at)} ago"
