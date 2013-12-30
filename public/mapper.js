@@ -1,19 +1,33 @@
 
 var PieMapper = function(options){
     this.init = function(d){
-        this.map = {};
+        if(options.MAP=="NA"){
+            this.map = {};
+        }else{
+            this.map = options.MAP;
+        }
         this.data = options.DATA;
         this.getType();
         this.fillVarList();
+        if(options.MAP!="NA") this.loadMap();
+    }
+
+    this.loadMap = function(){
+        for(var i in options.MAP){
+            var m = options.MAP[i];
+            var drop = $("#" + m + "-drop");
+            var drag = $("[data-colname='" + i + "']");
+            drag.offset(drop.offset());
+        }
     }
 
     // Final Mapping Data
     this.mappingData = function(){
         // TODO: Add some validations here to check if the mapping truly is complete
-        if(Object.keys(this.map).length !== 4){
-            alert("Mapping incomplete!");
-            return false;
-        }
+        //if(Object.keys(this.map).length !== 2){
+            //alert("Mapping incomplete!");
+            //return false;
+            //}
         window.open(options.URL + "?data=" + JSON.stringify(this.map), "_self");
         // This is what needs to be posted
     }

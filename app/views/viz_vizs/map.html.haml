@@ -5,25 +5,26 @@
       %li= link_to "Visualizations", viz_vizs_path
       %li= link_to @viz_viz.title, viz_viz_path(file_id: @viz_viz.slug)
       %li.active Map
-    .panel.panel-default
-      .panel-heading
-        %i.glyphicon.glyphicon-list-alt
-        &nbsp;
-        %b= @viz_viz.title
-        %button.btn.btn-primary#get-pie Next &raquo;
-      .panel-content{style: "padding: 10px;"}
-        %h4 Map columns to Chart
-        #pie-mapper.row
-          #user-variables.col-sm-4
-          - @viz_viz.reference_map.each do |m|
-            .col-sm-2
-              %h5= m[0]
-              .takes-drop{"id" => m[0] + "-drop", "data-droptype" => m[1], "map_identifier" => m[0]} Drop Here
-
+    %h1= @viz_viz.title
+    %button.btn.btn-primary#get-pie Next &raquo;
+    %br
+    %h4 Drag and drop data column names to boxes to model the data
+    %br
+    #pie-mapper.row
+      #user-variables.col-sm-4
+      - @viz_viz.reference_map.each do |m|
+        .col-sm-2
+          %h5= m[0]
+          .takes-drop{"id" => m[0] + "-drop", "data-droptype" => m[1], "map_identifier" => m[0]} Drop Here
+-if @viz_viz.map.present?
+  -dbmap = @viz_viz.map
+-else
+  -dbmap = "'NA'"
 = javascript_include_tag("/mapper")
 :javascript
   var pm = new PieMapper({
     DATA: [#{@viz_viz.headers}],
+    MAP: #{dbmap},
     URL: "/visualizations/#{@viz_viz.slug}/put_map"
   });
   pm.init();

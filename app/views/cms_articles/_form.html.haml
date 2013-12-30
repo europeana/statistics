@@ -21,11 +21,12 @@
               .col-sm-6   
                 #editor
                   #toolbar.wmd-toolbar
-                  = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+                  = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
               .col-sm-6
                 %br
                 %br
                 #preview.wmd-preview{:style => "height: 420px; overflow:auto"}  
+                  .f11.gray Live preview
           .form-group 
             - if !@cms_article.is_published
               = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"

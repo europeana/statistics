@@ -29,8 +29,7 @@ class VizVizsController < ApplicationController
   def create    
     @viz_viz = Viz::Viz.new(params[:viz_viz])
     if @viz_viz.save
-      flash[:notice] = t("c.s")
-      redirect_to map_viz_viz_path(file_id: @viz_viz.slug), :locals => {:flash => flash}
+      redirect_to map_viz_viz_path(file_id: @viz_viz.slug)
     else
       gon.errors = @viz_viz.errors 
       flash[:error] = t("c.f")

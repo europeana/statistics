@@ -11,12 +11,11 @@
       .panel-content{style: "padding: 10px;"}
         .col-sm-6
           %h5 Transformed output
-          - if 1 == 1
-            - if @mapped_output.present?
-              %table.table.table-condensed.table-hover
-                - @mapped_output[0]["values"].each do |m|
-                  %tr
-                    %td= m["label"]
-                    %td= m["value"]
+          - if @mapped_output.present?
+            %table.table.table-condensed.table-hover
+              - @mapped_output[0]["values"][0].each do |key, set|
+                %tr
+                  %td= key
+                  %td= set
         .col-sm-6
           = "."
