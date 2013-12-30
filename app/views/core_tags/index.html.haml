@@ -3,7 +3,6 @@
     %ol.breadcrumb
       %li= link_to "Home", root_url
       %li.active Tags
-    .pull-right= link_to "Add new data", new_core_tags_path, class: "btn btn-success btn-xs", style: "color: white; margin-bottom: 10px;"
     - if @core_tags.first.present?
       %table.bordered
         %tr
@@ -13,5 +12,12 @@
         - @core_tags.each do |core_tag|
           %tr
             %td= core_tag.genre
-            %td= link_to core_tag.name, core_tag_path(tag_id: core_tag.slug)
+            %td= link_to core_tag.name, edit_core_tag_path(tag_id: core_tag.slug)
             %td= core_tag.description
+        %tr
+          %td Page
+          %td
+            = form_for(@core_tag, url: create_core_tags_path, html: {role: "form"}) do |f|
+              = f.text_field :name, placeholder: "Write page name here"
+              = f.submit "Add New Page", class: "btn btn-success btn-sm", id: "submit"
+          %td
