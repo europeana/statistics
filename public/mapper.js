@@ -24,10 +24,10 @@ var PieMapper = function(options){
     // Final Mapping Data
     this.mappingData = function(){
         // TODO: Add some validations here to check if the mapping truly is complete
-        if(Object.keys(this.map).length !== 4){
-            alert("Mapping incomplete!");
-            return false;
-        }
+        //if(Object.keys(this.map).length !== 2){
+            //alert("Mapping incomplete!");
+            //return false;
+            //}
         window.open(options.URL + "?data=" + JSON.stringify(this.map), "_self");
         // This is what needs to be posted
     }
