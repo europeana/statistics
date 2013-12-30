@@ -3,13 +3,17 @@
     %ol.breadcrumb
       %li= link_to "Home", root_url
       %li.active Visualizations
-    .pull-right= link_to "New", new_viz_vizs_path, class: "btn btn-success btn-xs"
-    .panel.panel-default
-      .panel-content{style: "padding: 10px;"}
-        %table
+    .pull-right= link_to "Add new visualization", new_viz_vizs_path, class: "btn btn-success btn-xs", style: "color: white; margin-bottom: 10px;"
+    - if @viz_vizs.first.present?
+      %table.bordered
+        %tr
+          %th Title
+          %th Source Data
+          %th Chart Name
+          %th Last Updated
+        - @viz_vizs.each do |viz|
           %tr
-          - if @viz_vizs.first.present?
-            - @viz_vizs.each do |viz|
-              %tr
-                %td.col-sm-6= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
-                %td.f11.gray.col-sm-2= "#{time_ago_in_words(viz.updated_at)} ago"
+            %td.col-sm-6= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
+            %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
+            %td= viz.chart
+            %td.f11.gray.col-sm-2= "#{time_ago_in_words(viz.updated_at)} ago"
