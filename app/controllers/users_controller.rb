@@ -17,6 +17,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def demo
+  end  
+
   def logout
     session.delete(:user_id)
     session.delete(:user_email)

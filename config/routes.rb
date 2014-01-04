@@ -3,6 +3,7 @@ Pykhub::Application.routes.draw do
   post '/login', to: "users#login", as: "login"  
   get '/login', to: "users#login", as: "login"
   get '/logout', to: "users#logout", as: "logout"  
+  get '/demo', to: "users#demo", as: "demo"  
   
   #articles
   get "/new", to: "cms_articles#new", as: "new_cms_articles"
