@@ -15,7 +15,7 @@
       - @viz_viz.reference_map.each do |m|
         .col-sm-2
           %h5= m[0]
-          .takes-drop{"id" => m[0] + "-drop", "data-droptype" => m[1], "map_identifier" => m[0]} Drop Here
+          .takes-drop{"id" => m[0] + "-drop", "data-droptype" => m[1], "map_identifier" => m[0], "data-map-type" => m[2]} Drop Here
 -if @viz_viz.map.present?
   -dbmap = @viz_viz.map
 -else

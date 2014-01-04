@@ -40,17 +40,17 @@ class Viz::Viz < ActiveRecord::Base
 
   def reference_map
     if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
-      [["Dimension", "string", "m"],["Size", "number", "m"]]
+      [["Dimension", "string", "M"],["Size", "number", "M"]]
     elsif self.chart == "Bar Chart"
-      [["X", "number", "m"], ["Y", "string", "m"]]
+      [["X", "number", "M"], ["Y", "string", "M"]]
     elsif self.chart == "Column Chart"
-      [["X", "string", "m"],["Y", "number", "m"]]
+      [["X", "string", "M"],["Y", "number", "M"]]
     elsif self.chart == "Grouped Column Chart"
-      [["X", "string", "m"],["Y", "number", "m"],["Group", "string", "m"]]
+      [["X", "string", "M"],["Y", "number", "M"],["Group", "string", "M"]]
     elsif self.chart == "Stacked Column Chart"
-      [["X", "string", "m"],["Y", "number", "m"],["Stack", "string", "m"]]
+      [["X", "string", "M"],["Y", "number", "M"],["Stack", "string", "M"]]
     elsif self.chart == "Line Chart"
-      [["X", "string", "m"],["Line 1", "number", "m"],["Line 2", "number", "o"],["Line 3", "number", "o"],["Line 4", "number", "o"]]
+      [["X", "string", "M"],["Line 1", "number", "M"],["Line 2", "number", "O"],["Line 3", "number", "O"],["Line 4", "number", "0"]]
     end
   end
   

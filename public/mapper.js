@@ -1,5 +1,6 @@
 
 var PieMapper = function(options){
+
     this.init = function(d){
         if(options.MAP=="NA"){
             this.map = {};
@@ -24,10 +25,25 @@ var PieMapper = function(options){
     // Final Mapping Data
     this.mappingData = function(){
         // TODO: Add some validations here to check if the mapping truly is complete
-        //if(Object.keys(this.map).length !== 2){
-            //alert("Mapping incomplete!");
-            //return false;
-            //}
+        
+        var mandatory_field = ""
+        $(".mand-error").remove();
+        $("[data-map-type=M]").each(function(){
+            console.log("not droppped class found", $(this).hasClass("dropped"))
+            if (!$(this).hasClass("dropped")) {
+
+                mandatory_field = $(this).parent().find("h5").text();
+                $(this).append("<span class='label label-danger mand-error'>"
+                                +mandatory_field+" required!</span>");
+
+            }
+
+        });
+
+        if (mandatory_field.length > 0) {
+            return false;
+        }
+        
         window.open(options.URL + "?data=" + JSON.stringify(this.map), "_self");
         // This is what needs to be posted
     }
@@ -55,29 +71,53 @@ var PieMapper = function(options){
         var that = this;
 
         $("#user-variables div").draggable({
-            revert: function(d){
-                if(!d) return true;
-                var param = $(d).attr("id").split("-")[0];
-                var local_param = $(this).attr("data-colname");
-                if(that.map[local_param] === undefined) return true;
-                if($(d).attr("data-full") === param) return true;
-            },
+            revert: true,
             snap: ".takes-drop",
-            snapMode: "inner"
+            snapMode: "inner",
+            start: function(evt, ui){
+                startPos = ui.helper.position();
+            }            
+
         });
 
         $(".takes-drop").each(function(e, i){
-            var droptype = $(this).attr("data-droptype");
-            $(this).droppable({
-                accept: "div[data-droptype='" + droptype + "']",
+            
+            var droptype = $(this).attr("data-droptype");            
+
+            var accept_valid = ".ui-draggable";
+            if (droptype == "number") {
+                accept_valid = "div[data-droptype='" + droptype + "']";
+            }
+
+            $(this).droppable({                
+                accept: accept_valid  ,
                 activeClass: "active-drop",
                 hoverClass: "hover-drop",
                 tolerance: "fit",
+
                 drop: function(e, u){
-                    var param = $(this).attr("map_identifier");
+                    
+                    if ($(this).hasClass("dropped")) {
+                        return false;                    
+                    }
+
+                    u.draggable.draggable('option', 'revert', function(){return false});
+
+                    $( this ).addClass( "dropped" )
+                    var param = $(this).attr("map_identifier");                    
                     var local_param = $(u.draggable).attr("data-colname");
                     if(that.map[local_param] === undefined) that.map[local_param] = param;
                     if(that.map[local_param] === undefined) $(this).attr("data-full", param)
+                },
+                out: function(event, u){
+                    u.position.top = startPos.top;
+                    u.position.left = startPos.left;                 
+                    if ($(this).hasClass("dropped")) {
+                        $(this).removeClass("dropped")
+                    }
+
+                    
+
                 }
             });
         });
