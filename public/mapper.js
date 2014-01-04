@@ -14,10 +14,12 @@ var PieMapper = function(options){
     }
 
     this.loadMap = function(){
+        
         for(var i in options.MAP){
             var m = options.MAP[i];
             var drop = $("#" + m + "-drop");
             var drag = $("[data-colname='" + i + "']");
+            drop.addClass("dropped");
             drag.offset(drop.offset());
         }
     }
