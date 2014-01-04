@@ -8,8 +8,13 @@ class Viz::Viz < ActiveRecord::Base
   require 'json'
   require 'csv'
   
+  #BAR - First two columns, first column is Y axis and two column is X axis
+  #COLUMN - First two columns, first column is X axis and two column is Y axis
+  #COLUMN / STACKED - Three columns
+  #LINE - at least 2 columns
+  
   #CONSTANTS
-  CHARTS = [["Pie Chart"], ["Election Donut Chart"], ["Donut Chart"], ["Bar Chart"], ["Column Chart"], ["Grouped Column Chart"], [], ["Line Chart"]]
+  CHARTS = [["Pie Chart"], ["Election Donut Chart"], ["Donut Chart"], ["Bar Chart"], ["Column Chart"], ["Grouped Column Chart"], ["Line Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
@@ -35,11 +40,17 @@ class Viz::Viz < ActiveRecord::Base
 
   def reference_map
     if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
-      [["Dimension", "string"],["Size", "number"]]
-    elsif self.chart == "Grouped Column Chart" or self.chart == "Stacked Column Chart"
-      [["X", "number"],["Y", "number"],["Size", "number"],["Group", "string"]]
-    else
-      [["X", "number"],["Y", "number"],["Size", "number"]]
+      [["Dimension", "string", "m"],["Size", "number", "m"]]
+    elsif self.chart == "Bar Chart"
+      [["X", "number", "m"], ["Y", "string", "m"]]
+    elsif self.chart == "Column Chart"
+      [["X", "string", "m"],["Y", "number", "m"]]
+    elsif self.chart == "Grouped Column Chart"
+      [["X", "string", "m"],["Y", "number", "m"],["Group", "string", "m"]]
+    elsif self.chart == "Stacked Column Chart"
+      [["X", "string", "m"],["Y", "number", "m"],["Stack", "string", "m"]]
+    elsif self.chart == "Line Chart"
+      [["X", "string", "m"],["Line 1", "number", "m"],["Line 2", "number", "o"],["Line 3", "number", "o"],["Line 4", "number", "o"]]
     end
   end
   

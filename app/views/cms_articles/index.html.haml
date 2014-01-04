@@ -1,8 +1,12 @@
+.row
+  .col-sm-12
+    %h1 Europeana Dashboard
 - if current_user.present?
   .row
     .col-sm-12
       .pull-right
         %span.f11.gray{"data-toggle" => "chardinjs", :style => "cursor:pointer;", :onclick => "$('.container').chardinJs('start')"} Help
+        = link_to "Tags", core_tags_path, class: "btn btn-default btn-xs"
         = link_to "Data", data_filzs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit data", "data-position" => "left"
         = link_to "Viz", viz_vizs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit visualization", "data-position" => "bottom"
         = link_to "New article", new_cms_articles_path, class: "btn btn-default btn-xs", "data-intro" => "To add article", "data-position" => "top"
@@ -10,6 +14,7 @@
   .col-sm-2
     %br
   .col-sm-10
+    %br
     - i = 0
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|

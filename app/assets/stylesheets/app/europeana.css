@@ -1606,7 +1606,7 @@ table {
 
 .bordered th:first-child {
     -moz-border-radius: 6px 0 0 0;
-    -webkit-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;3
     border-radius: 6px 0 0 0;
 }
 
@@ -1640,6 +1640,6 @@ table {
     display: inline-block;
     margin: .5em 1em .5em 1em;
     width: 100%;
-    height: 200px;
-    width: 21%!important;
+    height: 300px;
+    width: 29%!important;
 }

@@ -16,8 +16,8 @@
         .logo-and-search
           .logo
             %h1= link_to image_tag("europeana-logo.png"), root_url
-        - if session[:user_name] 
-          .query-info= link_to "Logout", "/logout"
+        - if current_user
+          .pull-right= link_to "Logout", "/logout", class: "f11"
       .row
         .col-sm-12
           %hr

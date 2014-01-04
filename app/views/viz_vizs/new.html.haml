@@ -16,5 +16,5 @@
           .form-group
             %label Chart
             %br
-            = f.select :chart, options_for_select(Viz::Viz::CHARTS.map{|z| [z[0], z[0]]})
+            = f.select :chart, options_for_select(Viz::Viz::CHARTS.map{|z| [z[0], z[0]]}), include_blank: false
           .form-group= f.submit "Create", class: "btn btn-success", id: "submit"

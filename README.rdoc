@@ -12,9 +12,3 @@ Journalism++ (see http://datawrapper.de/ and https://github.com/datawrapper/data
 ### Contributors
 
 * [pykih](http://www.pykih.com)
-
-Todos:
-
-1. Make 3 viz per row
-2. Show logout link
-3. Title Europeana Dashboard
