@@ -54,20 +54,53 @@ class Viz::Viz < ActiveRecord::Base
     end
   end
   
-  def mapper_1d(headings, map_json, raw_data)
-    transformed_data = [{"key" => "Chart","values" => []}] #json_data
+  def mapper(headings, map_json, raw_data)
+    transformed_data = []
     h = {}
     out = []
     raw_data.each do |row|
-      label = row[headings.index(map_json["Dimension"])]
-      value = row[headings.index(map_json["Size"])]
-      h[label] = h[label].present? ? (h[label].to_f + value.to_f) : value.to_f
+      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
+        label = row[headings.index(map_json["Dimension"])]
+        value = row[headings.index(map_json["Size"])]
+      elsif self.chart == "Bar Chart"
+        label = row[headings.index(map_json["Y"])]
+        value = row[headings.index(map_json["X"])]
+      elsif self.chart == "Column Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Y"])]
+      elsif self.chart == "Grouped Column Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Y"])]
+      elsif self.chart == "Stacked Column Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Y"])]
+      elsif self.chart == "Line Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Line 1"])]
+        line2 = row[headings.index(map_json["Line 2"])]
+        line3 = row[headings.index(map_json["Line 3"])]
+        line4 = row[headings.index(map_json["Line 4"])]
+      end
+      group = map_json["Group"].present? ? row[headings.index(map_json["Group"])]     : "_"
+      stack = map_json["Stack"].present? ? row[headings.index(map_json["Stack"])]     : "_"
+      line2 = map_json["Line 2"].present? ? row[headings.index(map_json["Line 2"])] : 0.0
+      line3 = map_json["Line 3"].present? ? row[headings.index(map_json["Line 3"])] : 0.0
+      line4 = map_json["Line 4"].present? ? row[headings.index(map_json["Line 4"])] : 0.0
+      unique_label = "#{label}#{group}#{stack}" #create a unique label of all dimensions which will act as KEY
+      if h[unique_label].present?
+        h[unique_label] = {"label" => label, 
+                           "value" => h[unique_label]["value"].to_f + value.to_f,
+                           "group" => group, 
+                           "stack" => stack}
+      else
+        h[unique_label] = {"label" => label, "value" => value.to_f, "group" => group, "stack" => stack}
+      end
     end
     if h != {}
-      h.each do |key, val|
-        out << [key, val]
+      h.map.each do |unique_label, label, value, group, stack|
+        out << [label, value, group, stack]
       end
-      transformed_data[0]["values"].push(out)
+      transformed_data.push(out)
     end  
     transformed_data.to_json
   end
@@ -84,13 +117,7 @@ class Viz::Viz < ActiveRecord::Base
       headings = headings.collect{|h| h.split(":").first}
       mapped_output = [{"key" => "Chart","values" => []}] #json_data
       map_json = JSON.parse(self.map).invert
-      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
-        self.mapped_output = mapper_1d(headings, map_json, raw_data)    
-      elsif self.chart == "Grouped Column Chart" or self.chart == "Stacked Column Chart"
-        true
-      else
-        true
-      end
+      self.mapped_output = mapper(headings, map_json, raw_data)    
     end      
     true
   end
