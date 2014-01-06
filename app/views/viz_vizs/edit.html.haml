@@ -1,3 +1,24 @@
+:javascript
+  var __locale = 'en';
+
+= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js", "//assets-datawrapper.s3.amazonaws.com/globalize.min.js", "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js", "//assets-datawrapper.s3.amazonaws.com/vendor/d3-light/3.1.7/d3-light.min.js", "//assets-datawrapper.s3.amazonaws.com/vendor/chroma-js/0.5.4/chroma.min.js", "/js/dw", "/js/dw.standalone", "/js/default"
+
+%link{:href => "/css/default.css", :rel => "stylesheet", :type => "text/css"}
+/ include chart types
+%script{:src => "/vis/raphael-chart/raphael-chart.js", :type => "text/javascript"}
+%link{:href => "/vis/raphael-chart/raphael-chart.css", :rel => "stylesheet", :type => "text/css"}
+%script{:src => "/vis/line-chart/line-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/column-chart/column-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/bar-chart/bar-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/pie-chart/pie-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/donut-chart/donut-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/grouped-column-chart/grouped-column-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/stacked-column-chart/stacked-column-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/bar-chart/bar-chart.js", :type => "text/javascript"}
+%script{:src => "/vis/data-table/data-table.js", :type => "text/javascript"}
+%script{:src => "/vis/maps/maps.js", :type => "text/javascript"}
+%script{:src => "/vis/election-donut-chart/election-donut-chart.js", :type => "text/javascript"}
+
 .row
   .col-sm-12
     %ol.breadcrumb
@@ -18,4 +39,21 @@
                   %td= set
                   %td.f11= key
         .col-sm-6
-          = "."
+          %br
+          %br
+          %br
+          #pie-chart{style: "height:500px; width:500px;"}
+
+
+- chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column" , "Line Chart" => "line" }
+
+:javascript
+  
+  // display a pie chart
+  dw.visualize({
+      type: '#{chart_types[@viz_viz.chart]}-chart', 
+      theme: 'default', 
+      container: $('#pie-chart'),
+      datasource:   dw.datasource.delimited({csv: gon.csv_data})
+  });
+          

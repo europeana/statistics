@@ -24,6 +24,7 @@ class VizVizsController < ApplicationController
       redirect_to map_viz_viz_path(file_id: @viz_viz.slug)
     end
     @mapped_output = JSON.parse(@viz_viz.mapped_output)
+    gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
   end
 
   def create    
