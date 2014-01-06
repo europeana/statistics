@@ -56,8 +56,9 @@ class Core::Oauth < ActiveRecord::Base
   
   def after_create_set
     Data::Filz.create!(genre: "API", file_file_name: "#{self.name}: Google Analytics Query 1", core_oauth_id: self.id)
-    Jobs::Ga.delay.query(self.id, "first")
     true
   end
+  
+  #Jobs::Ga.query(self.id, "first")
   
 end
