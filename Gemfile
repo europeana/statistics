@@ -13,7 +13,7 @@ gem 'jbuilder'
 gem 'tinymce-rails'
 gem "fog"
 gem 'unf' #brother of fog
-#gem 'acts-as-taggable-on'
+gem 'gon'
 
 # User Interface
 group :assets do
@@ -49,5 +49,6 @@ gem "carrierwave"
 
 # Development
 group :development do
+  gem "better_errors"
   gem "binding_of_caller"
 end
