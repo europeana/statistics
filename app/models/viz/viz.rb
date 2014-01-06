@@ -50,7 +50,7 @@ class Viz::Viz < ActiveRecord::Base
     elsif self.chart == "Stacked Column Chart"
       [["X", "string", "M"],["Y", "number", "M"],["Stack", "string", "M"]]
     elsif self.chart == "Line Chart"
-      [["X", "string", "M"],["Line 1", "number", "M"],["Line 2", "number", "O"],["Line 3", "number", "O"],["Line 4", "number", "0"]]
+      [["X", "string", "M"],["Line 1", "number", "M"]]#,["Line 2", "number", "O"],["Line 3", "number", "O"],["Line 4", "number", "0"]]
     end
   end
   
@@ -71,38 +71,52 @@ class Viz::Viz < ActiveRecord::Base
       elsif self.chart == "Grouped Column Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
+        group = row[headings.index(map_json["Group"])]
       elsif self.chart == "Stacked Column Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
+        stack = row[headings.index(map_json["Stack"])]
       elsif self.chart == "Line Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Line 1"])]
-        line2 = row[headings.index(map_json["Line 2"])]
-        line3 = row[headings.index(map_json["Line 3"])]
-        line4 = row[headings.index(map_json["Line 4"])]
+        #line2 = row[headings.index(map_json["Line 2"])]
+        #line3 = row[headings.index(map_json["Line 3"])]
+        #line4 = row[headings.index(map_json["Line 4"])]
       end
-      group = map_json["Group"].present? ? row[headings.index(map_json["Group"])]     : "_"
-      stack = map_json["Stack"].present? ? row[headings.index(map_json["Stack"])]     : "_"
-      line2 = map_json["Line 2"].present? ? row[headings.index(map_json["Line 2"])] : 0.0
-      line3 = map_json["Line 3"].present? ? row[headings.index(map_json["Line 3"])] : 0.0
-      line4 = map_json["Line 4"].present? ? row[headings.index(map_json["Line 4"])] : 0.0
-      unique_label = "#{label}#{group}#{stack}" #create a unique label of all dimensions which will act as KEY
-      if h[unique_label].present?
-        h[unique_label] = {"label" => label, 
-                           "value" => h[unique_label]["value"].to_f + value.to_f,
-                           "group" => group, 
-                           "stack" => stack}
-      else
-        h[unique_label] = {"label" => label, "value" => value.to_f, "group" => group, "stack" => stack}
+      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart"
+        unique_label = label
+        if h[unique_label].present?
+          h[unique_label] = {"label" => label, "value" => h[unique_label]["value"].to_f + value.to_f}
+        else
+          h[unique_label] = {"label" => label, "value" => value.to_f}
+        end
+      elsif self.chart == "Grouped Column Chart"
+        unique_label = "#{label}#{group}"
+        if h[unique_label].present?
+          h[unique_label] = {"label" => label, "value" => h[unique_label]["value"].to_f + value.to_f, "group" => group}
+        else
+          h[unique_label] = {"label" => label, "value" => value.to_f, "group" => group}
+        end
+      elsif self.chart == "Stacked Column Chart"
+        unique_label = "#{label}#{stack}"
+        if h[unique_label].present?
+          h[unique_label] = {"label" => label, "value" => h[unique_label]["value"].to_f + value.to_f, "stack" => stack}
+        else
+          h[unique_label] = {"label" => label, "value" => value.to_f, "stack" => stack}
+        end
       end
     end
     if h != {}
-      h.map.each do |unique_label, label, value, group, stack|
-        out << [label, value, group, stack]
+      h.each do |unique_label, val|
+        new_out = []
+        val.each do |label, value|
+          new_out << value
+        end
+        out << new_out
       end
-      transformed_data.push(out)
+      transformed_data << out
     end  
-    transformed_data.to_json
+    transformed_data[0].to_json
   end
   
   #UPSERT
@@ -115,7 +129,6 @@ class Viz::Viz < ActiveRecord::Base
       raw_data = JSON.parse(self.data_filz.content) 
       headings = raw_data.shift
       headings = headings.collect{|h| h.split(":").first}
-      mapped_output = [{"key" => "Chart","values" => []}] #json_data
       map_json = JSON.parse(self.map).invert
       self.mapped_output = mapper(headings, map_json, raw_data)    
     end      

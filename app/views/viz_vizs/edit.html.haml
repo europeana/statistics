@@ -11,4 +11,11 @@
       .panel-content{style: "padding: 10px;"}
         .col-sm-6
           %h5 Transformed output
-          = @mapped_output.inspect
+          - if @mapped_output.present?
+            %table.table.table-condensed.table-hover
+              - @mapped_output.each do |key, set|
+                %tr
+                  %td= set
+                  %td.f11= key
+        .col-sm-6
+          = "."
