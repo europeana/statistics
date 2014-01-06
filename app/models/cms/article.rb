@@ -6,14 +6,15 @@ class Cms::Article < ActiveRecord::Base
   friendly_id :title, use: [:slugged]
   
   #ACCESSORS
-  attr_accessible :description, :is_published, :published_at, :title
+  attr_accessible :description, :is_published, :published_at, :title, :core_tag_id
   
   #ASSOCIATIONS
-  #VALIDATIONS
-  validate :title, uniqueness: true, length: {minimum: 2}
-  validates :title, :presence => true
-
+  belongs_to :core_tag, class_name: "Core::Tag", foreign_key: :core_tag_id
   
+  #VALIDATIONS
+  validates :title, uniqueness: true, length: {minimum: 2}, :presence => true
+  validates :core_tag_id, presence: true
+
   #CALLBACKS
   before_create :before_create_set
   before_save :before_save_set

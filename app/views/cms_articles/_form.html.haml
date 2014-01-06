@@ -27,6 +27,10 @@
                 %br
                 #preview.wmd-preview{:style => "height: 420px; overflow:auto"}  
                   .f11.gray Live preview
+          .form-group
+            %b Page:
+            &nbsp;&nbsp;
+            = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]})
           .form-group 
             - if !@cms_article.is_published
               = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
