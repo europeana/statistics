@@ -64,6 +64,21 @@ class VizVizsController < ApplicationController
     @viz_viz.destroy
     redirect_to viz_vizs_path
   end
+
+  def generate_chart        
+    if @viz_viz
+      mapped_output = JSON.parse(@viz_viz.mapped_output)
+      mapped_output = Core::Services.twod_to_csv(mapped_output)
+      json_data = { "chart_type" => @viz_viz.chart, "mapped_output" => mapped_output }
+
+    else
+      json_data = {}      
+    end
+    respond_to do |format|
+      format.json { render :json => json_data.to_json, head: "ok"  }
+    end    
+    
+  end
   
   private
   

@@ -43,6 +43,7 @@ Pykhub::Application.routes.draw do
   get "/visualizations/:file_id/put_map", to: "viz_vizs#put_map", as: "put_map_viz_viz"
   get "/visualizations/:file_id/delete", to: "viz_vizs#destroy", as: "delete_viz_viz"
   get "/visualizations/:file_id", to: "viz_vizs#show", as: "viz_viz"
+  get "/generate/chart/:file_id", to: "viz_vizs#generate_chart", as: "generate_viz_chart"
   
   get "/:file_id", to: "cms_articles#show", as: "cms_article"
   

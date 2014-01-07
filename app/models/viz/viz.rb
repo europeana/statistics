@@ -23,7 +23,7 @@ class Viz::Viz < ActiveRecord::Base
   belongs_to :data_filz, class_name: "Data::Filz", foreign_key: "data_filz_id"
 
   #VALIDATIONS
-  validate :title, presence: true, uniqueness: true, length: {minimum: 2}
+  validates :title, presence: true, uniqueness: true, length: {minimum: 2}
   validates :data_filz_id, presence: :true
   validates :map, presence: :true, on: :update
 

@@ -12,9 +12,11 @@ class CmsArticlesController < ApplicationController
 
   def new
     @cms_article = Cms::Article.new
+    @viz_vizs = Viz::Viz.all
   end
 
   def edit
+    @viz_vizs = Viz::Viz.all
   end
 
   def create
