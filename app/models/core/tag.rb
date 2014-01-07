@@ -10,9 +10,10 @@ class Core::Tag < ActiveRecord::Base
   attr_accessible :description, :genre, :name, :slug
 
   #ASSOCIATIONS
+  has_many :cms_articles, foreign_key: :core_tag_id, class_name: "Cms::Article"
+  
   #VALIDATIONS
   validates :name, presence: true
-  #validates :genre , presence: true
   validate :validate_uniqueness?
 
   #CALLBACKS
@@ -26,9 +27,8 @@ class Core::Tag < ActiveRecord::Base
   private
   
   def validate_uniqueness?
-    self.genre = "Page"
-    dup = Core::Tag.where(name: self.name, genre: self.genre).first
-    if dup.present?
+    dup = Core::Tag.where(name: self.name, genre: "Page").first
+    if (dup.present? and self.id.blank?) or (dup.id != self.id and self.id.present?)
       errors.add(:name, "already taken for this genre")
     end
   end

@@ -26,7 +26,7 @@ Pykhub::Application.routes.draw do
   #tags
   get "/tags", to: "core_tags#index", as: "core_tags"
   post "/tags/create", to: "core_tags#create", as: "create_core_tags"
-  put "/tags/:tag_id/edit", to: "core_tags#edit", as: "edit_core_tag"
+  get "/tags/:tag_id/edit", to: "core_tags#edit", as: "edit_core_tag"
   put "/tags/:tag_id/update", to: "core_tags#update", as: "update_core_tag"
   get "/tags/:tag_id/delete", to: "core_tags#destroy", as: "delete_core_tag"
   

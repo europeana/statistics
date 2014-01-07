@@ -3,11 +3,9 @@ CarrierWave.configure do |config|
     :provider               => 'AWS',                        
     :aws_access_key_id      => AWS_ACCESS_KEY_ID,            
     :aws_secret_access_key  => AWS_SECRET_ACCESS_KEY,                        
-    :region                 => 'ap-southeast-1'#,
-    #:endpoint=>'http://pykhub-cms-images-dev.s3-website-ap-southeast-1.amazonaws.com/'
+    :region                 => AWS_REGION
   }
   config.fog_directory  = AWS_S3_BUCKET
-  config.fog_public     = false                                   # optional, defaults to true
-  config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, defaults to {}
+  config.fog_public     = true
 end
 

@@ -17,6 +17,7 @@ class CmsArticlesController < ApplicationController
 
   def edit
     @viz_vizs = Viz::Viz.all
+    @core_tags = Core::Tag.all
   end
 
   def create
@@ -29,6 +30,7 @@ class CmsArticlesController < ApplicationController
     if @cms_article.save
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
+      @core_tags = Core::Tag.all
       render action: "new"
     end
   end
@@ -42,6 +44,7 @@ class CmsArticlesController < ApplicationController
     if @cms_article.update_attributes(params[:cms_article])
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("u.s")
     else
+      @core_tags = Core::Tag.all
       render action: "edit"
     end
   end

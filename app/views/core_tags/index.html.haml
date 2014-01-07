@@ -12,8 +12,12 @@
         - @core_tags.each do |core_tag|
           %tr
             %td= core_tag.genre
-            %td= link_to core_tag.name, edit_core_tag_path(tag_id: core_tag.slug)
-            %td= core_tag.description
+            %td
+              - if core_tag.genre == "Page"
+                = link_to core_tag.name, edit_core_tag_path(tag_id: core_tag.slug)
+              - else
+                = core_tag.name
+            %td= truncate(core_tag.description, length: 100, omission: '...')
         %tr
           %td Page
           %td

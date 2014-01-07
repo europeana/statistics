@@ -20,7 +20,7 @@
       - @cms_articles.each do |cms_article|
         - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
           .box1
-            %h4= link_to cms_article.title, cms_article_path(cms_article)
+            %h4= link_to cms_article.title, cms_article_path(cms_article), style: "color: black;"
             - if !cms_article.is_published
               %span.f11.gray (Draft)
             - if current_user.present?

@@ -68,12 +68,14 @@ Pykhub::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
-  BASE_URL = "app.pykih.com"
-  
-  AWS_ACCESS_KEY_ID = "AKIAIF45K4Q4NWJLWE7A"
-  AWS_SECRET_ACCESS_KEY = "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"
-  AWS_S3_BUCKET = "pykhub-cms-images-prod"
+  BASE_URL = "europeana.herokuapp.com"
+  GOOGLE_CLIENTID = ENV["GOOGLE_CLIENTID"]
+  GOOGLE_SECRET = ENV["GOOGLE_SECRET"] 
+  AWS_ACCESS_KEY_ID = ENV["AWS_ACCESS_KEY_ID"]
+  AWS_SECRET_ACCESS_KEY = ENV["AWS_SECRET_ACCESS_KEY"]
+  AWS_S3_BUCKET = ENV["AWS_S3_BUCKET"]
+  AWS_REGION = ENV["AWS_REGION"]
 
-  config.action_mailer.default_url_options = { :host => "app.pykih.com" }
+  config.action_mailer.default_url_options = { :host => "europeana.herokuapp.com" }
   
 end

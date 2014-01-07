@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230074337) do
+ActiveRecord::Schema.define(:version => 20140106113314) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20131230074337) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "slug"
+    t.integer  "core_tag_id"
   end
 
   add_index "cms_articles", ["slug"], :name => "index_cms_articles_on_slug"
@@ -45,13 +46,11 @@ ActiveRecord::Schema.define(:version => 20131230074337) do
   end
 
   create_table "core_tags", :force => true do |t|
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
     t.string   "genre"
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.string   "slug"
   end
 
@@ -66,22 +65,6 @@ ActiveRecord::Schema.define(:version => 20131230074337) do
   end
 
   add_index "data_filzs", ["slug"], :name => "index_data_filzs_on_slug"
-
-  create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0, :null => false
-    t.integer  "attempts",   :default => 0, :null => false
-    t.text     "handler",                   :null => false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "users", :force => true do |t|
     t.string   "email",         :default => "", :null => false
@@ -107,7 +90,6 @@ ActiveRecord::Schema.define(:version => 20131230074337) do
   create_table "viz_vizs", :force => true do |t|
     t.string   "title"
     t.integer  "data_filz_id"
-    t.integer  "viz_chart_id"
     t.text     "map"
     t.text     "mapped_output"
     t.text     "settings"
