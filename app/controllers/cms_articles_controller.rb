@@ -12,11 +12,11 @@ class CmsArticlesController < ApplicationController
   end
 
   def new
+    @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
     @cms_article = Cms::Article.new
   end
 
   def edit
-    @viz_vizs = Viz::Viz.all
   end
 
   def create
@@ -29,6 +29,7 @@ class CmsArticlesController < ApplicationController
     if @cms_article.save
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
+      @core_tag = Core::Tag.find(@cms_article.core_tag_id)
       render action: "new"
     end
   end
@@ -58,6 +59,7 @@ class CmsArticlesController < ApplicationController
       @cms_article = Cms::Article.find(params[:file_id])
     end
     @core_tags = Core::Tag.order(:sort_order)
+    @viz_vizs = Viz::Viz.all
   end
     
 end

@@ -16,13 +16,9 @@
         = link_to "Home", root_url, class: "white left"
         - if current_user
           %span.pull-right
-            = link_to "Configure Tags", core_tags_path, style: "color: white;"
-            &nbsp;&nbsp;
             = link_to "Raw Data", data_filzs_path, style: "color: white;"
             &nbsp;&nbsp;
             = link_to "Visualizations", viz_vizs_path, style: "color: white;"
-            &nbsp;&nbsp;
-            = link_to "Articles", new_cms_articles_path, style: "color: white;"
             &nbsp;&nbsp;
             = link_to "Logout", "/logout", style: "color: white;"
       .row#header{role: "banner"}

@@ -1,6 +1,9 @@
 .row
-  .col-sm-12
+  .col-sm-10
     %h1 Europeana Dashboard
+  .col-sm-2
+    - if current_user.present?
+      .pull-right= link_to "Add new article to #{@core_tag.slug.capitalize} tag", "/new?tag=#{@core_tag.slug}", class: "btn btn-primary btn-xs", style: "color: white;"
 .row
   .col-sm-2    
     %br
@@ -8,11 +11,12 @@
       %ul.pages
         - @core_tags.each do |tag|
           %li{class: (@core_tag.id == tag.id  ? "active": nil)}= link_to tag.name, root_url(tag: tag.slug)
+        - if current_user.present?
+          %li= link_to "Configure Tags", core_tags_path, class: "f12", style: "color: #2a85e8;"
   .col-sm-10
     %br
     - if @core_tag.description.present?
       %p.lead= @core_tag.description
-      %br
     - i = 0
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|

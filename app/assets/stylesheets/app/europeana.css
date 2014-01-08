@@ -1636,7 +1636,7 @@ table {
 
 .box1{
     padding: 10px;
-    background: #eee;
+    border: 1px solid #eee;
     display: inline-block;
     margin: .5em 1em .5em 1em;
     width: 100%;

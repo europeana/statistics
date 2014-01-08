@@ -21,8 +21,8 @@
               .col-sm-6   
                 #editor
                   #toolbar.wmd-toolbar
-                  %a{"data-toggle" => "modal", "data-target"=>"#chart-selector"}
-                    select Chart
+                  - if @viz_vizs.first.present?
+                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector"} Select Chart
 
                   = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
               .col-sm-6
@@ -33,25 +33,29 @@
           .form-group
             %b Page:
             &nbsp;&nbsp;
-            = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]})
+            - if @core_tag.present?
+              = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]}, @core_tag.id)
+            - else
+              = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]})
           .form-group 
             - if !@cms_article.is_published
               = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
             = f.submit "Publish", class: "btn btn-success", id: "submit"
 
-#chart-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-body
-        %table.table.table-bordred.table-hovered 
-          - @viz_vizs.each do |viz|
-            %tr
-              %td                
-                %a{class: "selected-chart", src: "#{viz.title}"}  
-                  = viz.title
-              %td                
-                = viz.chart
-
+- if @viz_vizs.first.present?
+  #chart-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-body
+          %table.table.table-bordred.table-hovered 
+            - @viz_vizs.each do |viz|
+              %tr
+                %td                
+                  %a{class: "selected-chart", src: "#{viz.title}"}  
+                    = viz.title
+                %td                
+                  = viz.chart
+  
 
 - chart_type = ""
 - if @viz_viz.present?
