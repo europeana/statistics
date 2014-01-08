@@ -17,7 +17,7 @@
     %br
     - i = 0
     - if @cms_articles.first.present?
-      - @cms_articles.each do |cms_article|
+      - @cms_articles.each do |cms_article|                
         - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
           .box1
             %h4= link_to cms_article.title, cms_article_path(cms_article), style: "color: black;"
@@ -28,3 +28,10 @@
                 = link_to "Edit", edit_cms_article_path(file_id: cms_article.slug)
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 = link_to "Delete", delete_cms_article_path(file_id: cms_article.slug),  confirm: 'Are you sure?'
+            .preview-show{class: "wmd-preview preview-#{cms_article.id}", id: "preview-#{cms_article.id}" }
+            
+
+
+:javascript
+
+  generate_article_chart()

@@ -80,8 +80,7 @@ class VizVizsController < ApplicationController
     
   end
   
-  private
-  
+  private  
   def find_objects
     @data_filzs = Data::Filz.all
     if params[:file_id].present? 

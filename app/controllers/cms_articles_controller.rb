@@ -5,6 +5,7 @@ class CmsArticlesController < ApplicationController
 
   def index
     @cms_articles = Cms::Article.all
+    gon.cms_articles = @cms_articles
   end
 
   def show
@@ -13,6 +14,7 @@ class CmsArticlesController < ApplicationController
   def new
     @cms_article = Cms::Article.new
     @viz_vizs = Viz::Viz.all
+    @core_tags = Core::Tag.all
   end
 
   def edit
@@ -31,6 +33,7 @@ class CmsArticlesController < ApplicationController
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
       @core_tags = Core::Tag.all
+      @viz_vizs = Viz::Viz.all
       render action: "new"
     end
   end
@@ -45,13 +48,14 @@ class CmsArticlesController < ApplicationController
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("u.s")
     else
       @core_tags = Core::Tag.all
+      @viz_vizs = Viz::Viz.all
       render action: "edit"
     end
   end
 
   def destroy
     @cms_article.destroy
-    redirect_to cms_articles_path
+    redirect_to root_url
   end
   
   private
