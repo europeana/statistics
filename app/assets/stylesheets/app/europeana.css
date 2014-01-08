@@ -1636,10 +1636,18 @@ table {
 
 .box1{
     padding: 10px;
-    background: #eee;
+    border: 1px solid #eee;
     display: inline-block;
     margin: .5em 1em .5em 1em;
-    width: 100%;
     height: 300px;
     width: 29%!important;
+}
+
+.box1_big{
+    padding: 10px;
+    border: 1px solid #eee;
+    display: inline-block;
+    margin: .5em 1em .5em 1em;
+    width: 100%!important;
+    height: 300px;
 }

@@ -2,7 +2,6 @@
   .col-sm-12
     %ol.breadcrumb
       %li= link_to "Home", root_url
-      %li.active= @cms_article.title
     %h1
       = @cms_article.title
       - if current_user.present?

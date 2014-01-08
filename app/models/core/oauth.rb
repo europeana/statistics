@@ -34,9 +34,9 @@ class Core::Oauth < ActiveRecord::Base
   end
   
   #developers.google.com/analytics/devguides/reporting/core/dimsmets
-  def ga(sd, ed)
+  def ga(qry, sd, ed)
     begin
-      url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{self.token}&start-date=#{sd}&end-date=#{ed}&ids=ga:#{self.profile}&metrics=ga:visitors,ga:newVisits,ga:visits,ga:bounces,ga:avgTimeOnSite,ga:pageviewsPerVisit,ga:pageviews,ga:avgTimeOnPage,ga:exits&dimensions=ga:date,ga:country,ga:sourceMedium,ga:keyword,ga:deviceCategory,ga:pagePath,ga:landingPagePath"
+      url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{self.token}&start-date=#{sd}&end-date=#{ed}&ids=ga:#{self.profile}&max-results=10000#{qry}"
       a = Core::Services.get_json(Nestful.get(url))
       if a.present?
         if a["totalsForAllResults"].present?

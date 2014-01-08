@@ -9,6 +9,18 @@ class Core::Services
     end
   end
   
+  #Core::Services.end_of_month(month, year)
+  def self.end_of_month(month, year)
+    Date.new(year, month, -1).to_time + 86340
+  end
+  
+  #Core::ga_date_format(d)
+  def self.ga_date_format(d)
+    mon = d.month.to_s.length == 1 ? "0#{d.month.to_s}" : d.month.to_s
+    day = d.day.to_s.length == 1 ? "0#{d.day.to_s}" : d.day.to_s
+    "#{d.year.to_s}-#{mon}-#{day}"
+  end
+  
   #Core::Services.array_of_array_to_handsontable(array_of_array)
   def self.array_of_array_to_handsontable(array_of_array)
     output = []

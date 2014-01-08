@@ -1,27 +1,39 @@
 .row
-  .col-sm-12
+  .col-sm-10
     %h1 Europeana Dashboard
-- if current_user.present?
-  .row
-    .col-sm-12
-      .pull-right
-        %span.f11.gray{"data-toggle" => "chardinjs", :style => "cursor:pointer;", :onclick => "$('.container').chardinJs('start')"} Help
-        = link_to "Tags", core_tags_path, class: "btn btn-default btn-xs"
-        = link_to "Data", data_filzs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit data", "data-position" => "left"
-        = link_to "Viz", viz_vizs_path, class: "btn btn-default btn-xs", "data-intro" => "To add or edit visualization", "data-position" => "bottom"
-        = link_to "New article", new_cms_articles_path, class: "btn btn-default btn-xs", "data-intro" => "To add article", "data-position" => "top"
-.row
   .col-sm-2
+    - if current_user.present?
+      .pull-right= link_to "Compose", "/new?tag=#{@core_tag.slug}", class: "btn btn-primary btn-xs", style: "color: white;"
+.row
+  .col-sm-2    
     %br
+    %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}
+      %ul.pages
+        - @core_tags.each do |tag|
+          %li{class: (@core_tag.id == tag.id  ? "active": nil)}= link_to tag.name, root_url(tag: tag.slug)
+        - if current_user.present?
+          %li= link_to "Configure Tags", core_tags_path, class: "f12", style: "color: #2a85e8;"
   .col-sm-10
     %br
+    - if @core_tag.description.present?
+      %p.lead= @core_tag.description
+    - if @star_article.present?
+      - if @star_article.is_published or (!@star_article.is_published and current_user.present?)
+        .box1_big
+          %h3
+            = link_to truncate(@star_article.title, length: 30, omission: '...'), cms_article_path(file_id: @star_article.slug), style: "color: black;"
+          - if !@star_article.is_published
+            %span.f11.gray (Draft)
     - i = 0
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|                
         - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
           .box1
-            %h4= link_to cms_article.title, cms_article_path(cms_article), style: "color: black;"
+            %h4
+              = link_to image_tag("star.png"), star_cms_article_path(file_id: cms_article.slug)
+              = link_to truncate(cms_article.title, length: 30, omission: '...'), cms_article_path(file_id: cms_article.slug), style: "color: black;"
             - if !cms_article.is_published
+<<<<<<< HEAD
               %span.f11.gray (Draft)
             - if current_user.present?
               .pull-right.f11
@@ -35,3 +47,6 @@
 :javascript
 
   generate_article_chart()
+=======
+              %span.f11.gray (Draft)
+>>>>>>> 93535dd6c65f8a3c4ad88819def3e234ca47e1ff

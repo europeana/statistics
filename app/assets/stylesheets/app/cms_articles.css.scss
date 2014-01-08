@@ -1,0 +1,19 @@
+ul.pages{
+    margin: 0;padding: 0;
+    li{
+        font-size: 12px;
+        padding: 5px;
+        cursor: pointer;
+        list-style-type: none;
+        a{
+            color: #2E2E2E;
+        }
+    }
+    li:hover{
+        background: #eee;
+    }
+    li.active{
+        background-color: #D3D3D3;
+    }
+    
+}

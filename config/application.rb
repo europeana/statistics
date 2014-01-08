@@ -8,7 +8,6 @@ require "net/https"
 require "pyk"
 require 'json'
 require 'g_ruby'
-require 'delayed_job'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line

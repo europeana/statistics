@@ -3,7 +3,6 @@ class CoreTagsController < ApplicationController
   before_filter :authenticate_user!, :find_object
   
   def index
-    @core_tags = Core::Tag.all
     @core_tag = Core::Tag.new
   end
 
@@ -15,7 +14,6 @@ class CoreTagsController < ApplicationController
     if @core_tag.save
       redirect_to core_tags_path, notice: 'Added.'
     else
-      @core_tags = Core::Tag.all
       render action: "index" 
     end
   end
@@ -39,6 +37,7 @@ class CoreTagsController < ApplicationController
     if params[:tag_id].present?
       @core_tag = Core::Tag.find(params[:tag_id])
     end
+    @core_tags = Core::Tag.order(:sort_order)
   end
   
 end
