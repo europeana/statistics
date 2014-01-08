@@ -5,7 +5,8 @@ class CmsArticlesController < ApplicationController
 
   def index
     @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
-    @cms_articles = Cms::Article.where(core_tag_id: @core_tag.id)
+    @star_article = Cms::Article.where(core_tag_id: @core_tag.id, is_star: true).first
+    @cms_articles = Cms::Article.where(core_tag_id: @core_tag.id, is_star: false)
   end
 
   def show
@@ -17,6 +18,12 @@ class CmsArticlesController < ApplicationController
   end
 
   def edit
+  end
+  
+  def star
+    Cms::Article.where(core_tag_id: @cms_article.core_tag_id).update_all(is_star: false)
+    @cms_article.update_attributes(is_star: true)
+    redirect_to root_url(tag: @cms_article.core_tag.slug)
   end
 
   def create

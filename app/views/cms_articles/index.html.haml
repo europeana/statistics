@@ -3,7 +3,7 @@
     %h1 Europeana Dashboard
   .col-sm-2
     - if current_user.present?
-      .pull-right= link_to "Add new article to #{@core_tag.slug.capitalize} tag", "/new?tag=#{@core_tag.slug}", class: "btn btn-primary btn-xs", style: "color: white;"
+      .pull-right= link_to "Compose", "/new?tag=#{@core_tag.slug}", class: "btn btn-primary btn-xs", style: "color: white;"
 .row
   .col-sm-2    
     %br
@@ -17,16 +17,20 @@
     %br
     - if @core_tag.description.present?
       %p.lead= @core_tag.description
+    - if @star_article.present?
+      - if @star_article.is_published or (!@star_article.is_published and current_user.present?)
+        .box1_big
+          %h3
+            = link_to truncate(@star_article.title, length: 30, omission: '...'), cms_article_path(file_id: @star_article.slug), style: "color: black;"
+          - if !@star_article.is_published
+            %span.f11.gray (Draft)
     - i = 0
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|
         - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
           .box1
-            %h4= link_to cms_article.title, cms_article_path(cms_article), style: "color: black;"
+            %h4
+              = link_to image_tag("star.png"), star_cms_article_path(file_id: cms_article.slug)
+              = link_to truncate(cms_article.title, length: 30, omission: '...'), cms_article_path(file_id: cms_article.slug), style: "color: black;"
             - if !cms_article.is_published
               %span.f11.gray (Draft)
-            - if current_user.present?
-              .pull-right.f11
-                = link_to "Edit", edit_cms_article_path(file_id: cms_article.slug)
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                = link_to "Delete", delete_cms_article_path(file_id: cms_article.slug),  confirm: 'Are you sure?'
