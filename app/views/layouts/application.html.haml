@@ -4,6 +4,8 @@
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
     %meta{charset: "utf-8"} 
     = include_gon
+    :javascript
+      var __locale = 'en';
     = stylesheet_link_tag "application", :media => "screen"
     = javascript_include_tag "application"
     = csrf_meta_tags
