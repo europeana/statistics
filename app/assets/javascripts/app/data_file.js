@@ -1,7 +1,5 @@
 $(document).ready(function () {
-	
-  $("#grid > th:first div.relative").html("he its hack")
-
+  $('#chart-selector').modal(options);
 });
 
 
