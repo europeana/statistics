@@ -1,66 +1,3 @@
-//
-// showdown.js -- A javascript port of Markdown.
-//
-// Copyright (c) 2007 John Fraser.
-//
-// Original Markdown Copyright (c) 2004-2005 John Gruber
-//   <http://daringfireball.net/projects/markdown/>
-//
-// The full source distribution is at:
-//
-//				A A L
-//				T C A
-//				T K B
-//
-//   <http://www.attacklab.net/>
-//
-
-//
-// Wherever possible, Showdown is a straight, line-by-line port
-// of the Perl version of Markdown.
-//
-// This is not a normal parser design; it's basically just a
-// series of string substitutions.  It's hard to read and
-// maintain this way,  but keeping Showdown close to the original
-// design makes it easier to port new features.
-//
-// More importantly, Showdown behaves like markdown.pl in most
-// edge cases.  So web applications can do client-side preview
-// in Javascript, and then build identical HTML on the server.
-//
-// This port needs the new RegExp functionality of ECMA 262,
-// 3rd Edition (i.e. Javascript 1.5).  Most modern web browsers
-// should do fine.  Even with the new regular expression features,
-// We do a lot of work to emulate Perl's regex functionality.
-// The tricky changes in this file mostly have the "attacklab:"
-// label.  Major or self-explanatory changes don't.
-//
-// Smart diff tools like Araxis Merge will be able to match up
-// this file with markdown.pl in a useful way.  A little tweaking
-// helps: in a copy of markdown.pl, replace "#" with "//" and
-// replace "$text" with "text".  Be sure to ignore whitespace
-// and line endings.
-//
-
-
-//
-// Showdown usage:
-//
-//   var text = "Markdown *rocks*.";
-//
-//   var converter = new Attacklab.showdown.converter();
-//   var html = converter.makeHtml(text);
-//
-//   alert(html);
-//
-// Note: move the sample code to the bottom of this
-// file before uncommenting it.
-//
-
-
-//
-// Attacklab namespace
-//
 var Attacklab = Attacklab || {}
 
 //
@@ -84,6 +21,7 @@ Attacklab.showdown.converter = function() {
 var g_urls;
 var g_titles;
 var g_html_blocks;
+var visualization_titles = []
 
 // Used to track when we're inside an ordered or unordered list
 // (see _ProcessListItems() for details):
@@ -347,7 +285,6 @@ var _RunBlockGamut = function(text) {
 // tags like paragraphs, headers, and list items.
 //
 	text = _DoHeaders(text);
-
 	// Do Horizontal Rules:
 	var key = hashBlock("<hr />");
 	text = text.replace(/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm,key);
@@ -601,54 +538,104 @@ var _DoImages = function(text) {
 		/g,writeImageTag);
 	*/
 	text = text.replace(/(!\[(.*?)\]\s?\([ \t]*()<?(\S+?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g,writeImageTag);
-
 	return text;
 }
 
 var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
+
 	var whole_match = m1;
 	var alt_text   = m2;
 	var link_id	 = m3.toLowerCase();
 	var url		= m4;
 	var title	= m7;
 
-	if (!title) title = "";
-	
-	if (url == "") {
-		if (link_id == "") {
-			// lower-case and turn embedded newlines into spaces
-			link_id = alt_text.toLowerCase().replace(/ ?\n/g," ");
-		}
-		url = "#"+link_id;
+
+	if (m2 == "visualization") {
+
+		var div_id = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for( var i=0; i < 5; i++ )
+			div_id += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		GenerateDataWrapperChartBySlug(m4, div_id)
+		result = ""
 		
-		if (g_urls[link_id] != undefined) {
-			url = g_urls[link_id];
-			if (g_titles[link_id] != undefined) {
-				title = g_titles[link_id];
+	}else {
+
+		if (!title) title = "";
+		
+		if (url == "") {
+			if (link_id == "") {
+				// lower-case and turn embedded newlines into spaces
+				link_id = alt_text.toLowerCase().replace(/ ?\n/g," ");
 			}
-		}
-		else {
-			return whole_match;
-		}
-	}	
-	
-	alt_text = alt_text.replace(/"/g,"&quot;");
-	url = escapeCharacters(url,"*_");
-	var result = "<img src=\"" + url + "\" alt=\"" + alt_text + "\"";
+			url = "#"+link_id;
+			
+			if (g_urls[link_id] != undefined) {
+				url = g_urls[link_id];
+				if (g_titles[link_id] != undefined) {
+					title = g_titles[link_id];
+				}
+			}
+			else {
+				return whole_match;
+			}
+		}	
+		
+		alt_text = alt_text.replace(/"/g,"&quot;");
+		url = escapeCharacters(url,"*_");
+		var result = "<img src=\"" + url + "\" alt=\"" + alt_text + "\"";
 
-	// attacklab: Markdown.pl adds empty title attributes to images.
-	// Replicate this bug.
+		// attacklab: Markdown.pl adds empty title attributes to images.
+		// Replicate this bug.
 
-	//if (title != "") {
-		title = title.replace(/"/g,"&quot;");
-		title = escapeCharacters(title,"*_");
-		result +=  " title=\"" + title + "\"";
-	//}
-	
-	result += " />";
+		//if (title != "") {
+			title = title.replace(/"/g,"&quot;");
+			title = escapeCharacters(title,"*_");
+			result +=  " title=\"" + title + "\"";
+		//}
+		
+		result += " />";
+	}
 	
 	return result;
 }
+
+
+var GenerateDataWrapperChartBySlug = function(slug, div_id,text) {
+
+    var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
+    var vdata;
+    $.get("/generate/chart/"+slug,function(data,status){
+      vdata = data;
+      
+      if (data) {
+        //$("<div id='"+ div_id +"' style='height:300px; width:200px;'></div>").appendTo("#preview")
+
+
+      	$("<div>")
+	        .attr("id", div_id)
+	        .css({
+	          "height": "300px",
+	          "width": "200px"
+	        })
+        .appendTo("#preview")
+
+        dw.visualize({
+            type: chart_types[data.chart_type] + '-chart', 
+            theme: 'default', 
+            container: $('#'+div_id),
+            datasource:   dw.datasource.delimited({csv: data.mapped_output})        
+        });
+              
+      }     
+      
+    });
+
+    return $('#'+div_id);
+
+  } 
 
 
 var _DoHeaders = function(text) {
@@ -1304,3 +1291,5 @@ var Showdown = Attacklab.showdown;
 if (Attacklab.fileLoaded) {
 	Attacklab.fileLoaded("showdown.js");
 }
+
+//http://stackoverflow.com/questions/20969176/markdown-editor-wmd-custom-tag

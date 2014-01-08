@@ -18,3 +18,26 @@
 //= require vendor/lib/wmd
 //= require vendor/lib/functions
 //= require vendor/lib/jquery.inline-attach.min
+
+//Datawrapper js files
+//= require vendor/datawrapper/underscore-min
+//= require vendor/datawrapper/globalize.min
+//= require vendor/datawrapper/raphael-min
+//= require vendor/datawrapper/d3-light.min
+//= require vendor/datawrapper/chroma.min
+//= require vendor/datawrapper/dw
+//= require vendor/datawrapper/dw.standalone
+//= require vendor/datawrapper/default
+
+//Datawrapper Visualization js files
+//= require vendor/datawrapper/vis/raphael-chart
+//= require vendor/datawrapper/vis/line-chart
+//= require vendor/datawrapper/vis/column-chart
+//= require vendor/datawrapper/vis/bar-chart
+//= require vendor/datawrapper/vis/pie-chart
+//= require vendor/datawrapper/vis/donut-chart
+//= require vendor/datawrapper/vis/grouped-column-chart
+//= require vendor/datawrapper/vis/stacked-column-chart
+//= require vendor/datawrapper/vis/data-table
+//= require vendor/datawrapper/vis/maps
+//= require vendor/datawrapper/vis/election-donut-chart

@@ -21,6 +21,9 @@
               .col-sm-6   
                 #editor
                   #toolbar.wmd-toolbar
+                  %a{"data-toggle" => "modal", "data-target"=>"#chart-selector"}
+                    select Chart
+
                   = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
               .col-sm-6
                 %br
@@ -36,11 +39,33 @@
               = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
             = f.submit "Publish", class: "btn btn-success", id: "submit"
 
+#chart-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        %table.table.table-bordred.table-hovered 
+          - @viz_vizs.each do |viz|
+            %tr
+              %td                
+                %a{class: "selected-chart", src: "#{viz.title}"}  
+                  = viz.title
+              %td                
+                = viz.chart
+
+
+- chart_type = ""
+- if @viz_viz.present?
+  - chart_type = @viz_viz.chart
+
 :javascript
   $(document).ready(function() {    
-    $.ajaxSetup({ 
-      'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} 
-    });
+
+    if (1==2)  {
+      $.ajaxSetup({ 
+        'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} 
+      });
+
+    }
 
     $("#highlightCode").click(function(){
       $.SyntaxHighlighter.init({
@@ -95,3 +120,16 @@
       //$("#source").scrollTop($("#epiceditor-preview").scrollTop());
     }
   }
+
+  $(".selected-chart").click(function(event) {
+
+    event.preventDefault();
+
+    var img_url = $(this).attr("src");
+    var input = $('textarea');
+    input.val(input.val() + " ![visualization]("+ img_url + ')');
+    return false;
+  })
+
+
+  

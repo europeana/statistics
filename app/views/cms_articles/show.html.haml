@@ -12,9 +12,16 @@
     %hr
     #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
     #preview.wmd-preview
+
+- chart_type = ""
+- if @viz_viz.present?
+  - chart_type = @viz_viz.chart
           
 :javascript
   $(document).ready(function() {
     $("#editor > #input").hide();
     new WMD("input", "toolbar", { preview: "preview" });
   });
+
+
+
