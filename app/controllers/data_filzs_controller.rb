@@ -3,7 +3,7 @@ class DataFilzsController < ApplicationController
   before_filter :authenticate_user!, :find_objects
   
   def index
-    @data_filzs = Data::Filz.where("genre != 'API'")
+    @data_filzs = Data::Filz.where(genre: nil)
   end
     
   def csv
@@ -24,7 +24,7 @@ class DataFilzsController < ApplicationController
     @data_filz = Data::Filz.new(params[:data_filz])
     if @data_filz.save
       flash[:notice] = t("c.s")
-      redirect_to data_filz_path(file_id: @data_filz.slug), :locals => {:flash => flash}
+      redirect_to data_filzs_path, :locals => {:flash => flash}
     else
       gon.errors = @data_filz.errors 
       flash[:error] = t("c.f")
@@ -38,7 +38,7 @@ class DataFilzsController < ApplicationController
   
   def update
     if @data_filz.update_attributes(params[:data_filz])
-      redirect_to data_filz_path(file_id: @data_filz.slug), notice: t("u.s")
+      redirect_to data_filzs_path, notice: t("u.s")
     else
       gon.errors = @data_filz.errors 
       flash[:error] = t("c.f")

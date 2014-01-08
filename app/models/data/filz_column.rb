@@ -15,22 +15,16 @@ class Data::FilzColumn
     headers = []
     stats.each do |s|
       if s["col"].present?
-        if s.keys.size == 2
-          name = s["col"]
-          name = (name.include? ":") ? name.split(":")[0] : name
-          headers.push "#{s['col']}:#{s.keys.last}"
-        else
           name = s["col"]
           name = (name.include? ":") ? name.split(":")[0] : name
           s.delete("col")
           type = s.sort.last.first
           headers.push "#{name}:#{type}"
-        end
       end
     end
-    return headers.join(",")
+    return headers.join(",")    
   end
-  
+    
   private
 
   def self.tell_datatype(v)

@@ -33,7 +33,6 @@
               = link_to image_tag("star.png"), star_cms_article_path(file_id: cms_article.slug)
               = link_to truncate(cms_article.title, length: 30, omission: '...'), cms_article_path(file_id: cms_article.slug), style: "color: black;"
             - if !cms_article.is_published
-<<<<<<< HEAD
               %span.f11.gray (Draft)
             - if current_user.present?
               .pull-right.f11
@@ -45,8 +44,4 @@
 
 
 :javascript
-
   generate_article_chart()
-=======
-              %span.f11.gray (Draft)
->>>>>>> 93535dd6c65f8a3c4ad88819def3e234ca47e1ff
