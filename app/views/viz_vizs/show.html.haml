@@ -1,1 +1,38 @@
-VIZ SHOW PAGE
+.row
+  .col-sm-12
+    %ol.breadcrumb
+      %li= link_to "Home", root_url
+      %li= link_to "Visualizations", viz_vizs_path
+      %li.active= @viz_viz.title
+    .panel.panel-default
+      .panel-heading
+        %b= @viz_viz.title
+      .col-sm-6
+        %br
+        %br
+        %h5 Transformed output
+        - if @mapped_output.present?
+          %table.table.table-condensed.table-hover
+            - @mapped_output.each do |key, set|
+              %tr
+                %td= set
+                %td.f11= key
+      .col-sm-6
+        %br
+        %br
+        #pie-chart{style: "height:500px; width:500px;"}
+        
+
+
+- chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column" , "Line Chart" => "line" }
+
+:javascript
+  
+  // display a pie chart
+  dw.visualize({
+      type: '#{chart_types[@viz_viz.chart]}-chart', 
+      theme: 'default', 
+      container: $('#pie-chart'),
+      datasource:   dw.datasource.delimited({csv: gon.csv_data})
+  });
+          

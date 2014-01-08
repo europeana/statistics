@@ -8,20 +8,21 @@
     .panel.panel-default
       .panel-heading
         %b= @viz_viz.title
-      .panel-content{style: "padding: 10px;"}
-        .col-sm-6
-          %h5 Transformed output
-          - if @mapped_output.present?
-            %table.table.table-condensed.table-hover
-              - @mapped_output.each do |key, set|
-                %tr
-                  %td= set
-                  %td.f11= key
-        .col-sm-6
-          %br
-          %br
-          %br
-          #pie-chart{style: "height:500px; width:500px;"}
+      .col-sm-6
+        %br
+        %br
+        %h5 Transformed output
+        - if @mapped_output.present?
+          %table.table.table-condensed.table-hover
+            - @mapped_output.each do |key, set|
+              %tr
+                %td= set
+                %td.f11= key
+      .col-sm-6
+        %br
+        %br
+        #pie-chart{style: "height:500px; width:500px;"}
+        
 
 
 - chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column" , "Line Chart" => "line" }

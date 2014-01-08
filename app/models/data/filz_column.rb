@@ -28,7 +28,7 @@ class Data::FilzColumn
   private
 
   def self.tell_datatype(v)
-    #return "number" unless v.to_s.match(/^[\d]+(\.[\d]+){0,1}$/) == nil
+    return "number" unless v.to_s.match(/^[\d]+(\.[\d]+){0,1}$/) == nil
     return "string"
   end
 
