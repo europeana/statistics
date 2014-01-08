@@ -10,5 +10,3 @@ Core::Oauth.create(name: "Europeana 1914-1918", profile: "43980802", refresh_tok
 
 Core::Tag.create(name: "Overview", genre: "Pages", sort_order: 1)
 Core::Tag.create(name: "Usage", genre: "Pages", sort_order: 2)
-#Core::Tag.create(name: "Europeana 1914-1918", genre: "Site")
-#Core::Tag.create(name: "Both", genre: "Site")
