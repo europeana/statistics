@@ -4,7 +4,8 @@ class CmsArticlesController < ApplicationController
   before_filter :find_objects
 
   def index
-    @cms_articles = Cms::Article.all
+    @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
+    @cms_articles = Cms::Article.where(core_tag_id: @core_tag.id)
   end
 
   def show
@@ -12,11 +13,9 @@ class CmsArticlesController < ApplicationController
 
   def new
     @cms_article = Cms::Article.new
-    @core_tags = Core::Tag.all
   end
 
   def edit
-    @core_tags = Core::Tag.all
   end
 
   def create
@@ -29,7 +28,6 @@ class CmsArticlesController < ApplicationController
     if @cms_article.save
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
-      @core_tags = Core::Tag.all
       render action: "new"
     end
   end
@@ -43,7 +41,6 @@ class CmsArticlesController < ApplicationController
     if @cms_article.update_attributes(params[:cms_article])
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("u.s")
     else
-      @core_tags = Core::Tag.all
       render action: "edit"
     end
   end
@@ -59,6 +56,7 @@ class CmsArticlesController < ApplicationController
     if params[:file_id].present? 
       @cms_article = Cms::Article.find(params[:file_id])
     end
+    @core_tags = Core::Tag.order(:sort_order)
   end
     
 end

@@ -12,12 +12,20 @@
     .container{style: "margin-left: auto; margin-right: auto;"}
       .row#header-strip
         = link_to "Home", root_url, class: "white left"
+        - if current_user
+          %span.pull-right
+            = link_to "Pages", core_tags_path, style: "color: white;"
+            &nbsp;&nbsp;
+            = link_to "Raw Data", data_filzs_path, style: "color: white;"
+            &nbsp;&nbsp;
+            = link_to "Visualizations", viz_vizs_path, style: "color: white;"
+            &nbsp;&nbsp;
+            = link_to "Articles", new_cms_articles_path, style: "color: white;"
+            &nbsp;&nbsp;
+            = link_to "Logout", "/logout", style: "color: white;"
       .row#header{role: "banner"}
         .logo-and-search
           .logo
-            %h1= link_to image_tag("europeana-logo.png"), root_url
-        - if current_user
-          .pull-right= link_to "Logout", "/logout", class: "f11"
       .row
         .col-sm-12
           %hr

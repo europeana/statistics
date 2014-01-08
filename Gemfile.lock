@@ -68,11 +68,6 @@ GEM
       mail
     daemons (1.1.9)
     debug_inspector (0.0.2)
-    delayed_job (4.0.0)
-      activesupport (>= 3.0, < 4.1)
-    delayed_job_active_record (4.0.0)
-      activerecord (>= 3.0, < 4.1)
-      delayed_job (>= 3.0, < 4.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
     excon (0.31.0)
@@ -216,7 +211,6 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   csv_validator
   daemons
-  delayed_job_active_record
   fog
   friendly_id (~> 4.0.1)
   g_ruby (= 0.0.11)

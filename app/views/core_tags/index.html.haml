@@ -13,7 +13,7 @@
           %tr
             %td= core_tag.genre
             %td
-              - if core_tag.genre == "Page"
+              - if core_tag.genre == "Pages"
                 = link_to core_tag.name, edit_core_tag_path(tag_id: core_tag.slug)
               - else
                 = core_tag.name

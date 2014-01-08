@@ -1,20 +1,18 @@
 class Jobs::Ga
   
-  def self.query(oauth_id, scope)
+  def self.query(oauth_id, sd)
     begin
-      if scope == "today"
-        d = Date.today - 1
-        start_date = "#{d.year.to_s}-#{d.month.to_s}-#{d.day.to_s}"
-        end_date = start_date
-      else
-        d = Date.today - 30
-        start_date = "#{d.year.to_s}-#{d.month.to_s}-#{d.day.to_s}"
-        d = Date.today - 1
-        end_date = "#{d.year.to_s}-#{d.month.to_s}-#{d.day.to_s}"
-      end
+      start_date = Core::Services.ga_date_format(sd)
+      end_date = Core::Services.ga_date_format(sd)
+      
+      puts "calling api"
       core_oauth = Core::Oauth.find(oauth_id)
       core_oauth.reauthenticate? #get the token
-      api_output = core_oauth.ga(start_date, end_date) #calling the API
+
+      qry = "&metrics=ga:visitors,ga:newVisits,ga:visits,ga:bounces,ga:avgTimeOnSite,ga:pageviewsPerVisit,ga:pageviews,ga:avgTimeOnPage,ga:exits&dimensions=ga:date,ga:country,ga:sourceMedium,ga:keyword,ga:deviceCategory,ga:pagePath,ga:landingPagePath"
+      api_output = core_oauth.ga(qry, start_date, end_date) #calling the API
+      
+      puts "processing"
       final_output = Core::Services.array_of_array_to_handsontable(api_output) #transforming the data
       
       #add more calculated data points
@@ -23,8 +21,8 @@ class Jobs::Ga
         j << j[0][4..5]
         j << j[0][6..7]
         j[0] = "#{j[0][0..3]}-#{j[0][4..5]}-#{j[0][6..7]}"
-        j << j[2].split("/")[0].strip
-        j << j[2].split("/")[1].strip
+        j << j[2].split("/")[0].blank? ? nil : j[2].split("/")[0].strip
+        j << j[2].split("/")[1].blank? ? nil : j[2].split("/")[1].strip
       end
       
       data_filz = core_oauth.data_filz
@@ -35,7 +33,8 @@ class Jobs::Ga
       
       data_filz.update_attributes(:content => o)
     rescue Exception => ex
-      
+      puts "fail"
+      puts ex.message
     end
   end
     

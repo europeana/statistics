@@ -40,7 +40,6 @@ gem "carmen"
 gem "lazy_high_charts"
 gem "railties"
 gem 'daemons'
-gem 'delayed_job_active_record'
 gem "rmagick"
 gem "simple_form"
 gem "carrierwave"
