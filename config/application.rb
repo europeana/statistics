@@ -5,7 +5,6 @@ require 'csv'
 require 'open-uri'
 require 'rubygems'
 require "net/https"
-require "pyk"
 require 'json'
 require 'g_ruby'
 

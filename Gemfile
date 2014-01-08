@@ -29,8 +29,6 @@ gem 'csv_validator'
 gem 'yui-compressor'
 
 # PYKIH ENVIRONMENT GEMS - START
-gem "pyk", "0.2.7"
-#gem "pyk", "0.2.5", path: '/Users/ritvvijparrikh/Projects/pyk'
 gem 'chosen-rails'
 gem 'thin' 
 gem "roo"

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :api_accounts, class_name: "Api::Account", dependent: :destroy
 
   #VALIDATIONS
-  validates :email, uniqueness: {case_sensitive: false}, length: {minimum: 5}, format: {with: Pyk::Regex::EMAIL, message: "invalid format"}, presence: true
+  validates :email, uniqueness: {case_sensitive: false}, length: {minimum: 5}, presence: true
   validates :password , length: { within: 8..40, on: :create }, presence: {on: :create}
 
   #CALLBACKS
