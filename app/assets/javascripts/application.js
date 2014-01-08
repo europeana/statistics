@@ -10,9 +10,9 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require pyk
+//= require jquery
+//= require jquery_ujs
 //= require_tree ./vendor/app/
-//= require_tree ./app/
 //= require vendor/lib/jquery.syntaxhighlighter.min
 //= require vendor/lib/showdown
 //= require vendor/lib/wmd
@@ -41,3 +41,5 @@
 //= require vendor/datawrapper/vis/data-table
 //= require vendor/datawrapper/vis/maps
 //= require vendor/datawrapper/vis/election-donut-chart
+
+//= require_tree ./app/

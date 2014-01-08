@@ -84,7 +84,7 @@ class VizVizsController < ApplicationController
   
   private  
   def find_objects
-    @data_filzs = Data::Filz.all
+    @data_filzs = Data::Filz.where(genre: nil)
     if params[:file_id].present? 
       @viz_viz = Viz::Viz.find(params[:file_id])
     end
