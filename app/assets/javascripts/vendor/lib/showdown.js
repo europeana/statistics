@@ -617,8 +617,8 @@ var GenerateDataWrapperChartBySlug = function(slug, div_id,text) {
       	$("<div>")
 	        .attr("id", div_id)
 	        .css({
-	          "height": "300px",
-	          "width": "200px"
+	          "height": "500px",
+	          "width": "500px"
 	        })
         .appendTo("#preview")
 

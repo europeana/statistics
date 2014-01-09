@@ -124,8 +124,8 @@ function generate_article_chart() {
       $("<div>")
         .attr("id", title+"_Id_"+data.id)
         .css({
-          "height": "300px",
-          "width": "200px"
+          "height": "200px",
+          "width": "180px"
         })
       .appendTo(class_name)
 
@@ -184,8 +184,8 @@ function generate_article_star_chart() {
     $("<div>")
       .attr("id", title+"_Id_"+data.id)
       .css({
-        "height": "300px",
-        "width": "200px"
+        "height": "230px",
+        "width": "848px"
       })
     .appendTo(class_name)
 

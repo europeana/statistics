@@ -16,9 +16,11 @@
         = link_to "Home", root_url, class: "white left"
         - if current_user
           %span.pull-right
-            = link_to "Raw Data", data_filzs_path, style: "color: white;"
+            = link_to "Upload Data", data_filzs_path, style: "color: white;"
             &nbsp;&nbsp;
-            = link_to "Visualizations", viz_vizs_path, style: "color: white;"
+            = link_to "Visualize", viz_vizs_path, style: "color: white;"
+            &nbsp;&nbsp;
+            = link_to "Compose", "/new", style: "color: white;"
             &nbsp;&nbsp;
             = link_to "Logout", "/logout", style: "color: white;"
       .row#header{role: "banner"}
