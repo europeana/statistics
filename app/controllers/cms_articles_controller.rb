@@ -8,6 +8,7 @@ class CmsArticlesController < ApplicationController
     @star_article = Cms::Article.where(core_tag_id: @core_tag.id, is_star: true).first
     @cms_articles = Cms::Article.where(core_tag_id: @core_tag.id, is_star: false)
     gon.cms_articles = @cms_articles
+    gon.star_article = @star_article
   end
 
   def show
