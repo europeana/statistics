@@ -29,6 +29,7 @@ var g_list_level = 0;
 
 
 this.makeHtml = function(text) {
+
 //
 // Main function. The order in which other subs are called here is
 // essential. Link and image substitutions need to happen before
@@ -612,13 +613,21 @@ var GenerateDataWrapperChartBySlug = function(slug, div_id,text) {
       
       if (data) {
         //$("<div id='"+ div_id +"' style='height:300px; width:200px;'></div>").appendTo("#preview")
+        var width = "500px";
+        var height = "500px";
+        if (gon.width) {
+        	width = gon.width;
+        }
+        if (gon.height) {
+        	height = gon.height;
+        }
 
-
+        console.log(gon)
       	$("<div>")
 	        .attr("id", div_id)
 	        .css({
-	          "height": "500px",
-	          "width": "500px"
+	          "height": height,
+	          "width": width
 	        })
         .appendTo("#preview")
 
