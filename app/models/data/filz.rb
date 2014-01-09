@@ -50,7 +50,7 @@ class Data::Filz < ActiveRecord::Base
         headings = raw_data.shift
         headings = headings.collect{|h| h.split(":").first}
         map_json = JSON.parse(viz.map).invert
-        viz.mapped_output = mapper(headings, map_json, raw_data)
+        viz.mapped_output = viz.mapper(headings, map_json, raw_data)
         viz.save
       end
     end
