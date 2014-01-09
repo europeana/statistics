@@ -55,8 +55,9 @@ class Viz::Viz < ActiveRecord::Base
   end
   
   def mapper(headings, map_json, raw_data)
-    transformed_data = []
+    transformed_data = []    
     h = {}
+    h["row-headings"] = map_json
     out = []
     raw_data.each do |row|
       if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
