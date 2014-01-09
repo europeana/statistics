@@ -23,7 +23,9 @@
           %h3
             = link_to truncate(@star_article.title, length: 30, omission: '...'), cms_article_path(file_id: @star_article.slug), style: "color: black;"
           - if !@star_article.is_published
-            %span.f11.gray (Draft)
+            %span.f11.gray (Draft)  
+            .preview-show{class: "wmd-preview preview-#{@star_article.id}", id: "preview-#{@star_article.id}" }
+
     - i = 0
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|                

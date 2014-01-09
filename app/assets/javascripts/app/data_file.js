@@ -1,8 +1,3 @@
-$(document).ready(function () {
-  $('#chart-selector').modal(options);
-});
-
-
 function handsontable_with_filter(selector, data, readonly) {
 
     $(selector).handsontable({      
