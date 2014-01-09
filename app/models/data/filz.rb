@@ -12,6 +12,7 @@ class Data::Filz < ActiveRecord::Base
 
   #ASSOCIATIONS
   belongs_to :core_oauth, class_name: "Core::Oauth", foreign_key: "core_oauth_id"
+  has_many :viz_vizs, class_name: "Viz::Viz", foreign_key: "data_filz_id"
 
   #VALIDATIONS
   validate :file_file_name, presence: true, uniqueness: true, length: {minimum: 2}
@@ -19,6 +20,7 @@ class Data::Filz < ActiveRecord::Base
 
   #CALLBACKS
   before_save :before_save_set
+  after_update :after_update_set
 
   #SCOPES
   #CUSTOM SCOPES
@@ -37,6 +39,20 @@ class Data::Filz < ActiveRecord::Base
       newa = [new_header.split(",")] + con
       con = newa
       self.content = con.to_json
+    end
+    true
+  end
+  
+  def after_update_set
+    self.viz_vizs.each do |viz|
+      if viz.map.present?     
+        raw_data = JSON.parse(self.content) 
+        headings = raw_data.shift
+        headings = headings.collect{|h| h.split(":").first}
+        map_json = JSON.parse(viz.map).invert
+        viz.mapped_output = mapper(headings, map_json, raw_data)
+        viz.save
+      end
     end
     true
   end
