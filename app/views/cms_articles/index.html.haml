@@ -24,7 +24,7 @@
             = link_to truncate(@star_article.title, length: 30, omission: '...'), cms_article_path(file_id: @star_article.slug), style: "color: black;"
           - if !@star_article.is_published
             %span.f11.gray (Draft)  
-            .preview-show{class: "wmd-preview preview-#{@star_article.id}", id: "preview-#{@star_article.id}" }
+          .preview-show{class: "wmd-preview", id: "star-article-preview" }
 
     - i = 0
     - if @cms_articles.first.present?
@@ -42,8 +42,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 = link_to "Delete", delete_cms_article_path(file_id: cms_article.slug),  confirm: 'Are you sure?'
             .preview-show{class: "wmd-preview preview-#{cms_article.id}", id: "preview-#{cms_article.id}" }
-            
-
 
 :javascript
-  generate_article_chart()
+  generate_article_star_chart()
+  //generate_article_chart()
