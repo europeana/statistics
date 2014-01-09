@@ -5,8 +5,8 @@ star.png: star-3b9a68958be79c5594fa35b1cd777d3c.png
 star/index.png: star-3b9a68958be79c5594fa35b1cd777d3c.png
 wmd-toolbar.png: wmd-toolbar-d98fb7f4c4f8a4b0ff0b1edf93daaa36.png
 wmd-toolbar/index.png: wmd-toolbar-d98fb7f4c4f8a4b0ff0b1edf93daaa36.png
-application.js: application-00bf6f6d74fab3d34033c7075af1abb3.js
-application/index.js: application-00bf6f6d74fab3d34033c7075af1abb3.js
+application.js: application-d69f2a1828d6d5de6489fc77e3b8bac8.js
+application/index.js: application-d69f2a1828d6d5de6489fc77e3b8bac8.js
 application.css: application-f525a4380337af4e920159325bae58cd.css
 application/index.css: application-f525a4380337af4e920159325bae58cd.css
 chosen-sprite.png: chosen-sprite-0b638291e3ab1e89592983b5810b9b79.png
