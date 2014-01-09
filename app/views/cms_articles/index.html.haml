@@ -43,5 +43,9 @@
                   .preview-show{class: "wmd-preview preview-#{cms_article.id}", id: "preview-#{cms_article.id}" }
 
 :javascript
-  generate_article_star_chart()
-  generate_article_chart()
+  if (gon.cms_articles.length > 0){
+      generate_article_chart()
+  }
+  if (gon.star_article !== undefined){
+      generate_article_star_chart()
+  }
