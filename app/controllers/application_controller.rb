@@ -16,8 +16,6 @@ class ApplicationController < ActionController::Base
     #set_access_control_headers madhukaudantha.blogspot.in/2011/05/access-control-allow-origin-in-rails.html
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-    gon.width = "300px"
-    gon.height = "300px"
   end
   
   def authenticate_user!

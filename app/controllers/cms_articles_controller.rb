@@ -20,9 +20,13 @@ class CmsArticlesController < ApplicationController
     @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
     @cms_article = Cms::Article.new
     @viz_vizs = Viz::Viz.all
+    gon.width = "300px"
+    gon.height = "300px"
   end
 
   def edit
+    gon.width = "300px"
+    gon.height = "300px"    
   end
   
   def star
@@ -43,6 +47,8 @@ class CmsArticlesController < ApplicationController
     else
       @viz_vizs = Viz::Viz.all
       @core_tag = Core::Tag.find(@cms_article.core_tag_id)
+      gon.width = "300px"
+      gon.height = "300px"      
       render action: "new"
     end
   end
@@ -56,6 +62,8 @@ class CmsArticlesController < ApplicationController
     if @cms_article.update_attributes(params[:cms_article])
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("u.s")
     else
+      gon.width = "300px"
+      gon.height = "300px"      
       @viz_vizs = Viz::Viz.all
       render action: "edit"
     end
