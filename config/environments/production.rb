@@ -71,10 +71,12 @@ Pykhub::Application.configure do
   BASE_URL = "europeana.herokuapp.com"
   GOOGLE_CLIENTID = ENV["GOOGLE_CLIENTID"]
   GOOGLE_SECRET = ENV["GOOGLE_SECRET"] 
+  
   AWS_ACCESS_KEY_ID = ENV["AWS_ACCESS_KEY_ID"]
   AWS_SECRET_ACCESS_KEY = ENV["AWS_SECRET_ACCESS_KEY"]
-  AWS_S3_BUCKET = ENV["AWS_S3_BUCKET"]
-  AWS_REGION = ENV["AWS_REGION"]
+  AWS_S3_BUCKET = "europeana1"
+  AWS_REGION = "eu-west-1"
+  AWS_ENDPOINT = 'https://s3-eu-west-1.amazonaws.com/'
 
   config.action_mailer.default_url_options = { :host => "europeana.herokuapp.com" }
   
