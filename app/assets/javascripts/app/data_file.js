@@ -104,21 +104,25 @@ function generate_article_chart() {
   var converter = new Showdown.converter();
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
 
-  $.each(gon.cms_articles, function(index, data) {
-    
+  $.each(gon.cms_articles, function(index, data) {    
 
     var class_name = "#preview-"+data.id;
-    var ehtml = ""
-    var title = data.description.split( "![visualization]\(" );
 
-    if (title.length > 0) {
-      title = title[1].split("\)")[0];
+    var title = "";
+    if (data.description.split( "![visualization]\(" )) {
+      title = data.description.split( "![visualization]\(" );
+      if (title.length > 1) {      
+        title = title[1].split("\)")[0];
+      }else {
+        title = "";
+      }    
     }
+
 
     if (title.length > 0) {
 
       $("<div>")
-        .attr("id", title)
+        .attr("id", title+"_Id_"+data.id)
         .css({
           "height": "300px",
           "width": "200px"
@@ -128,11 +132,10 @@ function generate_article_chart() {
       $.get("/generate/chart/"+title,function(vdata,status){
 
         if (vdata) {
-          console.log($('#'+title), class_name)
           dw.visualize({
             type: chart_types[vdata.chart_type] + "-chart", 
             theme: 'default', 
-            container: $('#'+title),
+            container: $('#'+title+"_Id_"+data.id),
             datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
           })          
         }
@@ -142,7 +145,6 @@ function generate_article_chart() {
     }
 
     if (title.length <= 0) {
-      console.log("adfsss")
       var image_checker = converter.makeHtml(data.description);
       $(class_name).html(image_checker);        
       var element_type = $(class_name+" img:first")
@@ -167,15 +169,20 @@ function generate_article_star_chart() {
 
   var data = gon.star_article;    
   var class_name = "#star-article-preview";
-  var title = data.description.split( "![visualization]\(" );
+  var title = "";
 
-  if (title.length > 0) {
-    title = title[1].split("\)")[0];
+  if (data.description.split( "![visualization]\(" )) {
+    title = data.description.split( "![visualization]\(" );
+    if (title.length > 1) {      
+      title = title[1].split("\)")[0];
+    }else {
+      title = "";
+    }    
   }
 
   if (title.length > 0) {
     $("<div>")
-      .attr("id", title)
+      .attr("id", title+"_Id_"+data.id)
       .css({
         "height": "300px",
         "width": "200px"
@@ -188,7 +195,7 @@ function generate_article_star_chart() {
         dw.visualize({
           type: chart_types[vdata.chart_type] + "-chart", 
           theme: 'default', 
-          container: $('#'+title),
+          container: $('#'+title+"_Id_"+data.id),
           datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
         })          
       }
@@ -198,7 +205,6 @@ function generate_article_star_chart() {
   }
 
   if (title.length <= 0) {
-    console.log("adfsss")
     var image_checker = converter.makeHtml(data.description);
     $(class_name).html(image_checker);        
     var element_type = $(class_name+" img:first")
