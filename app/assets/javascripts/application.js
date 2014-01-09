@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require_tree ./vendor/app/
 //= require vendor/lib/jquery.syntaxhighlighter.min
+//= require vendor/lib/bootstrap.min
 //= require vendor/lib/showdown
 //= require vendor/lib/wmd
 //= require vendor/lib/functions
