@@ -12,6 +12,8 @@ class CmsArticlesController < ApplicationController
   end
 
   def show
+    gon.width = "1000px"
+    gon.height = "500px"
   end
 
   def new
