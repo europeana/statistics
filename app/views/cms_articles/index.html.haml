@@ -1,9 +1,6 @@
 .row
-  .col-sm-10
+  .col-sm-12
     %h1 Europeana Dashboard
-  .col-sm-2
-    - if current_user.present?
-      .pull-right= link_to "Compose", "/new?tag=#{@core_tag.slug}", class: "btn btn-primary btn-xs", style: "color: white;"
 .row
   .col-sm-2    
     %br
@@ -16,7 +13,7 @@
   .col-sm-10
     %br
     - if @core_tag.description.present?
-      %p.lead= @core_tag.description
+      %p= @core_tag.description
     - if @star_article.present?
       - if @star_article.is_published or (!@star_article.is_published and current_user.present?)
         .box1_big

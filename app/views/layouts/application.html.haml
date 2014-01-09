@@ -20,7 +20,13 @@
             &nbsp;&nbsp;
             = link_to "Visualize", viz_vizs_path, style: "color: white;"
             &nbsp;&nbsp;
-            = link_to "Compose", "/new", style: "color: white;"
+            - if @core_tag.present?
+              - if @core_tag.id.present?
+                = link_to "Compose", "/new?tag=#{@core_tag.slug}", style: "color: white;"
+              - else
+                = link_to "Compose", "/new", style: "color: white;"
+            - else
+              = link_to "Compose", "/new", style: "color: white;"
             &nbsp;&nbsp;
             = link_to "Logout", "/logout", style: "color: white;"
       .row#header{role: "banner"}
