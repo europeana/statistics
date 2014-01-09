@@ -1,6 +1,7 @@
 userlist = [{"email"=> "al@pykih.com", "password" => "afzal199"},
             {"email"=> "mirko.lorenz@gmail.com", "password" => "europeana*#"}  ]
-            
+
+User.delete_all            
 userlist.each do |user|
   user_save = User.new(email: user["email"], password: user["password"])
   user_save.save!
