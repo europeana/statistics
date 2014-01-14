@@ -28,7 +28,7 @@ class Core::Tag < ActiveRecord::Base
   
   def validate_uniqueness?
     dup = Core::Tag.where(name: self.name, genre: "Pages").first
-    if (dup.present? and self.id.blank?) or (self.id.present? and dup.id != self.id)
+    if (dup.present? and self.id.blank?) or (dup.present? and self.id.present? and dup.id != self.id)
       errors.add(:name, "already taken for this genre")
     end
   end
@@ -36,6 +36,7 @@ class Core::Tag < ActiveRecord::Base
   def before_create_set
     self.genre = "Pages" if self.genre.blank?
     self.sort_order = Core::Tag.select("max(sort_order) as max").first.max.to_i + 1 if self.sort_order.blank?
+    true
   end
   
 end
