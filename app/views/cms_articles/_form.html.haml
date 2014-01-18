@@ -22,7 +22,7 @@
                 #editor
                   #toolbar.wmd-toolbar
                   - if @viz_vizs.first.present?
-                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector"} Select Chart
+                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector"} Select Chart
 
                   = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
               .col-sm-6
@@ -62,6 +62,8 @@
   - chart_type = @viz_viz.chart
 
 :javascript
+  
+  var $textBox;
   $(document).ready(function() {    
 
     if (1==2)  {
@@ -72,7 +74,6 @@
     }
     
     
-
     $("#highlightCode").click(function(){
       $.SyntaxHighlighter.init({
       'lineNumbers': false,
@@ -128,12 +129,11 @@
   }
 
   $(".selected-chart").click(function(event) {
-
     event.preventDefault();
-
     var img_url = $(this).attr("src");
-    var input = $('textarea');
-    input.val(input.val() + " ![visualization]("+ img_url + ')');
+    var input   = $('textarea');
+    var html_in = '<div class="pykih-viz" data-slug-id="'+img_url+'"></div>';        
+    insertTextAtTextareaCursor('btn-chart-selector', html_in);
     return false;
   })
 

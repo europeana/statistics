@@ -218,3 +218,70 @@ function generate_article_star_chart() {
 
 
 }
+
+
+function GenereteChartInMarkdown() {
+
+  var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
+
+  $(".pykih-viz").each(function(index) {      
+
+    console.log($(this).parent("div").attr("class"))
+    var title = $(this).attr("data-slug-id");   
+    var that  = $(this);   
+    var width = $(this).parent("div").attr("class");
+
+    $(this).addClass(width);
+    $(this).css("height","250px");
+
+    var div_id = $("#"+title).attr("id");
+    $.get("/generate/chart/"+title,function(vdata,status){
+
+      if (vdata) {
+        dw.visualize({
+          type: chart_types[vdata.chart_type] + "-chart", 
+          theme: 'default', 
+          container: that,
+          datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+        })          
+      }
+
+    });
+      
+  }); 
+
+}
+
+function insertTextAtTextareaCursor(ID,text) {    
+    var txtarea = $("#"+ID).next('textarea')[0];
+    var scrollPos = txtarea.scrollTop;
+    var strPos = 0;
+    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+    "ff" : (document.selection ? "ie" : false ) );
+    if (br == "ie") { 
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        strPos = range.text.length;
+    }
+    else if (br == "ff") strPos = txtarea.selectionStart;
+    
+    var front = (txtarea.value).substring(0,strPos); 
+    var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+    txtarea.value=front+text+back;
+    strPos = strPos + text.length;
+    if (br == "ie") { 
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        range.moveStart ('character', strPos);
+        range.moveEnd ('character', 0);
+        range.select();
+    }
+    else if (br == "ff") {
+        txtarea.selectionStart = strPos;
+        txtarea.selectionEnd = strPos;
+        txtarea.focus();
+    }
+    txtarea.scrollTop = scrollPos;
+}
