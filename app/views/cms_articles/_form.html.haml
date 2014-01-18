@@ -22,7 +22,9 @@
                 #editor
                   #toolbar.wmd-toolbar
                   - if @viz_vizs.first.present?
-                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector"} Select Chart
+                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector"} Select Chart
+
+                  %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector"} Select Layout
 
                   = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
               .col-sm-6
@@ -56,12 +58,41 @@
                 %td                
                   = viz.chart
   
+#layout-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        %a{class: "layout-chart", src: "1x1"}1X1  
+        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+          %tr
+            %td
+              1 Layer
+
+        %a{class: "layout-chart", src: "1x2"}1X2
+        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+          %tr
+            %td
+              1 Layer
+            %td
+              2 Layer
+
+        %a{class: "layout-chart", src: "1x3"}1X3
+        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+          %tr
+            %td
+              1 Layer
+            %td
+              2 Layer
+            %td
+              3 Layer
 
 - chart_type = ""
 - if @viz_viz.present?
   - chart_type = @viz_viz.chart
 
 :javascript
+  
+  var $textBox;
   $(document).ready(function() {    
 
     if (1==2)  {
@@ -72,7 +103,6 @@
     }
     
     
-
     $("#highlightCode").click(function(){
       $.SyntaxHighlighter.init({
       'lineNumbers': false,
@@ -128,14 +158,27 @@
   }
 
   $(".selected-chart").click(function(event) {
-
     event.preventDefault();
-
     var img_url = $(this).attr("src");
-    var input = $('textarea');
-    input.val(input.val() + " ![visualization]("+ img_url + ')');
+    var input   = $('textarea');
+    var html_in = '<div class="pykih-viz" data-slug-id="'+img_url+'"></div>';        
+    var id = $("#btn-chart-selector").next().next('textarea')[0]
+    insertTextAtTextareaCursor(id, html_in);
     return false;
-  })
+  });
+
+  $(".layout-chart").click(function(event) {
+    event.preventDefault();
+    var img_url = $(this).attr("src");
+    var input   = $('textarea');        
+    
+    var id = $("#btn-layout-selector").next('textarea')[0]
+
+    var html_in = get_html_template(img_url,"");
+    insertTextAtTextareaCursor(id, html_in);
+    return false;
+  });
+
 
 
   

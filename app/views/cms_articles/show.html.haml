@@ -20,4 +20,5 @@
   $(document).ready(function() {
     $("#editor > #input").hide();
     new WMD("input", "toolbar", { preview: "preview" });
+    setTimeout(function(){GenereteChartInMarkdown();},5000);
   });

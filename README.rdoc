@@ -12,3 +12,23 @@ Journalism++ (see http://datawrapper.de/ and https://github.com/datawrapper/data
 ### Contributors
 
 * [pykih](http://www.pykih.com)
+
+// Ga Dimensions
+1. UI Language 
+2. Visits across months  
+3. Location 
+4. Device Breakdown  
+5. Device Brand Breakdown
+6. Traffic Sources 
+7. Browser 
+8. os
+9. ga:mobileDeviceModel
+10. ga:mobileInputSelector
+
+
+Note:
+Maximum Dimension 7 in one query
+
+//Query
+
+

@@ -9,29 +9,43 @@ class Jobs::Ga
       core_oauth = Core::Oauth.find(oauth_id)
       core_oauth.reauthenticate? #get the token
 
-      qry = "&metrics=ga:visitors,ga:newVisits,ga:visits,ga:bounces,ga:avgTimeOnSite,ga:pageviewsPerVisit,ga:pageviews,ga:avgTimeOnPage,ga:exits&dimensions=ga:date,ga:country,ga:sourceMedium,ga:keyword,ga:deviceCategory,ga:pagePath,ga:landingPagePath"
-      api_output = core_oauth.ga(qry, start_date, end_date) #calling the API
-      
-      puts "processing"
-      final_output = Core::Services.array_of_array_to_handsontable(api_output) #transforming the data
-      
-      #add more calculated data points
-      final_output.each do |j|
-        j << j[0][0..3]
-        j << j[0][4..5]
-        j << j[0][6..7]
-        j[0] = "#{j[0][0..3]}-#{j[0][4..5]}-#{j[0][6..7]}"
-        j << j[2].split("/")[0].blank? ? nil : j[2].split("/")[0].strip
-        j << j[2].split("/")[1].blank? ? nil : j[2].split("/")[1].strip
+      common_metrics = "&metrics=ga:visitors,ga:newVisits,ga:visits,ga:bounces,ga:avgTimeOnSite,ga:pageviewsPerVisit,ga:pageviews,ga:avgTimeOnPage,ga:exits"
+      v_page_metrics = common_metrics + ".ga:pageviews,ga:timeOnPage"
+      qry_list = [[common_metrics+"&dimensions=ga:country"],
+                  [common_metrics+"&dimensions=ga:city,ga:country"],
+                  [common_metrics+"&dimensions=ga:browser"],
+                  [common_metrics+"&dimensions=ga:mobileDeviceBranding"],
+                  [common_metrics+"&dimensions=ga:keyword"],
+                  [v_page_metrics+"&dimensions=ga:pagePath"],
+                  [common_metrics+"&dimensions=ga:source"],
+                  [common_metrics+"&dimensions=ga:socialNetwork"]
+                  ]
+
+      qry_list.each do |qry|        
+       # qry = "&metrics=ga:visitors,ga:newVisits,ga:visits,ga:bounces,ga:avgTimeOnSite,ga:pageviewsPerVisit,ga:pageviews,ga:avgTimeOnPage,ga:exits&dimensions=ga:date,ga:country,ga:sourceMedium,ga:keyword,ga:deviceCategory,ga:pagePath,ga:landingPagePath"
+        api_output = core_oauth.ga(qry, start_date, end_date) #calling the API
+        
+        puts "processing"
+        final_output = Core::Services.array_of_array_to_handsontable(api_output) #transforming the data
+        
+        #add more calculated data points
+        final_output.each do |j|
+          j << j[0][0..3]
+          j << j[0][4..5]
+          j << j[0][6..7]
+          j[0] = "#{j[0][0..3]}-#{j[0][4..5]}-#{j[0][6..7]}"
+          j << j[2].split("/")[0].blank? ? nil : j[2].split("/")[0].strip
+          j << j[2].split("/")[1].blank? ? nil : j[2].split("/")[1].strip
+        end
+        
+        data_filz = core_oauth.data_filz
+        
+        o = []
+        o << Core::Oauth::HEADER_ROW.split(",") if data_filz.content.blank?
+        o = o + final_output
+        
+        data_filz.update_attributes(:content => o)
       end
-      
-      data_filz = core_oauth.data_filz
-      
-      o = []
-      o << Core::Oauth::HEADER_ROW.split(",") if data_filz.content.blank?
-      o = o + final_output
-      
-      data_filz.update_attributes(:content => o)
     rescue Exception => ex
       puts "fail"
       puts ex.message
