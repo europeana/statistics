@@ -253,7 +253,7 @@ function GenereteChartInMarkdown() {
 }
 
 function insertTextAtTextareaCursor(ID,text) {    
-    var txtarea = $("#"+ID).next('textarea')[0];
+    var txtarea = ID;
     var scrollPos = txtarea.scrollTop;
     var strPos = 0;
     var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 

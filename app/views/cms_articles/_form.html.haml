@@ -162,17 +162,20 @@
     var img_url = $(this).attr("src");
     var input   = $('textarea');
     var html_in = '<div class="pykih-viz" data-slug-id="'+img_url+'"></div>';        
-    insertTextAtTextareaCursor('btn-chart-selector', html_in);
+    var id = $("#btn-chart-selector").next().next('textarea')[0]
+    insertTextAtTextareaCursor(id, html_in);
     return false;
   });
 
   $(".layout-chart").click(function(event) {
     event.preventDefault();
     var img_url = $(this).attr("src");
-    var input   = $('textarea');    
+    var input   = $('textarea');        
+    
+    var id = $("#btn-layout-selector").next('textarea')[0]
 
     var html_in = get_html_template(img_url,"");
-    insertTextAtTextareaCursor('btn-layout-selector', html_in);
+    insertTextAtTextareaCursor(id, html_in);
     return false;
   });
 
