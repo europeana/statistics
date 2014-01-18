@@ -231,7 +231,7 @@ function GenereteChartInMarkdown() {
     var that  = $(this);   
     var width = $(this).parent("div").attr("class");
 
-    $(this).addClass(width);
+    $(this).addClass("col-sm-12");
     $(this).css("height","250px");
 
     var div_id = $("#"+title).attr("id");
@@ -284,4 +284,22 @@ function insertTextAtTextareaCursor(ID,text) {
         txtarea.focus();
     }
     txtarea.scrollTop = scrollPos;
+}
+
+function get_html_template(layout_type,style) {
+
+  var algorithm = parseInt(layout_type.split("x")[1]);
+  var html_tag  = "<div class='row'>";
+
+  var class_name = "col-sm-12";
+  if (algorithm >= 2) {
+    class_name = "col-sm-"+(12/algorithm);
+  }
+  console.log(algorithm > 1,algorithm < 1, algorithm)
+  
+  for (var i=1; i <= algorithm; i++) {     
+    html_tag = html_tag + "<div class='"+class_name+"'></div>";
+  }
+
+  return html_tag = html_tag + "</div>";
 }
