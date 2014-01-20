@@ -3,10 +3,22 @@ class CmsArticlesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :index]
   before_filter :find_objects
 
-  def index
-    @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
-    @cms_articles = Cms::Article.where(core_tag_id: @core_tag.id)
-    gon.cms_articles = @cms_articles
+  def index    
+    @core_tags = Cms::Article.select(:tag).order(:tag).uniq
+    @default_tag_name = ""
+    if params[:tag].present?
+      if params[:tag].nil? || params[:tag].blank? || params[:tag] == "All-Empty-Tags"
+        @default_tag_name = "All-Empty-Tags"
+        @cms_article = Cms::Article.where(tag: nil).first
+      else
+        @default_tag_name = params[:tag]
+        @cms_article = Cms::Article.where(tag: params[:tag]).first
+      end
+    else
+      @cms_article = Cms::Article.where(home_page: true).first
+      @default_tag_name = @cms_article.pluck(:tag)[0]      
+    end
+    gon.cms_article = @cms_article
   end
 
   def show
@@ -15,7 +27,6 @@ class CmsArticlesController < ApplicationController
   end
 
   def new
-    @core_tag = params[:tag].blank? ? Core::Tag.where(name: "Overview").first : Core::Tag.find(params[:tag])
     @cms_article = Cms::Article.new
     @viz_vizs = Viz::Viz.all
     gon.width = "300px"
@@ -38,7 +49,7 @@ class CmsArticlesController < ApplicationController
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
       @viz_vizs = Viz::Viz.all
-      @core_tag = Core::Tag.find(@cms_article.core_tag_id)
+      gon.errors = @cms_article.errors
       gon.width = "300px"
       gon.height = "300px"      
       render action: "new"
@@ -71,8 +82,7 @@ class CmsArticlesController < ApplicationController
   def find_objects
     if params[:file_id].present? 
       @cms_article = Cms::Article.find(params[:file_id])
-    end
-    @core_tags = Core::Tag.order(:sort_order)
+    end    
     @viz_vizs = Viz::Viz.all
   end
     

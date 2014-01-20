@@ -22,14 +22,7 @@ Pykhub::Application.routes.draw do
   get "/data/:file_id/delete", to: "data_filzs#destroy", as: "delete_data_filz"
   get "/data/:file_id/raw", to: "data_filzs#raw", as: "raw_data_filz"
   get "/data/:file_id", to: "data_filzs#show", as: "data_filz"
-  
-  #tags
-  get "/tags", to: "core_tags#index", as: "core_tags"
-  post "/tags/create", to: "core_tags#create", as: "create_core_tags"
-  get "/tags/:tag_id/edit", to: "core_tags#edit", as: "edit_core_tag"
-  put "/tags/:tag_id/update", to: "core_tags#update", as: "update_core_tag"
-  get "/tags/:tag_id/delete", to: "core_tags#destroy", as: "delete_core_tag"
-  
+    
   #images
   post "/images/create", to: "cms_images#create", as: "create_cms_images"
   

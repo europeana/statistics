@@ -6,14 +6,12 @@ class Cms::Article < ActiveRecord::Base
   friendly_id :title, use: [:slugged]
   
   #ACCESSORS
-  attr_accessible :description, :is_published, :published_at, :title, :core_tag_id
+  attr_accessible :description, :is_published, :published_at, :title, :tag, :home_page
   
   #ASSOCIATIONS
-  belongs_to :core_tag, class_name: "Core::Tag", foreign_key: :core_tag_id
-  
   #VALIDATIONS
-  validates :title, uniqueness: true, length: {minimum: 2}, :presence => true
-  validates :core_tag_id, presence: true
+  validates :title, uniqueness: true, length: {minimum: 2}, presence: true
+  validates :tag, uniqueness: true, length: {minimum: 2}, presence: true
 
   #CALLBACKS
   before_create :before_create_set
@@ -31,6 +29,14 @@ class Cms::Article < ActiveRecord::Base
     if self.is_published_changed?
       if self.is_published
         self.published_at = Date.today
+      end
+    end
+
+    if self.home_page
+      if self.id.nil?
+        Cms::Article.update_all(home_page: false)      
+      else
+        Cms::Article.where("id != #{self.id}").update_all(home_page: false)
       end
     end
     true

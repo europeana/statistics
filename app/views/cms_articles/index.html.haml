@@ -6,26 +6,27 @@
     %br
     %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}
       %ul.pages
-        - @core_tags.each do |tag|
-          %li{class: (@core_tag.id == tag.id  ? "active": nil)}= link_to tag.name, root_url(tag: tag.slug)
-        - if current_user.present?
-          %li= link_to "Configure Tags", core_tags_path, class: "f12", style: "color: #2a85e8;"
-  .col-sm-10
-    %br
-    - if @cms_articles.first.present?
-      - @cms_articles.each do |cms_article|                
-        - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
-          .col-sm-4.col-md-4
-            .thumbnail{style: "height: 300px;"}
-              .caption
-                %h5{style: "font-weight: 800;"}
-                  = link_to truncate(cms_article.title, length: 30, omission: '...'), cms_article_path(file_id: cms_article.slug), style: "color: black;"                
-                %p
-                  - if !cms_article.is_published
-                    .f11.gray (Draft)
-                  .preview-show{class: "wmd-preview preview-#{cms_article.id}", id: "preview-#{cms_article.id}" }
+        - if !@core_tags.empty?
+          - @core_tags.each do |tag|
 
+            - if tag.tag.nil? || tag.tag.blank?
+              -tag.tag = "All-Empty-Tags"
+
+            %li{class: (@default_tag_name == tag.tag  ? "active": nil)}= link_to tag.tag, "?tag=#{tag.tag}"
+  .col-sm-10
+    %h1
+      = @cms_article.title
+      - if current_user.present?
+        %span.pull-right.f11
+          = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn btn-default btn-xs"
+          = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn btn-danger btn-xs"
+    %hr
+    #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
+    #preview.wmd-preview
+          
 :javascript
-  if (gon.cms_articles.length > 0){
-      generate_article_chart()
-  }
+  $(document).ready(function() {
+    $("#editor > #input").hide();
+    new WMD("input", "toolbar", { preview: "preview" });
+    setTimeout(function(){GenereteChartInMarkdown();},5000);
+  });

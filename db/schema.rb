@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140108111017) do
+ActiveRecord::Schema.define(:version => 20140120112026) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(:version => 20140108111017) do
     t.string   "slug"
     t.integer  "core_tag_id"
     t.boolean  "is_star"
+    t.string   "tag"
+    t.boolean  "home_page"
   end
 
   add_index "cms_articles", ["slug"], :name => "index_cms_articles_on_slug"

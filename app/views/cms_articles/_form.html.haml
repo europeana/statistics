@@ -12,9 +12,9 @@
         %li.active New Article
       
     .panel.panel-default
-      = form_for(@cms_article, url: url, html: {role: "form"}) do |f|
+      = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
         .panel-heading{style: "background: #F2F2F2;"}
-          .form-group= f.text_field :title, class: "form-control", placeholder: "File Name", autofocus: true 
+          .form-group= f.input :title, autofocus: true
         .panel-content{style: "padding: 10px;"}
           .form-group
             .row  
@@ -34,11 +34,10 @@
                   .f11.gray Live preview
           .form-group
             %b Page:
-            &nbsp;&nbsp;
-            - if @core_tag.present?
-              = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]}, @core_tag.id)
-            - else
-              = f.select :core_tag_id, options_for_select(@core_tags.map{|z| [z.name, z.id]})
+            = f.input :tag
+            %br
+            %b Make Default page:
+            = f.check_box :home_page, class: "form-control"
           .form-group 
             - if !@cms_article.is_published
               = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
@@ -163,7 +162,7 @@
     var html_in = '<div class="pykih-viz" data-slug-id="'+img_url+'" id="'+ img_url +'"></div>';
     var id = $("#btn-chart-selector").next().next('textarea')[0]    
     insertTextAtTextareaCursor(id, html_in);
-    setTimeout(function(){GenereteChartInMarkdown();},5000);
+    setTimeout(function(){$("svg").remove(); GenereteChartInMarkdown();},5000);
     
   });
 
