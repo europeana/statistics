@@ -11,6 +11,7 @@ Pykhub::Application.routes.draw do
   get "/:file_id/edit", to: "cms_articles#edit", as: "edit_cms_article"
   put "/:file_id/update", to: "cms_articles#update", as: "update_cms_article"
   get "/:file_id/delete", to: "cms_articles#destroy", as: "delete_cms_article"
+  post "/sort/tags", to: "cms_articles#sort", as: "sort_tags"
   
   #files
   get "/data", to: "data_filzs#index", as: "data_filzs"

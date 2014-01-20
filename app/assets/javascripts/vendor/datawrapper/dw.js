@@ -393,8 +393,8 @@ dw.column.types.number = function(sample) {
             ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
             ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/,
             // excel sometimes produces a strange white-space:
-            ' .': /^ *-?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)? *$/,
-            ' ,': /^ *-?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)? *$/
+            'Â .': /^ *-?[0-9]{1,3}(Â [0-9]{3})*(\.[0-9]+)? *$/,
+            'Â ,': /^ *-?[0-9]{1,3}(Â [0-9]{3})*(,[0-9]+)? *$/
         },
         formatLabels = {
             '-.': '1234.56',
@@ -404,8 +404,8 @@ dw.column.types.number = function(sample) {
             ' .': '1 234.56',
             ' ,': '1 234,56',
             // excel sometimes produces a strange white-space:
-            ' .': '1 234.56',
-            ' ,': '1 234,56'
+            'Â .': '1 234.56',
+            'Â ,': '1 234,56'
         },
         // a list of strings that are recognized as 'not available'
         naStrings = {
@@ -1135,6 +1135,7 @@ dw.utils = {
         ch += bottom;
         // subtract body padding
         //ch += $('body').innerHeight() - $('body').height();
+        console.log(el,"this is almost id")
         var mt = $('#chart').css('margin-top').replace('px', ''),
             mb = $('#chart').css('margin-bottom').replace('px', ''),
             // FIXME: -8 instead of -2 because when `introduction` is filled, a scrollbar appears.
@@ -1249,7 +1250,7 @@ dw.utils = {
         switch (locale.substr(0, 2).toLowerCase()) {
             case 'de': return { 3: ' Tsd.', 6: ' Mio.', 9: ' Mrd.', 12: ' Bio.' };
             case 'fr': return { 3: ' mil', 6: ' Mio', 9: ' Mrd' };
-            case 'es': return { 3: ' Mil', 6: ' millón' };
+            case 'es': return { 3: ' Mil', 6: ' millÃ³n' };
             default: return { 3: 'k', 6: 'M', 9: ' bil' };
         }
     },
@@ -1404,7 +1405,7 @@ dw.utils.filter = function (column, active, type, format) {
             });
 
             // a pointer symbol to highlight the current date
-            var pointer = $('<div>▲</div>').css({
+            var pointer = $('<div>â–²</div>').css({
                 position: 'absolute',
                 width: 20,
                 bottom: 2,
@@ -1672,7 +1673,7 @@ dw.chart = function(attributes) {
                 .parent()
                 .addClass('vis-'+visualization.id)
                 .addClass('theme-'+theme.id);
-            visualization.render($cont);
+            visualization.render($cont, dataset, visualization.axes(true), theme, chart);
         },
 
         attributes: function(attrs) {
@@ -1703,7 +1704,7 @@ dw.chart = function(attributes) {
 
                 colFormat = {
                     'number-divisor': div,
-                    'number-append': div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '',
+                    'number-append': div ? mtrSuf[div] || ' Ã— 10<sup>'+div+'</sup>' : '',
                     'number-format': 'n'+Math.max(0, ndim)
                 };
             }
@@ -1845,7 +1846,8 @@ _.extend(dw.visualization.base, {
     },
 
     translate: function(str) {
-        var locale = this.meta.locale, lang = this.lang;
+        var locale = this.meta.locale || {},
+            lang = this.lang;
         return locale[str] ? locale[str][lang] || locale[str] : str;
     },
 
@@ -1976,9 +1978,10 @@ _.extend(dw.visualization.base, {
 
     keys: function() {
         var me = this,
-            axesDef = me.axes();
-        if (axesDef.labels) {
-            var lblCol = me.dataset.column(axesDef.labels),
+            axesDef = me.axes(),
+            highlightKey = me.meta['highlight-key'] || 'labels';
+        if (axesDef[highlightKey]) {
+            var lblCol = me.dataset.column(axesDef[highlightKey]),
                 fmt = me.chart().columnFormatter(lblCol),
                 keys = [];
             lblCol.each(function(val) {

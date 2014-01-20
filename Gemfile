@@ -14,6 +14,8 @@ gem 'tinymce-rails'
 gem "fog"
 gem 'unf' #brother of fog
 gem 'gon'
+gem 'acts_as_list'
+gem 'jquery-ui-rails'
 
 # User Interface
 group :assets do
@@ -21,6 +23,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
+  
 end
 gem 'haml'
 gem "bcrypt-ruby", :require => "bcrypt"

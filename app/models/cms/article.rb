@@ -1,12 +1,13 @@
 class Cms::Article < ActiveRecord::Base
   
   #GEMS USED
+  acts_as_list
   self.table_name = :cms_articles
   extend FriendlyId
   friendly_id :title, use: [:slugged]
   
   #ACCESSORS
-  attr_accessible :description, :is_published, :published_at, :title, :tag, :home_page
+  attr_accessible :description, :is_published, :published_at, :title, :tag, :home_page, :position
   
   #ASSOCIATIONS
   #VALIDATIONS

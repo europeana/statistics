@@ -30,7 +30,6 @@
                     .theme(dw.theme(opts.theme))
                     .vis(vis);
 
-                console.log(opts, opts.container,"skfsklsjklsfj")    
                 vis.size(opts.container.width(), opts.container.height())
                    .__init()
                    .render(opts.container);

@@ -4,7 +4,7 @@ class CmsArticlesController < ApplicationController
   before_filter :find_objects
 
   def index    
-    @core_tags = Cms::Article.select(:tag).order(:tag).uniq
+    @core_tags = Cms::Article.select('tag,position').order(:position).pluck(:tag).uniq
     @default_tag_name = ""
     if params[:tag].present?
       if params[:tag].nil? || params[:tag].blank? || params[:tag] == "All-Empty-Tags"
@@ -76,6 +76,14 @@ class CmsArticlesController < ApplicationController
     @cms_article.destroy
     redirect_to root_url
   end
+
+  def sort    
+    params[:sort].each_with_index do |id, index|      
+      positionx = index+1
+      Cms::Article.where(tag: id).update_all(position: positionx)
+    end
+    render nothing: true
+  end  
   
   private
   

@@ -15,5 +15,10 @@ ul.pages{
     li.active{
         background-color: #D3D3D3;
     }
-    
 }
+
+#sort-tags .handle {
+  font-size: 12px;
+  color: #777;
+  cursor: move;
+}        
