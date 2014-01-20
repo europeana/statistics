@@ -158,65 +158,6 @@ function generate_article_chart() {
 
 }
 
-
-function generate_article_star_chart() {
-
-  $(".wmd-input").hide();
-  var converter = new Showdown.converter();
-  var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
-
-  var data = gon.star_article;    
-  var class_name = "#star-article-preview";
-  var title = "";
-
-  if (data.description.split( "![visualization]\(" )) {
-    title = data.description.split( "![visualization]\(" );
-    if (title.length > 1) {      
-      title = title[1].split("\)")[0];
-    }else {
-      title = "";
-    }    
-  }
-
-  if (title.length > 0) {
-    $("<div>")
-      .attr("id", title+"_Id_"+data.id)
-      .css({
-        "height": "230px",
-        "width": "848px"
-      })
-    .appendTo(class_name)
-
-    $.get("/generate/chart/"+title,function(vdata,status){
-
-      if (vdata) {
-        dw.visualize({
-          type: chart_types[vdata.chart_type] + "-chart", 
-          theme: 'default', 
-          container: $('#'+title+"_Id_"+data.id),
-          datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
-        })          
-      }
-
-    });
-
-  }
-
-  if (title.length <= 0) {
-    var image_checker = converter.makeHtml(data.description);
-    $(class_name).html(image_checker);        
-    var element_type = $(class_name+" img:first")
-
-    if (element_type.length <= 0) {
-      element_type = image_checker;
-    }
-
-    $(class_name).html(element_type);
-  }
-
-
-}
-
 function GenereteChartInMarkdown() {
 
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
@@ -228,7 +169,8 @@ function GenereteChartInMarkdown() {
     var width = $(this).parent("div").attr("class");
 
     $(this).addClass("col-sm-12");
-    $(this).css("height","250px");
+    $(this).css("height","250px").css("margin", "50px,0,50px,0");
+
 
     var div_id = $("#"+title).attr("id");
     $.get("/generate/chart/"+title,function(vdata,status){

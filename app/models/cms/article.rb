@@ -6,7 +6,7 @@ class Cms::Article < ActiveRecord::Base
   friendly_id :title, use: [:slugged]
   
   #ACCESSORS
-  attr_accessible :description, :is_published, :published_at, :title, :core_tag_id, :is_star
+  attr_accessible :description, :is_published, :published_at, :title, :core_tag_id
   
   #ASSOCIATIONS
   belongs_to :core_tag, class_name: "Core::Tag", foreign_key: :core_tag_id
@@ -38,7 +38,6 @@ class Cms::Article < ActiveRecord::Base
   
   def before_create_set
     self.is_published = false if self.is_published.blank?
-    self.is_star = false
     true
   end
     

@@ -9,7 +9,6 @@ Pykhub::Application.routes.draw do
   get "/new", to: "cms_articles#new", as: "new_cms_articles"
   post "/create", to: "cms_articles#create", as: "create_cms_articles"
   get "/:file_id/edit", to: "cms_articles#edit", as: "edit_cms_article"
-  get "/:file_id/star", to: "cms_articles#star", as: "star_cms_article"
   put "/:file_id/update", to: "cms_articles#update", as: "update_cms_article"
   get "/:file_id/delete", to: "cms_articles#destroy", as: "delete_cms_article"
   

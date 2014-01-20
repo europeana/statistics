@@ -12,18 +12,6 @@
           %li= link_to "Configure Tags", core_tags_path, class: "f12", style: "color: #2a85e8;"
   .col-sm-10
     %br
-    - if @core_tag.description.present?
-      %p= @core_tag.description
-    - if @star_article.present?
-      - if @star_article.is_published or (!@star_article.is_published and current_user.present?)
-        .box1_big
-          %h5{style: "font-weight: 800;"}
-            = link_to truncate(@star_article.title, length: 30, omission: '...'), cms_article_path(file_id: @star_article.slug), style: "color: black;"
-          - if !@star_article.is_published
-            %span.f11.gray (Draft)  
-          %br
-          .preview-show{class: "wmd-preview", id: "star-article-preview" }
-
     - if @cms_articles.first.present?
       - @cms_articles.each do |cms_article|                
         - if cms_article.is_published or (!cms_article.is_published and current_user.present?)
@@ -31,8 +19,6 @@
             .thumbnail{style: "height: 300px;"}
               .caption
                 %h5{style: "font-weight: 800;"}
-                  - if current_user.present?
-                    = link_to image_tag("star.png"), star_cms_article_path(file_id: cms_article.slug)
                   = link_to truncate(cms_article.title, length: 30, omission: '...'), cms_article_path(file_id: cms_article.slug), style: "color: black;"                
                 %p
                   - if !cms_article.is_published
@@ -42,7 +28,4 @@
 :javascript
   if (gon.cms_articles.length > 0){
       generate_article_chart()
-  }
-  if (gon.star_article !== undefined){
-      generate_article_star_chart()
   }
