@@ -16,7 +16,7 @@ class CmsArticlesController < ApplicationController
       end
     else
       @cms_article = Cms::Article.where(home_page: true).first
-      @default_tag_name = @cms_article.pluck(:tag)[0]      
+      @default_tag_name = @cms_article.tag
     end
     gon.cms_article = @cms_article
   end

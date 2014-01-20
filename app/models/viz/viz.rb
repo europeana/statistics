@@ -14,7 +14,7 @@ class Viz::Viz < ActiveRecord::Base
   #LINE - at least 2 columns
   
   #CONSTANTS
-  CHARTS = [ ["Column Chart"], ["Grouped Column Chart"], ["Line Chart"]]
+  CHARTS = [ ["Pie Chart"],["Column Chart"], ["Grouped Column Chart"], ["Line Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
