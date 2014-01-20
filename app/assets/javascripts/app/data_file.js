@@ -68,8 +68,6 @@ function handsontable_with_filter(selector, data, readonly) {
     return str;
   }
 
-  //console.log(ConvertToCSV(data));
-
 }
 
 function remove_null_rows(selector) {
@@ -219,14 +217,12 @@ function generate_article_star_chart() {
 
 }
 
-
 function GenereteChartInMarkdown() {
 
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
 
   $(".pykih-viz").each(function(index) {      
 
-    console.log($(this).parent("div").attr("class"))
     var title = $(this).attr("data-slug-id");   
     var that  = $(this);   
     var width = $(this).parent("div").attr("class");
@@ -295,11 +291,45 @@ function get_html_template(layout_type,style) {
   if (algorithm >= 2) {
     class_name = "col-sm-"+(12/algorithm);
   }
-  console.log(algorithm > 1,algorithm < 1, algorithm)
   
   for (var i=1; i <= algorithm; i++) {     
     html_tag = html_tag + "<div class='"+class_name+"'></div>";
   }
 
   return html_tag = html_tag + "</div>";
+}
+
+function randomString() {
+  var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+  var string_length = 5;
+  var randomstring = '';
+  for (var i=0; i<string_length; i++) {
+    var rnum = Math.floor(Math.random() * chars.length);
+    randomstring += chars.substring(rnum,rnum+1);
+  }
+  return randomstring;
+}
+
+function GenereteDataWrapperChart(options) {
+
+  var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
+
+  var title = options.title;   
+  console.log(options.selector)
+  $("#"+options.id).addClass("col-sm-12");
+  $("#"+options.id).css("height","250px");
+
+  $.get("/generate/chart/"+title,function(vdata,status){
+
+    if (vdata) {      
+      dw.visualize({
+        type: chart_types[vdata.chart_type] + "-chart", 
+        theme: 'default', 
+        container: options.selector,
+        datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+      })          
+    }
+
+  });      
+
 }
