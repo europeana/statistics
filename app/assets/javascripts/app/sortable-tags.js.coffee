@@ -7,7 +7,6 @@ jQuery ->
       $(this).children().each ->
         id = $(this).attr("id")
         neworder.push(id)
-      alert neworder    
       $.ajax
         url: "sort/tags"
         type: "POST"

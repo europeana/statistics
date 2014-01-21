@@ -14,34 +14,33 @@
     .panel.panel-default
       = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
         .panel-heading{style: "background: #F2F2F2;"}
-          .form-group= f.input :title, autofocus: true
+          = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
         .panel-content{style: "padding: 10px;"}
-          .form-group
-            .row  
-              .col-sm-6   
-                #editor
-                  #toolbar.wmd-toolbar
-                  - if @viz_vizs.first.present?
-                    %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector"} Select Chart
-
-                  %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector"} Select Layout
-
-                  = f.text_area :description, id: "input", cols:"65", rows:"20",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
-              .col-sm-6
-                %br
-                %br
-                #preview.wmd-preview{:style => "height: 420px; overflow:auto"}  
-                  .f11.gray Live preview
-          .form-group
-            %b Page:
-            = f.input :tag
-            %br
-            %b Make Default page:
-            = f.check_box :home_page, class: "form-control"
-          .form-group 
-            - if !@cms_article.is_published
-              = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
-            = f.submit "Publish", class: "btn btn-success", id: "submit"
+          .row  
+            .col-sm-6   
+              #editor
+                #toolbar.wmd-toolbar
+                - if @viz_vizs.first.present?
+                  %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Chart
+                %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Layout
+                = f.text_area :description, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+            .col-sm-6
+              %br
+              %br
+              #preview.wmd-preview{:style => "height: 525px; overflow:auto; background: #F2F2F2;"}  
+                .f11.gray Live preview
+          .row{style: "margin-top: 10px;"}
+            .col-sm-6= f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
+            .col-sm-6{style: "margin-top: 5px;"}
+              %span= f.check_box :home_page
+              %span Make Default page
+          .row{style: "margin-top: 10px;"}
+            .col-sm-12
+              - if !@cms_article.is_published
+                = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
+              = f.submit "Publish", class: "btn btn-success", id: "submit"
+            
+          
 
 - if @viz_vizs.first.present?
   #chart-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
@@ -61,29 +60,21 @@
   .modal-dialog
     .modal-content
       .modal-body
-        %a{class: "layout-chart", src: "1x1"}1X1  
-        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
-          %tr
-            %td
-              1 Layer
-
-        %a{class: "layout-chart", src: "1x2"}1X2
-        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
-          %tr
-            %td
-              1 Layer
-            %td
-              2 Layer
-
-        %a{class: "layout-chart", src: "1x3"}1X3
-        %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
-          %tr
-            %td
-              1 Layer
-            %td
-              2 Layer
-            %td
-              3 Layer
+        %a{class: "layout-chart", src: "1x1", style: "color: white;"}
+          %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+            %tr
+              %td One Box with 100% width
+        %a{class: "layout-chart", src: "1x2", style: "color: white;"}
+          %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+            %tr
+              %td Box one with 50% width
+              %td Box two with 50% width
+        %a{class: "layout-chart", src: "1x3", style: "color: white;"}
+          %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+            %tr
+              %td Box one with 33% width
+              %td Box two with 33% width
+              %td Box three with 33% width
 
 - chart_type = ""
 - if @viz_viz.present?
