@@ -19,10 +19,11 @@
           .row  
             .col-sm-6   
               #editor
-                %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Layout
-                #toolbar.wmd-toolbar
+                #toolbar.wmd-toolbar.pull-right                
                 - if @viz_vizs.first.present?
                   %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Chart
+                %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector",class: "btn btn-xs btn-default pull-left", style: "margin-top: 5px;"} Add Layout
+
                 = f.text_area :description, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
             .col-sm-6
               %br
@@ -160,8 +161,7 @@
   $(".layout-chart").click(function(event) {
     event.preventDefault();
     var img_url = $(this).attr("src");
-    var input   = $('textarea');        
-    
+    var input   = $('textarea');            
     var id = $("#btn-layout-selector").next('textarea')[0]
     var html_in = get_html_template(img_url,"");
     insertTextAtTextareaCursor(id, html_in);
