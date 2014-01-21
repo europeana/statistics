@@ -10,8 +10,8 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
     %title Europeana Statistics Dashboard
-  %body{style: "background: white;"}
-    .container{style: "background: white;"}
+  %body.sg-pattern-list
+    .sg-main{:role => "main", style: "margin-left:50px;margin-right:50px;"}
       %header.header.cf{role: "banner"}
         = link_to "Europeana", root_url, class: "lc logo ir"
         %nav#nav.nav
@@ -21,10 +21,9 @@
             %li= link_to "Visualize", viz_vizs_path, class: controller_name == "viz_vizs" ? "current" : nil
             %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
             %li= link_to "Logout", "/logout"
-      
-      .grid
-        .col-sm-12
-          = image_tag "banner.png"
+
+      .grid.grid--full
+        = image_tag "banner.png", style: "width:100%;"
       .grid
         .col-sm-12
           %br

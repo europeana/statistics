@@ -1,19 +1,22 @@
-.grid
-  .col-sm-2    
-    %br
-    %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}= render partial: "cms_articles/sidebar"
-  .col-sm-10
+.row
+  .col-sm-3
+    = render partial: "cms_articles/sidebar"
+
+  .col-sm-9
     - if @cms_other_articles.first.present?
-      %table.bordered
-        %tr
-          %th Title
-          %th Last Updated
-        - @cms_other_articles.each do |cms_articlez|
-          %tr
-            %td= link_to cms_articlez.title, "/#{cms_articlez.slug}"
-            %td.col-sm-2
-              %time= "#{time_ago_in_words(cms_articlez.updated_at)} ago"
-          
+      .sg-pattern-body
+        %table.table-bordered
+          %thead
+            %tr
+              %th Title
+              %th Last Updated
+          %tbody    
+          - @cms_other_articles.each do |cms_articlez|
+            %tr
+              %td= link_to cms_articlez.title, "/#{cms_articlez.slug}"
+              %td
+                %time= "#{time_ago_in_words(cms_articlez.updated_at)} ago"
+
 :javascript
   $(document).ready(function() {
     $("#editor > #input").hide();

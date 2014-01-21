@@ -1,14 +1,13 @@
-.grid
-  .col-sm-2    
-    %br
-    %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}= render partial: "cms_articles/sidebar"
-  .col-sm-10
+.row
+  .col-sm-3
+    = render partial: "cms_articles/sidebar"
+  .col-sm-9
     %h1{style: "border-top: solid 5px #333333; padding-top: 20px;"}
       = @cms_article.title
       - if current_user.present?
         %span.pull-right.f11
-          = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn btn-default btn-xs"
-          = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn btn-danger btn-xs"
+          = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn"
+          = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn"
     %hr
     #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
     #preview.wmd-preview
