@@ -1,4 +1,22 @@
-- if @cms_articles.first.present?
+:css
+  .affix,.affix-top {
+     position:static;
+  }
+
+  @media (min-width: 979px) {
+    .pages.affix-top {
+      position: static;
+      margin-top:25px;
+    }
+    
+    .pages.affix {
+      position: fixed;
+      top:25px;
+    }
+  }
+
+
+- if @cms_articles.first.present?  
   %ul.tabs.tabs-v{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path}
     - @cms_articles.each do |cms_article|
       %li{id: cms_article.slug, class: @selected_article == cms_article.slug  ? "active": nil}
@@ -7,3 +25,13 @@
             %i.glyphicon.glyphicon-align-justify 
         = link_to cms_article.tag, "/#{cms_article.slug}"
     %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Other articles", root_url(tag: "other")
+
+:javascript
+  $(".pages").affix({
+    offset: { 
+     top: 200
+    , bottom: function () {
+        return (this.bottom = $('#preview').outerHeight(true))
+      }
+    }
+  });
