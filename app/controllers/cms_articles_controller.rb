@@ -4,7 +4,7 @@ class CmsArticlesController < ApplicationController
   before_filter :find_objects
 
   def index    
-    @core_tags = Cms::Article.select('tag,position').order(:position).pluck(:tag).uniq
+    @core_tags = Cms::Article.select('tag, position').order(:position).pluck(:tag).uniq
     @default_tag_name = ""
     if params[:tag].present?
       if params[:tag].nil? || params[:tag].blank? || params[:tag] == "All-Empty-Tags"
@@ -40,6 +40,7 @@ class CmsArticlesController < ApplicationController
   
   def create
     @cms_article = Cms::Article.new(params[:cms_article])
+    @cms_article.position = 0
     @cms_article.is_published = false
     if params[:commit] == "Publish"
       @cms_article.is_published = params[:commit] == "Publish" ? true : false

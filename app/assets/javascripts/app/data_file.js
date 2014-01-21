@@ -169,7 +169,7 @@ function GenereteChartInMarkdown() {
     var width = $(this).parent("div").attr("class");
 
     $(this).addClass("col-sm-12");
-    $(this).css("height","250px").css("margin", "50px,0,50px,0");
+    $(this).css("height","250px");
 
 
     var div_id = $("#"+title).attr("id");
