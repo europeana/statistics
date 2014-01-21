@@ -3,7 +3,7 @@
     %br
     %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}= render partial: "cms_articles/sidebar"
   .col-sm-10
-    %h1
+    %h1{style: "border-top: solid 5px #333333; padding-top: 20px;"}
       = @cms_article.title
       - if current_user.present?
         %span.pull-right.f11

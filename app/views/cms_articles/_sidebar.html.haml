@@ -1,5 +1,5 @@
 - if @cms_articles.first.present?
-  %ul.pages{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path}
+  %ul.tabs.tabs-v{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path}
     - @cms_articles.each do |cms_article|
       %li{id: cms_article.slug, class: @selected_article == cms_article.slug  ? "active": nil}
         - if current_user.present?

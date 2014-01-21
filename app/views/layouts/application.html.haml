@@ -10,31 +10,25 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
     %title Europeana Statistics Dashboard
-  %body
-    .container{style: "margin-left: auto; margin-right: auto;"}
-      .row#header-strip
-        = link_to "Home", root_url, class: "white left"
-        - if current_user
-          %span.pull-right
-            = link_to "Upload Data", data_filzs_path, style: "color: white;"
-            &nbsp;&nbsp;
-            = link_to "Visualize", viz_vizs_path, style: "color: white;"
-            &nbsp;&nbsp;
-            - if @core_tag.present?
-              - if @core_tag.id.present?
-                = link_to "Compose", "/new?tag=#{@core_tag.slug}", style: "color: white;"
-              - else
-                = link_to "Compose", "/new", style: "color: white;"
-            - else
-              = link_to "Compose", "/new", style: "color: white;"
-            &nbsp;&nbsp;
-            = link_to "Logout", "/logout", style: "color: white;"
-      .row#header{role: "banner"}
-        .logo-and-search
-          .logo
+  %body{style: "background: white;"}
+    .container{style: "background: white;"}
+      %header.header.cf{role: "banner"}
+        = link_to "Europeana", root_url, class: "lc logo ir"
+        %nav#nav.nav
+          %ul
+            %li= link_to "Home", root_url, class: (controller_name == "cms_articles" and (action_name == "index" or action_name == "show")) ? "current" : nil
+            %li= link_to "Data", data_filzs_path, class: controller_name == "data_filzs" ? "current" : nil
+            %li= link_to "Visualize", viz_vizs_path, class: controller_name == "viz_vizs" ? "current" : nil
+            %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
+            %li= link_to "Logout", "/logout"
+      
       .row
         .col-sm-12
-          %hr
+          = image_tag "banner.png"
+      .row
+        .col-sm-12
+          %br
+          %br
           - if flash.present?
             - if flash.first.present?
               .row
@@ -52,63 +46,19 @@
       = yield
       .row{style: "background: white; height: 50px;"}
         %br
-      .row.footer{role: "contentinfo"}
-        .twelve.columns
-          .footer-wrapper
-            #footer-links-all.row
-              .four.columns
-                %h3
-                  %a.europeana{href: "#", target: "_self", title: "Other Europeana Sites"} Other Europeana Sites
-                %ul.footer-links.with-icons
-                  %li
-                    %span#link-logo-1.icon-logo
-                    %a.europeana{href: "http://exhibitions.europeana.eu", target: "_self", title: "Europeana Exhibitions"} Exhibitions
-                  %li
-                    %span#link-logo-2.icon-logo
-                    %a.europeana{href: "http://blog.europeana.eu", target: "_self", title: "Europeana Blog"} Blog
-                  %li
-                    %span#link-logo-3.icon-logo
-                    %a.europeana{href: "http://www.europeana1914-1918.eu", target: "_self", title: "Europeana 1914-1918"} 1914-1918
-                  %li
-                    %span#link-logo-4.icon-logo
-                    %a.europeana{href: "http://remix.europeana.eu/", target: "_self", title: "Europeana Remix"} Remix
-                  %li
-                    %span#link-logo-5.icon-logo
-                    %a.europeana{href: "http://pro.europeana.eu/", target: "_self", title: "Europeana Professional"} Professional
-              .four.columns
-                %h3
-                  %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana.html", target: "_self", title: "Help"} Help
-                %ul.footer-links
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_search.html", target: "_self", title: "Searching Europeana"} Searching Europeana
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_explore.html", target: "_self", title: "Exploring Europeana"} Exploring Europeana
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_results.html", target: "_self", title: "Results in Europeana"} Results in Europeana
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_myeuropeana.html", target: "_self", title: "Using My Europeana"} Using My Europeana
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/usingeuropeana_searchwidget.html", target: "_self", title: "Configure your search widget"} Configure your search widget
-              .four.columns
-                %h3
-                  %a.europeana{href: "http://www.europeana.eu/portal/aboutus.html", target: "_self", title: "About us"} About us
-                %ul.footer-links
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/newcontent.html", target: "_self", title: "New content"} New content
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/europeana-providers.html", target: "_self", title: "All providers"} All providers
-                  %li
-                    %a.europeana{href: "http://www.europeana.eu/portal/aboutus_enews.html", target: "_self", title: "Previous newsletters"} Previous newsletters
-                  %li
-                    %a.europeana{href: "http://pro.europeana.eu/web/guest/news", target: "_self", title: "Press Centre"} Press Centre
-                  %li
-                    %a.europeana{href: "http://www.pro.europeana.eu/about/jobs", target: "_self", title: "Jobs"} Jobs
-      .row.footer-bottom-links
-        .twelve.columns
-          = link_to "Europeana API", "http://www.europeana.eu/portal/api-introduction.html", target: "_self", class: "europeana footer-bottom-link"
-          = link_to "Terms of use & Policies", "http://www.europeana.eu/portal/rights/terms-and-policies.html", target: "_self", class: "europeana footer-bottom-link"
-          = link_to "Contact us", "http://www.europeana.eu/portal/contact.html", target: "_self", class: "europeana footer-bottom-link"
-          = link_to "Sitemap", "http://www.europeana.eu/portal/sitemap.html", target: "_self", class: "europeana footer-bottom-link"
-          %span.footer-funded-by
-            co-funded by the European Union
+      %footer.footer{role: "contentinfo"}
+        .lc
+          %ul.nav-footer
+            %li
+              %a{href: "#"} Home
+            %li
+              %a{href: "#"} About us
+            %li
+              %a{href: "http://www.europeana.eu/portal/rights/terms-and-policies.html"} Terms & policies
+            %li
+              %a{href: "http://www.europeana.eu/portal/sitemap.html"} Sitemap
+          %p.copyright 
+            Co-funded by the European Union.
             %span.icon-euflag
+          %a{href: "http://creativecommons.org/licenses/by-sa/4.0/", rel: "license"}
+            %img{alt: "Creative Commons License", src: "http://i.creativecommons.org/l/by-sa/4.0/88x31.png", style: "border-width:0"}/

@@ -11,7 +11,8 @@
         - @cms_other_articles.each do |cms_articlez|
           %tr
             %td= link_to cms_articlez.title, "/#{cms_articlez.slug}"
-            %td.f11.gray.col-sm-2= "#{time_ago_in_words(cms_articlez.updated_at)} ago"
+            %td.col-sm-2
+              %time= "#{time_ago_in_words(cms_articlez.updated_at)} ago"
           
 :javascript
   $(document).ready(function() {
