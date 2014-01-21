@@ -12,7 +12,7 @@ class Cms::Article < ActiveRecord::Base
   #ASSOCIATIONS
   #VALIDATIONS
   validates :title, uniqueness: true, length: {minimum: 2}, presence: true
-  validates :tag, uniqueness: true, length: {minimum: 2}, presence: true
+  validates :tag, uniqueness: true, length: {minimum: 2}, allow_blank: true
 
   #CALLBACKS
   before_create :before_create_set

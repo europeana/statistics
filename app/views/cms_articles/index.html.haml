@@ -1,31 +1,17 @@
 .row
-  .col-sm-12
-    %h1 Europeana Dashboard
-.row
   .col-sm-2    
     %br
-    %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}
-      %ul.pages{id: "sort-tags", "data-update-url" => sort_tags_path} 
-        - if !@core_tags.empty?
-          - @core_tags.each do |tag|
-
-            - if tag.nil? || tag.blank?
-              -tag = "All-Empty-Tags"
-
-            %li{id:tag, class: @default_tag_name == tag  ? "active": nil}
-              %span.handle
-                [drag]
-              = link_to tag, "?tag=#{tag}"
+    %div{id: "wallhanger", "data-spy"=>"affix", "data-offset-top"=>"0", style: "widht: 100%;"}= render partial: "cms_articles/sidebar"
   .col-sm-10
-    %h1
-      = @cms_article.title
-      - if current_user.present?
-        %span.pull-right.f11
-          = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn btn-default btn-xs"
-          = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn btn-danger btn-xs"
-    %hr
-    #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
-    #preview.wmd-preview
+    - if @cms_other_articles.first.present?
+      %table.bordered
+        %tr
+          %th Title
+          %th Last Updated
+        - @cms_other_articles.each do |cms_articlez|
+          %tr
+            %td= link_to cms_articlez.title, "/#{cms_articlez.slug}"
+            %td.f11.gray.col-sm-2= "#{time_ago_in_words(cms_articlez.updated_at)} ago"
           
 :javascript
   $(document).ready(function() {

@@ -4,24 +4,19 @@ class CmsArticlesController < ApplicationController
   before_filter :find_objects
 
   def index    
-    @core_tags = Cms::Article.select('tag, position').order(:position).pluck(:tag).uniq
-    @default_tag_name = ""
-    if params[:tag].present?
-      if params[:tag].nil? || params[:tag].blank? || params[:tag] == "All-Empty-Tags"
-        @default_tag_name = "All-Empty-Tags"
-        @cms_article = Cms::Article.where(tag: nil).first
-      else
-        @default_tag_name = params[:tag]
-        @cms_article = Cms::Article.where(tag: params[:tag]).first
-      end
+    @cms_articles = Cms::Article.where("tag IS NOT null").order(:position)
+    if params["tag"].present?
+      @cms_other_articles = Cms::Article.where(tag: nil)
+      @selected_article = "other"
     else
-      @cms_article = Cms::Article.where(home_page: true).first
-      @default_tag_name = @cms_article.tag
+      cms = Cms::Article.where(home_page: true).first
+      redirect_to "/#{cms.slug}"
     end
-    gon.cms_article = @cms_article
   end
 
   def show
+    @cms_articles = Cms::Article.where("tag IS NOT null").order(:position)
+    @selected_article = @cms_article.slug
     gon.width = ""
     gon.height = ""
   end
@@ -78,10 +73,10 @@ class CmsArticlesController < ApplicationController
     redirect_to root_url
   end
 
-  def sort    
+  def sort
     params[:sort].each_with_index do |id, index|      
       positionx = index+1
-      Cms::Article.where(tag: id).update_all(position: positionx)
+      Cms::Article.where(slug: id).update_all(position: positionx)
     end
     render nothing: true
   end  
