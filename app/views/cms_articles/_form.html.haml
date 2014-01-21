@@ -1,7 +1,7 @@
 - url = create_cms_articles_path
 - if @cms_article.id
   - url = update_cms_article_path(@cms_article.slug)
-.row
+.grid
   .col-sm-12
     %ol.breadcrumb
       %li= link_to "Home", root_url
@@ -16,7 +16,7 @@
         .panel-heading{style: "background: #F2F2F2;"}
           = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
         .panel-content{style: "padding: 10px;"}
-          .row  
+          .grid  
             .col-sm-6   
               #editor
                 #toolbar.wmd-toolbar.pull-right                
@@ -30,12 +30,12 @@
               %br
               #preview.wmd-preview{:style => "height: 525px; overflow:auto; background: #F2F2F2;"}  
                 .f11.gray Live preview
-          .row{style: "margin-top: 10px;"}
+          .grid{style: "margin-top: 10px;"}
             .col-sm-6= f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
             .col-sm-6{style: "margin-top: 5px;"}
               %span= f.check_box :home_page
               %span Make Default page
-          .row{style: "margin-top: 10px;"}
+          .grid{style: "margin-top: 10px;"}
             .col-sm-12
               - if !@cms_article.is_published
                 = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"

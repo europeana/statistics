@@ -20,10 +20,12 @@
   %ul.tabs.tabs-v{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path}
     - @cms_articles.each do |cms_article|
       %li{id: cms_article.slug, class: @selected_article == cms_article.slug  ? "active": nil}
-        - if current_user.present?
-          %span.handle
-            %i.glyphicon.glyphicon-align-justify 
-        = link_to cms_article.tag, "/#{cms_article.slug}"
+        %a{href: "/#{cms_article.slug}"}
+          - if current_user.present?
+            %span.handle
+              %i.glyphicon.glyphicon-align-justify
+              &nbsp;
+          = cms_article.tag
     %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Other articles", root_url(tag: "other")
 
 :javascript

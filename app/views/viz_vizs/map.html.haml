@@ -1,4 +1,4 @@
-.row
+.grid
   .col-sm-12
     %ol.breadcrumb
       %li= link_to "Home", root_url
@@ -10,7 +10,7 @@
     %br
     %h4 Drag and drop data column names to boxes to model the data
     %br
-    #pie-mapper.row
+    #pie-mapper.grid
       #user-variables.col-sm-4
       - @viz_viz.reference_map.each do |m|
         .col-sm-2
