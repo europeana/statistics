@@ -10,35 +10,35 @@
       - if @cms_article.id
         %li= link_to @cms_article.title, cms_article_path(file_id: @cms_article.slug)
     %h2.headline= headline  
-    .panel.panel-default
-      = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
-        .panel-heading{style: "background: #F2F2F2;"}
-          = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
-        .panel-content{style: "padding: 10px;"}
-          .row  
-            .col-sm-6   
-              #editor
-                #toolbar.wmd-toolbar.right                
-                - if @viz_vizs.first.present?
-                  %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Chart
-                %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector",class: "btn btn-xs btn-default pull-left", style: "margin-top: 5px;"} Add Layout
+    = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|        
+      .col-sm-6   
+        = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
+        %br
+        #editor          
+          #toolbar.wmd-toolbar.right
+          - if @viz_vizs.first.present?
+            %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector", class: "bootstrap-btn btn-xs btn-primary", style: "margin-top: 5px;"} Add Chart
+          %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector", class: "left bootstrap-btn btn-xs btn-primary", style: "margin-top: 5px;"} Add Layout
+          
+          %br
+          = f.text_area :description, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+          %br
+          = f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
+          %br
+          %div{style: "margin-top: 5px;"}
+          %span= f.check_box :home_page
+          %span Make Default page
+          %br
+          %br
+          - if !@cms_article.is_published
+            = f.submit 'Save as Draft', class: "btn alt", id: "submit", style: "width: 150px;"
+          = f.submit "Publish", class: "btn alt", id: "submit", style: "width: 100px;"
+      .col-sm-6
+        #preview.wmd-preview{:style => "height: 690px; overflow:auto; background: #F2F2F2;"} Live preview
 
-                = f.text_area :description, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
-            .col-sm-6
-              %br
-              %br
-              #preview.wmd-preview{:style => "height: 525px; overflow:auto; background: #F2F2F2;"}  
-                .f11.gray Live preview
-          .row{style: "margin-top: 10px;"}
-            .col-sm-6= f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
-            .col-sm-6{style: "margin-top: 5px;"}
-              %span= f.check_box :home_page
-              %span Make Default page
-          .row{style: "margin-top: 10px;"}
-            .col-sm-12
-              - if !@cms_article.is_published
-                = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
-              = f.submit "Publish", class: "btn", id: "submit"
+
+        
+      
             
           
 
