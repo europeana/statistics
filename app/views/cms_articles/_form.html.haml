@@ -86,12 +86,12 @@
   var $textBox;
   $(document).ready(function() {    
 
-    
+    if (1==2)  {
       $.ajaxSetup({ 
         'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} 
       });
 
-    
+    }
         
     $("#highlightCode").click(function(){
       $.SyntaxHighlighter.init({
@@ -123,7 +123,7 @@
           var err_msg = "";
           var img_url = msg[0].split("-->")[1];
 
-
+          
           if (confirm(msg)) {
             err_msg = $("textarea").val().replace('![Uploading file...]()', "<img src='"+ img_url +"' />");
           }else {
