@@ -35,13 +35,13 @@
                 .col-sm-12
                   - flash.each do |name, msg|
                     - if name.to_s == "error"          
-                      %p.message.message-error
+                      %p.alert.alert-danger
                         %span.icon-alert= msg
                     - elsif name.to_s == "notice"
-                      %p.message.message-info
+                      %p.alert.alert-warning
                         %span.icon-yes= msg
                     - else
-                      %p.message.message-info
+                      %p.alert.alert-info
                         %span.icon-info= msg
       = yield
       .row{style: "background: white; height: 50px;"}

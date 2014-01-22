@@ -23,12 +23,9 @@
       .form-group
         = f.submit "Save", id: "submit", class: "btn alt", style: "width: 100px;"
 
-        
-
 :javascript
   var content =  eval(#{@data_filz[:content]});
   content = (content === undefined) ? [] : content;
-
   handsontable_with_filter("#grid", content, false);
   $('#submit').click(function() {
     remove_null_rows("#grid");
