@@ -190,40 +190,6 @@ function GenereteChartInMarkdown() {
 
 }
 
-function insertTextAtTextareaCursor(ID,text) {    
-    var txtarea = ID;
-    var scrollPos = txtarea.scrollTop;
-    var strPos = 0;
-    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
-    "ff" : (document.selection ? "ie" : false ) );
-    if (br == "ie") { 
-        txtarea.focus();
-        var range = document.selection.createRange();
-        range.moveStart ('character', -txtarea.value.length);
-        strPos = range.text.length;
-    }
-    else if (br == "ff") strPos = txtarea.selectionStart;
-    
-    var front = (txtarea.value).substring(0,strPos); 
-    var back = (txtarea.value).substring(strPos,txtarea.value.length); 
-    txtarea.value=front+text+back;
-    strPos = strPos + text.length;
-    if (br == "ie") { 
-        txtarea.focus();
-        var range = document.selection.createRange();
-        range.moveStart ('character', -txtarea.value.length);
-        range.moveStart ('character', strPos);
-        range.moveEnd ('character', 0);
-        range.select();
-    }
-    else if (br == "ff") {
-        txtarea.selectionStart = strPos;
-        txtarea.selectionEnd = strPos;
-        txtarea.focus();
-    }
-    txtarea.scrollTop = scrollPos;
-}
-
 function get_html_template(layout_type,style) {
 
   var algorithm = parseInt(layout_type.split("x")[1]);
@@ -275,3 +241,34 @@ function GenereteDataWrapperChart(options) {
   });      
 
 }
+
+
+// This Jquery extend function for textarea to add text or data @ cursor postion
+$.fn.insertAtCaret = function(text) {
+  return this.each(function() {
+    if (document.selection && this.tagName == 'TEXTAREA') {
+        //IE textarea support
+        this.focus();
+        sel = document.selection.createRange();
+        sel.text = text;
+        this.focus();
+    } else if (this.selectionStart || this.selectionStart == '0') {
+        //MOZILLA/NETSCAPE support
+        startPos = this.selectionStart;
+        endPos = this.selectionEnd;
+        scrollTop = this.scrollTop;
+        this.value = this.value.substring(0, startPos) + text + this.value.substring(endPos, this.value.length);
+        this.focus();
+        this.selectionStart = startPos + text.length;
+        this.selectionEnd = startPos + text.length;
+        this.scrollTop = scrollTop;
+    } else {
+        // IE input[type=text] and other browsers
+        this.value += text;
+        this.focus();
+        this.value = this.value;    // forces cursor to end
+    }
+  });
+};
+
+
