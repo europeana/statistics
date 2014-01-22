@@ -3,23 +3,22 @@
     %ul.breadcrumbs
       %li= link_to "Home", root_url
 .row
-  .col-sm-9
+  .col-sm-6
     %h2.headline Visualizations
-  .col-sm-3    
-    .right= link_to "Add new visualization", new_viz_vizs_path, class: "btn"
-.row
-  .col-sm-12    
-    - if @viz_vizs.first.present?
-      %table.bordered
-        %thead
-          %tr
-            %th Title
-            %th Source Data
-            %th Chart Name
-            %th Last Updated
-        - @viz_vizs.each do |viz|
-          %tr
-            %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
-            %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
-            %td= viz.chart
-            %td= "#{time_ago_in_words(viz.updated_at)} ago"
+  .col-sm-6  
+    = link_to "Add new visualization", new_viz_vizs_path, class: "btn pull-right"
+
+- if @viz_vizs.first.present?
+  %table.bordered
+    %thead
+      %tr
+        %th Title
+        %th Source Data
+        %th Chart Name
+        %th Last Updated
+    - @viz_vizs.each do |viz|
+      %tr
+        %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
+        %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
+        %td= viz.chart
+        %td= "#{time_ago_in_words(viz.updated_at)} ago"
