@@ -22,15 +22,15 @@
             %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
             %li= link_to "Logout", "/logout"
 
-      .grid.grid--full
+      .row.row--full
         = image_tag "banner.png", style: "width:100%;"
-      .grid
+      .row
         .col-sm-12
           %br
           %br
           - if flash.present?
             - if flash.first.present?
-              .grid
+              .row
                 .col-sm-12
                   - flash.each do |name, msg|
                     - if name.to_s == "error"          
@@ -43,7 +43,7 @@
                       %p.message.message-info
                         %span.icon-info= msg
       = yield
-      .grid{style: "background: white; height: 50px;"}
+      .row{style: "background: white; height: 50px;"}
         %br
       %footer.footer{role: "contentinfo"}
         .lc

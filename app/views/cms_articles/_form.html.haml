@@ -1,16 +1,15 @@
 - url = create_cms_articles_path
+- headline = "Compose new story"
 - if @cms_article.id
   - url = update_cms_article_path(@cms_article.slug)
+  - headline = "Edit story"
 .row
   .col-sm-12
-    %ol.breadcrumb
+    %ul.breadcrumbs
       %li= link_to "Home", root_url
       - if @cms_article.id
         %li= link_to @cms_article.title, cms_article_path(file_id: @cms_article.slug)
-        %li.active Edit
-      - else
-        %li.active New Article
-      
+    %h2.headline= headline  
     .panel.panel-default
       = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
         .panel-heading{style: "background: #F2F2F2;"}
@@ -19,7 +18,7 @@
           .row  
             .col-sm-6   
               #editor
-                #toolbar.wmd-toolbar.pull-right                
+                #toolbar.wmd-toolbar.right                
                 - if @viz_vizs.first.present?
                   %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector",class: "btn btn-xs btn-default", style: "margin-top: 5px;"} Add Chart
                 %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector",class: "btn btn-xs btn-default pull-left", style: "margin-top: 5px;"} Add Layout
@@ -39,7 +38,7 @@
             .col-sm-12
               - if !@cms_article.is_published
                 = f.submit 'Save as Draft', class: "btn btn-default", id: "submit"
-              = f.submit "Publish", class: "btn btn-success", id: "submit"
+              = f.submit "Publish", class: "btn", id: "submit"
             
           
 

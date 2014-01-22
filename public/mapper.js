@@ -58,7 +58,7 @@ var PieMapper = function(options){
             var html = k[i] + " (" + t[i] + ")";
             var div = $("<div>")
                 .html(html)
-                .addClass("btn btn-primary drop-option")
+                .addClass("bootstrap-btn btn-primary drop-option")
                 .css("z-index", 1000)
                 .attr("data-droptype", t[i])
                 .attr("data-colname", k[i]);

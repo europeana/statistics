@@ -1,29 +1,29 @@
 - url = create_data_filzs_path
+- headline = "Add New Data"
 - if @data_filz.id.present?     
   - url = update_data_filz_path(@data_filz.slug)
-.grid
+  - headline = "Edit Data"
+.row
   .col-sm-12
-    %ol.breadcrumb
+    %ul.breadcrumbs
       %li= link_to "Home", root_url
       %li= link_to "Data", data_filzs_path
-      - if @data_filz.id.present?
-        %li.active= @data_filz.file_file_name
-      - else
-        %li.active New
-    .panel.panel-default
-      = form_for(@data_filz, url: url, :html => { role: "form" }) do |f|
-        = f.text_area :content, value: "", id: "content", hidden: true
-        .panel-heading{style: "background: #F2F2F2; height: 55px;"}
-          = f.text_field :file_file_name, class: "col-sm-8 form-control", placeholder: "File Name", autofocus: true, id: "data_file_file_name"
-        .panel-content{style: "padding: 10px;"}
-          .form-group
-            -if @data_filz.errors.present?
-              - @data_filz.errors[:content].each do |c_error|
-                %span.label.label-danger
-                  = c_error
-            #grid{style: "height: 350px;"}
-          .form-group
-            = f.submit "Save", class: "btn btn-success", id: "submit"
+    %h2.headline= headline
+    = form_for(@data_filz, url: url, :html => { role: "form" }) do |f|
+      = f.hidden_field :content, value: "", id: "content", hidden: true
+      = f.text_field :file_file_name, class: "col-sm-8 form-control", placeholder: "File Name", autofocus: true, id: "data_file_file_name"
+      %br
+      %br
+      .form-group
+        -if @data_filz.errors.present?
+          - @data_filz.errors[:content].each do |c_error|
+            %span.label.label-danger
+              = c_error
+        #grid{style: "height: 350px;"}
+      .form-group
+        = f.submit "Save", id: "submit", class: "btn alt", style: "width: 100px;"
+
+        
 
 :javascript
   var content =  eval(#{@data_filz[:content]});

@@ -1,4 +1,4 @@
-.grid
+.row
   .col-sm-3{style: "padding-bottom: 100px;"}
     = simple_form_for :user, url: "/login" do |f|
       - if notice
@@ -6,4 +6,4 @@
       = f.input :email
       = f.input :password
       %br
-      = f.button :submit, "Login", name: "login", class: "btn btn-success"
+      = f.button :submit, "Login", name: "login", class: "btn"

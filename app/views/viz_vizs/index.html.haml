@@ -1,19 +1,25 @@
-.grid
+.row
   .col-sm-12
-    %ol.breadcrumb
+    %ul.breadcrumbs
       %li= link_to "Home", root_url
-      %li.active Visualizations
-    .pull-right= link_to "Add new visualization", new_viz_vizs_path, class: "btn btn-success btn-xs", style: "color: white; margin-bottom: 10px;"
+.row
+  .col-sm-9
+    %h2.headline Visualizations
+  .col-sm-3    
+    .right= link_to "Add new visualization", new_viz_vizs_path, class: "btn"
+.row
+  .col-sm-12    
     - if @viz_vizs.first.present?
       %table.bordered
-        %tr
-          %th Title
-          %th Source Data
-          %th Chart Name
-          %th Last Updated
+        %thead
+          %tr
+            %th Title
+            %th Source Data
+            %th Chart Name
+            %th Last Updated
         - @viz_vizs.each do |viz|
           %tr
-            %td.col-sm-6= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
+            %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
             %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
             %td= viz.chart
-            %td.f11.gray.col-sm-2= "#{time_ago_in_words(viz.updated_at)} ago"
+            %td= "#{time_ago_in_words(viz.updated_at)} ago"

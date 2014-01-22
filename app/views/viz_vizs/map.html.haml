@@ -1,17 +1,21 @@
-.grid
+.row
   .col-sm-12
-    %ol.breadcrumb
+    %ul.breadcrumbs
       %li= link_to "Home", root_url
       %li= link_to "Visualizations", viz_vizs_path
-      %li= link_to @viz_viz.title, viz_viz_path(file_id: @viz_viz.slug)
-      %li.active Map
-    %h1= @viz_viz.title
-    %button.btn.btn-primary#get-pie Next &raquo;
+    %h2.headline= @viz_viz.title
+.row
+  .col-sm-9
+    %p.intro Drag and drop data column names to boxes to model the data
+  .col-sm-3
+    .right    
+      %button.btn#get-pie Next &raquo;
+.row
+  .col-sm-12
     %br
-    %h4 Drag and drop data column names to boxes to model the data
     %br
-    #pie-mapper.grid
-      #user-variables.col-sm-4
+    #pie-mapper.row
+      #user-variables.col-sm-4{style: "margin-bottom: 100px;"}
       - @viz_viz.reference_map.each do |m|
         .col-sm-2
           %h5= m[0]

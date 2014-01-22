@@ -1,19 +1,25 @@
-.grid
+.row
   .col-sm-12
-    %ol.breadcrumb
+    %ul.breadcrumbss
       %li= link_to "Home", root_url
-      %li.active Data
-    .pull-right= link_to "Manually add new data", new_data_filzs_path, class: "btn btn-success btn-xs", style: "color: white; margin-bottom: 10px;"
+.row
+  .col-sm-9
+    %h2.headline Data
+  .col-sm-3 
+    .right= link_to "Manually add new data", new_data_filzs_path, class: "btn"
+.row
+  .col-sm-12    
     - if @data_filzs.first.present?
       %table.bordered
-        %tr
-          %th Title
-          %th Source
-          %th Last updated
-          %th Download
+        %thead
+          %tr
+            %th Title
+            %th Source
+            %th Last updated
+            %th Download
         - @data_filzs.each do |data_filz|
           %tr
-            %td.col-sm-6= link_to "#{data_filz.file_file_name}", data_filz_path(file_id: data_filz.slug)
+            %td= link_to "#{data_filz.file_file_name}", data_filz_path(file_id: data_filz.slug)
             %td= data_filz.genre == "API" ? "APIs" : "Manual"
-            %td.f11.gray.col-sm-2= "#{time_ago_in_words(data_filz.updated_at)} ago"
-            %td.f11= link_to "CSV", csv_data_filz_path(file_id: data_filz.slug)
+            %td= "#{time_ago_in_words(data_filz.updated_at)} ago"
+            %td= link_to "CSV", csv_data_filz_path(file_id: data_filz.slug)
