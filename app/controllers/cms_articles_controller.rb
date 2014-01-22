@@ -10,7 +10,11 @@ class CmsArticlesController < ApplicationController
       @selected_article = "other"
     else
       cms = Cms::Article.where(home_page: true).first
-      redirect_to "/#{cms.slug}"
+
+      if cms
+        redirect_to "/#{cms.slug}"  
+      end
+      
     end
   end
 

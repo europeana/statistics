@@ -1,5 +1,5 @@
-userlist = [{"email"=> "al@pykih.com", "password" => "afzal199"}]
-userlist = [{"email"=> "mirko@jplusplus.org", "password" => "europeana*#"}]
+userlist = [{"email"=> "al@pykih.com", "password" => "afzal199"},
+            {"email"=> "mirko@jplusplus.org", "password" => "europeana*#"}]
 
 User.delete_all            
 userlist.each do |user|
