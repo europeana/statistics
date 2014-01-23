@@ -2,7 +2,12 @@ class UsersController < ApplicationController
   
   before_filter :authenticate_user!, only: :logout
   
-  def login    
+  def login
+
+    if current_user
+      redirect_to root_url
+    end
+
     if params[:login]
       email = params[:user][:email]
       password = params[:user][:password]    

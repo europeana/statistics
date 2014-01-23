@@ -3,10 +3,10 @@ class CmsArticlesController < ApplicationController
   before_filter :authenticate_user!, except: [:show, :index]
   before_filter :find_objects
 
-  def index    
-    @cms_articles = Cms::Article.where("tag IS NOT null").order(:position)
+  def index        
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
     if params["tag"].present?
-      @cms_other_articles = Cms::Article.where(tag: nil)
+      @cms_other_articles = Cms::Article.where("tag IS null OR tag = ''")
       @selected_article = "other"
     else
       cms = Cms::Article.where(home_page: true).first
@@ -19,7 +19,7 @@ class CmsArticlesController < ApplicationController
   end
 
   def show
-    @cms_articles = Cms::Article.where("tag IS NOT null").order(:position)
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
     @selected_article = @cms_article.slug
     gon.width = ""
     gon.height = ""

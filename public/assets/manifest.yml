@@ -1,6 +1,8 @@
 ---
 banner.png: banner.png
 banner/index.png: banner.png
+cursor_drag_arrow.png: cursor_drag_arrow.png
+cursor_drag_arrow/index.png: cursor_drag_arrow.png
 europeana-logo.png: europeana-logo.png
 europeana-logo/index.png: europeana-logo.png
 star.png: star.png

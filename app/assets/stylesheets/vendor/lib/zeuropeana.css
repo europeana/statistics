@@ -5326,3 +5326,8 @@ color:#b94a48;
 background-color:#f2dede;
 border-color:#eed3d7;
 }
+
+.custom-glyphicon:hover {
+  background-color: white;
+
+}

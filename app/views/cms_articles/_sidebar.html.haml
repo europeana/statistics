@@ -22,7 +22,7 @@
         %a{href: "/#{cms_article.slug}"}
           - if current_user.present?
             %span.handle
-              %i.glyphicon.glyphicon-align-justify
+              = image_tag "cursor_drag_arrow.png", class: "custom-glyphicon", size: "15x15"
               &nbsp;
           = cms_article.tag
     %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Other articles", root_url(tag: "other")
