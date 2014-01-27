@@ -14,7 +14,7 @@ class Viz::Viz < ActiveRecord::Base
   #LINE - at least 2 columns
   
   #CONSTANTS
-  CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],  ["Column Chart"], ["Grouped Column Chart"], ["Line Chart"], ["Stacked Column Chart"]]
+  CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],  ["Column Chart"], ["Grouped Column Chart"], ["Line Chart"], ["Stacked Column Chart"], ["Bubble Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
@@ -39,7 +39,7 @@ class Viz::Viz < ActiveRecord::Base
   end
 
   def reference_map
-    if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
+    if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bubble Chart"
       [["Dimension", "string", "M"],["Size", "number", "M"]]
     elsif self.chart == "Bar Chart"
       [["X", "number", "M"], ["Y", "string", "M"]]

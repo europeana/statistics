@@ -30,6 +30,7 @@ class VizVizsController < ApplicationController
     end
     @mapped_output = JSON.parse(@viz_viz.mapped_output)
     gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
+    gon.chart_type = @viz_viz.chart
   end
 
   def create    
