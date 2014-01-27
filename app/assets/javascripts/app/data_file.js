@@ -36,8 +36,6 @@ function handsontable_with_filter(selector, data, readonly) {
       handsontable.loadData(data);
     }
 
-
-
     function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
       Handsontable.TextCell.renderer.apply(this, arguments);
       td.style.fontWeight = 'bold';
@@ -129,13 +127,17 @@ function generate_article_chart() {
 
       $.get("/generate/chart/"+title,function(vdata,status){
 
-        if (vdata) {
-          dw.visualize({
-            type: chart_types[vdata.chart_type] + "-chart", 
-            theme: 'default', 
-            container: $('#'+title+"_Id_"+data.id),
-            datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
-          })          
+        if (custom_chart.indexOf(vdata.chart_type) >= 0) {
+          GenerateCustomChart(vdata.chart_type,'#'+title+"_Id_"+data.id, vdata.mapped_output);
+        }else{  
+          if (vdata) {
+            dw.visualize({
+              type: chart_types[vdata.chart_type] + "-chart", 
+              theme: 'default', 
+              container: $('#'+title+"_Id_"+data.id),
+              datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+            })          
+          }
         }
 
       });
@@ -171,23 +173,25 @@ function GenereteChartInMarkdown() {
     $(this).addClass("col-sm-12");
     $(this).css("height","250px");
 
-
     var div_id = $("#"+title).attr("id");
-    $.get("/generate/chart/"+title,function(vdata,status){
+    var custom_chart = ["Bubble Chart"];
+    $.get("/generate/chart/"+title,function(vdata,status){      
 
-      if (vdata) {
-        dw.visualize({
-          type: chart_types[vdata.chart_type] + "-chart", 
-          theme: 'default', 
-          container: that,
-          datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
-        })          
+      console.log("#"+title);
+      if (custom_chart.indexOf(vdata.chart_type) >= 0) {
+        GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
+      }else {
+        if (vdata) {
+          dw.visualize({
+            type: chart_types[vdata.chart_type] + "-chart", 
+            theme: 'default', 
+            container: that,
+            datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+          })          
+        }
       }
-
-    });
-      
+    });      
   }); 
-
 }
 
 function get_html_template(layout_type,style) {
@@ -223,19 +227,25 @@ function GenereteDataWrapperChart(options) {
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
 
   var title = options.title;   
-  console.log(options.selector)
   $("#"+options.id).addClass("col-sm-12");
   $("#"+options.id).css("height","250px");
-
+  var custom_chart = ["Bubble Chart"];
   $.get("/generate/chart/"+title,function(vdata,status){
 
     if (vdata) {      
-      dw.visualize({
-        type: chart_types[vdata.chart_type] + "-chart", 
-        theme: 'default', 
-        container: options.selector,
-        datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
-      })          
+      if (custom_chart.indexOf(vdata.chart_type) >= 0) {
+        GenerateCustomChart(vdata.chart_type,'#'+title+"_Id_"+data.id, vdata.mapped_output);
+      }else{
+        dw.visualize({
+          type: chart_types[vdata.chart_type] + "-chart", 
+          theme: 'default', 
+          container: options.selector,
+          datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+        })          
+
+      }
+  
+
     }
 
   });      
@@ -250,8 +260,10 @@ function GenerateCustomChart(chart_type,selector,data) {
 }
 
 function GenerateCustomBubbleChart(selector,data) {
- 
-  var diameter = 960,
+  
+  console.log($(selector),selector)
+  
+  var diameter = 400  ,
       format = d3.format(",d"),
       color = d3.scale.category20c();
 
@@ -260,19 +272,21 @@ function GenerateCustomBubbleChart(selector,data) {
       .size([diameter, diameter])
       .padding(1.5);
 
-  var svg = d3.select("body").append("svg")
+  console.log($(selector),selector);
+  var svg = d3.select(selector).append("svg")
       .attr("width", diameter)
       .attr("height", diameter)
       .attr("class", "bubble");
 
-  d3.csv("flare.json", function(error, root) {
-    var node = svg.selectAll(".node")
-        .data(bubble.nodes(classes(root))
-        .filter(function(d) { return !d.children; }))
-      .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  var data = d3.csv.parseRows(data);
 
+  var node = svg.selectAll(".node")
+                .data(bubble.nodes(classes(data))
+                .filter(function(d) { return !d.children; }))
+                .enter().append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) {return "translate(" + d.x + "," + d.y + ")"; });
+  
     node.append("title")
         .text(function(d) { return d.className + ": " + format(d.value); });
 
@@ -283,16 +297,22 @@ function GenerateCustomBubbleChart(selector,data) {
     node.append("text")
         .attr("dy", ".3em")
         .style("text-anchor", "middle")
-        .text(function(d) { return d.className.substring(0, d.r / 3); });
-  });
+        .text(function(d) {return d.className.substring(0, d.r / 3); });
+
 
   // Returns a flattened hierarchy containing all leaf nodes under the root.
   function classes(root) {
     var classes = [];
 
-    function recurse(name, node) {
-      if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
-      else classes.push({packageName: name, className: node.name, value: node.size});
+    function recurse(name, nodes) {      
+      nodes.forEach(function(node,index) {
+        if (index > 0) { 
+          classes.push({packageName: node[0], className: node[0], value: node[1]});
+        } 
+      });      
+      // return false;
+      // if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
+      // else classes.push({packageName: name, className: node.name, value: node.size});
     }
 
     recurse(null, root);

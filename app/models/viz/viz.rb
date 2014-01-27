@@ -60,7 +60,7 @@ class Viz::Viz < ActiveRecord::Base
     h["row-headings"] = map_json
     out = []
     raw_data.each do |row|
-      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart"
+      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bubble Chart"
         label = row[headings.index(map_json["Dimension"])]
         value = row[headings.index(map_json["Size"])]
       elsif self.chart == "Bar Chart"
@@ -84,7 +84,7 @@ class Viz::Viz < ActiveRecord::Base
         #line3 = row[headings.index(map_json["Line 3"])]
         #line4 = row[headings.index(map_json["Line 4"])]
       end
-      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart"
+      if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart" or self.chart == "Bubble Chart"
         unique_label = label
         if h[unique_label].present?
           h[unique_label] = {"label" => label, "value" => h[unique_label]["value"].to_f + value.to_f}

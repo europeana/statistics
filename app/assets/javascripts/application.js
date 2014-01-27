@@ -46,3 +46,4 @@
 //= require vendor/datawrapper/vis/election-donut-chart
 
 //= require_tree ./app/
+//= require vendor/lib/d3.v3
