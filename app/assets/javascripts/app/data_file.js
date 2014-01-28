@@ -170,9 +170,6 @@ function GenereteChartInMarkdown() {
     var that  = $(this);   
     var width = $(this).parent("div").attr("class");
 
-    $(this).addClass("col-sm-12");
-    $(this).css("height","250px");
-
     var div_id = $("#"+title).attr("id");
     var custom_chart = ["Bubble Chart"];
     $.get("/generate/chart/"+title,function(vdata,status){      
@@ -182,6 +179,8 @@ function GenereteChartInMarkdown() {
         GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
       }else {
         if (vdata) {
+          $(that).addClass("col-sm-12");
+          $(that).css("height","250px");
           dw.visualize({
             type: chart_types[vdata.chart_type] + "-chart", 
             theme: 'default', 
@@ -263,7 +262,7 @@ function GenerateCustomBubbleChart(selector,data) {
   
   console.log($(selector),selector)
   
-  var diameter = 400  ,
+  var diameter = 500  ,
       format = d3.format(",d"),
       color = d3.scale.category20c();
 
