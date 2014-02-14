@@ -167,3 +167,5 @@
   $("#input").keyup(function() {
     setTimeout(function(){ $("svg").remove(); GenereteChartInMarkdown();},10000);
   });
+
+  $("#input").trigger("keyup");
