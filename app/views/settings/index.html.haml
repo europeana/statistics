@@ -1,0 +1,35 @@
+.row
+  .col-sm-12
+    %ul.breadcrumbs
+      %li= link_to "Home", root_url
+      %li "Setting"
+      
+%h2.headline Setting      
+
+.row
+  .col-sm-6           
+    = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
+      = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
+      #editor
+        %table.table-horizontal
+          %td
+            %a{"data-toggle" => "modal", "data-target"=>"#layout-selector", id: "btn-layout-selector", class: "pull-left bootstrap-btn btn-xs btn-primary"} Add Layout          
+          %td
+            #toolbar.wmd-toolbar
+
+          - if @viz_vizs.first.present?
+            %td
+              %a{"data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector", class: " bootstrap-btn btn-xs btn-primary"} Add Chart
+
+        = f.text_area :description, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true,placeholder: "Write here and/or drag drop images", :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+        %br
+        = f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
+        %br
+        %div{style: "margin-top: 5px;"}
+        %span= f.check_box :home_page
+        %span Make Default page
+        %br
+        %br
+        - if !@cms_article.is_published
+          = f.submit 'Save as Draft', class: "btn alt", id: "submit", style: "width: 150px;"
+        = f.submit "Publish", class: "btn alt", id: "submit", style: "width: 100px;"

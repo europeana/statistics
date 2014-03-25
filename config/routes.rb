@@ -1,5 +1,8 @@
 Pykhub::Application.routes.draw do
-  
+
+  #resource
+  resource :settings, only: [:show, :edit, :update]
+
   post '/login', to: "users#login", as: "login"  
   get '/login', to: "users#login", as: "login"
   get '/logout', to: "users#logout", as: "logout"  
@@ -42,5 +45,5 @@ Pykhub::Application.routes.draw do
   
   #root
   root :to => 'cms_articles#index'
-  
+
 end

@@ -21,6 +21,7 @@
             - if current_user.present?
               %li= link_to "Visualize", viz_vizs_path, class: controller_name == "viz_vizs" ? "current" : nil
               %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
+              %li= link_to "Settings", edit_settings_path
               %li= link_to "Logout", "/logout"
 
       .row.row--full

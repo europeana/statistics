@@ -1,0 +1,16 @@
+.row
+  .col-sm-12
+    %ul.breadcrumbs
+      %li= link_to "Home", root_url
+      %li &nbsp; &nbsp; Setting
+      
+%h2.headline Setting - Edit
+
+.row
+  .col-sm-6           
+    = simple_form_for(@setting, url: settings_path, html: {role: "form"}) do |f|
+      %label Masonry
+
+      = f.input :masonry, as: :boolean, label: false
+
+      = f.submit "Save Changes", class: "btn alt", id: "submit", style: "width: 100px;"

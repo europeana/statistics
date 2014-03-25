@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140120163938) do
+ActiveRecord::Schema.define(:version => 20140325103614) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -58,6 +58,12 @@ ActiveRecord::Schema.define(:version => 20140120163938) do
   end
 
   add_index "data_filzs", ["slug"], :name => "index_data_filzs_on_slug"
+
+  create_table "settings", :force => true do |t|
+    t.boolean  "masonry"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",         :default => "", :null => false
