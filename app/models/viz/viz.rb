@@ -14,7 +14,10 @@ class Viz::Viz < ActiveRecord::Base
   #LINE - at least 2 columns
   
   #CONSTANTS
-  CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],  ["Column Chart"], ["Grouped Column Chart"], ["Line Chart"], ["Stacked Column Chart"], ["Bubble Chart"]]
+  CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],
+             ["Column Chart"], ["Grouped Column Chart"],
+             ["Line Chart"], ["Stacked Column Chart"],
+             ["Bubble Chart"], ["Compare Line Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
@@ -51,6 +54,11 @@ class Viz::Viz < ActiveRecord::Base
       [["X", "string", "M"],["Y", "number", "M"],["Stack", "string", "M"]]
     elsif self.chart == "Line Chart"
       [["X", "string", "M"],["Line 1", "number", "M"]]#,["Line 2", "number", "O"],["Line 3", "number", "O"],["Line 4", "number", "0"]]
+    elsif self.chart == "Compare Line Chart"
+      [ ["X", "string", "M"],["Monthly", "number", "M"],
+        ["Quaterly", "number", "O"],["Yearly", "number", "O"],
+        ["All", "number", "0"]
+      ]
     end
   end
   
@@ -83,6 +91,12 @@ class Viz::Viz < ActiveRecord::Base
         #line2 = row[headings.index(map_json["Line 2"])]
         #line3 = row[headings.index(map_json["Line 3"])]
         #line4 = row[headings.index(map_json["Line 4"])]
+      elsif self.chart == "Compare Line Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Monthly"])]
+        line2 = row[headings.index(map_json["Quaterly"])]
+        line3 = row[headings.index(map_json["Yearly"])]
+        line4 = row[headings.index(map_json["All"])]
       end
       if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart" or self.chart == "Bubble Chart"
         unique_label = label
@@ -104,6 +118,23 @@ class Viz::Viz < ActiveRecord::Base
           h[unique_label] = {"label" => label, "value" => h[unique_label]["value"].to_f + value.to_f, "stack" => stack}
         else
           h[unique_label] = {"label" => label, "value" => value.to_f, "stack" => stack}
+        end        
+      elsif self.chart == "Compare Line Chart"
+        unique_label = label
+        if h[unique_label].present?          
+          h[unique_label] = {"label" => label,
+           "value" => h[unique_label]["Monthly"].to_f + value.to_f,
+           "line2" => h[unique_label]["Quaterly"].to_f + line2.to_f,
+           "line3" => h[unique_label]["Yearly"].to_f + line3.to_f,
+           "line4" => h[unique_label]["All"].to_f + line4.to_f
+         }
+        else
+          h[unique_label] = {"label" => label,
+           "value" => value.to_f,           
+           "line2" => line2.to_f,
+           "line3" => line3.to_f,
+           "line4" => line4.to_f
+ }
         end
       end
     end
