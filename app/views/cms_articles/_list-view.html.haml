@@ -1,0 +1,12 @@
+.sg-pattern-body
+  %table.table-bordered
+    %thead
+      %tr
+        %th Title
+        %th Last Updated
+    %tbody    
+    - @cms_other_articles.each do |cms_articlez|
+      %tr
+        %td= link_to cms_articlez.title, "/#{cms_articlez.slug}"
+        %td
+          %time= "#{time_ago_in_words(cms_articlez.updated_at)} ago"

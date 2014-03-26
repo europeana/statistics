@@ -8,13 +8,12 @@ class CmsArticlesController < ApplicationController
     if params["tag"].present?
       @cms_other_articles = Cms::Article.where("tag IS null OR tag = ''")
       @selected_article = "other"
+      @setting = Setting.first
     else
       cms = Cms::Article.where(home_page: true).first
-
       if cms
         redirect_to "/#{cms.slug}"  
-      end
-      
+      end      
     end
   end
 
