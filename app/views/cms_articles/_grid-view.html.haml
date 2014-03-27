@@ -1,10 +1,18 @@
-.sg-pattern-body
-  %table.table-bordered
-    %thead
-      - @cms_other_articles.each do |cms_articlez|
-        %tr
-          %th{style: "33%"}
-            = link_to cms_articlez.title, "/#{cms_articlez.slug}"
-            %br
-            %time
-              = "#{time_ago_in_words(cms_articlez.updated_at)} ago"
+- per_line = 3
+- counter = 1
+- @cms_other_articles.each do |cms_articlez|
+
+  -if counter <= 3
+    .grid-view-home
+      = link_to cms_articlez.title, "/#{cms_articlez.slug}"
+      %br
+      %time
+        = "#{time_ago_in_words(cms_articlez.updated_at)} ago"    
+  -else 
+    .row
+      .grid-view-home 
+        = link_to cms_articlez.title, "/#{cms_articlez.slug}"
+        %br
+        %time
+          = "#{time_ago_in_words(cms_articlez.updated_at)} ago"
+  -counter += 1        

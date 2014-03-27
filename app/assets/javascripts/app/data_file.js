@@ -415,13 +415,11 @@ $(document).ready(function() {
 
   });
 
-  $("#time-frame").change(function() {
-    
+  $("#time-frame").change(function() {    
     if (validateCompareToWith()) {
       $("#pie-chart svg").remove()
       GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
     }
-
   });
 
 });
@@ -435,7 +433,6 @@ function validateCompareToWith() {
   }else {
     return true;
   }
-
 }
 
 function updateLineChartWithAxis(selector,data) {

@@ -25,27 +25,28 @@
 
 %br    
 
-.row
-  .col-sm-12
-    %h5 Transformed output
-    - if @mapped_output.present?
-      %table.bordered
-        - counter = 1
-        - @mapped_output.each do |key, set,set2,set3,set4|
-          %tr
-            - if counter == 1
-              - counter += 1
-              %th= key
-              %th= set
-              %th= set2
-              %th= set3
-              %th= set4
-            -else            
-              %td= key
-              %td= set
-              %td= set2
-              %td= set3
-              %td= set4
+- if 1 == 2
+  .row
+    .col-sm-12
+      %h5 Transformed output
+      - if @mapped_output.present?
+        %table.bordered
+          - counter = 1
+          - @mapped_output.each do |key, set,set2,set3,set4|
+            %tr
+              - if counter == 1
+                - counter += 1
+                %th= key
+                %th= set
+                %th= set2
+                %th= set3
+                %th= set4
+              -else            
+                %td= key
+                %td= set
+                %td= set2
+                %td= set3
+                %td= set4
 :css
   .axis path,
   .axis line {
