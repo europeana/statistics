@@ -1,17 +1,6 @@
 - per_line = 3
 - counter = 1
 - @cms_other_articles.each do |cms_articlez|
-
-  -if counter <= 3
+  .col-sm-4
     .grid-view-home
-      %h4
-        = link_to cms_articlez.title, "/#{cms_articlez.slug}"
-  -else 
-    .row
-      .grid-view-home 
-        %h3
-          = link_to cms_articlez.title, "/#{cms_articlez.slug}"
-        / %br
-        / %time
-        /   = "#{time_ago_in_words(cms_articlez.updated_at)} ago"
-  -counter += 1        
+      %h4= link_to cms_articlez.title, "/#{cms_articlez.slug}"
