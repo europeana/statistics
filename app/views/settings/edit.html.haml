@@ -9,8 +9,12 @@
 .row
   .col-sm-6           
     = simple_form_for(@setting, url: settings_path, html: {role: "form"}) do |f|
-      %label Masonry
+      %label 
+        %strong Select View type for Home Page
 
-      = f.input :masonry, as: :boolean, label: false
+      = f.input :masonry, collection: {"One list text" => "o", "One masonry" => "m" }, label: false, include_blank: false
 
       = f.submit "Save Changes", class: "btn alt", id: "submit", style: "width: 100px;"
+
+  .col-sm-6               
+%hr      

@@ -13,6 +13,11 @@ class SettingsController < ApplicationController
 
   def update
     @setting = Setting.first
+    if params[:setting][:masonry] == "m"
+      params[:setting][:masonry] = true
+    else 
+      params[:setting][:masonry] = false
+    end
     if @setting.update_attributes(params[:setting])
       redirect_to root_url, notice: "Setting Updated"
     end
