@@ -4,15 +4,14 @@
 
   -if counter <= 3
     .grid-view-home
-      = link_to cms_articlez.title, "/#{cms_articlez.slug}"
-      %br
-      %time
-        = "#{time_ago_in_words(cms_articlez.updated_at)} ago"    
+      %h4
+        = link_to cms_articlez.title, "/#{cms_articlez.slug}"
   -else 
     .row
       .grid-view-home 
-        = link_to cms_articlez.title, "/#{cms_articlez.slug}"
-        %br
-        %time
-          = "#{time_ago_in_words(cms_articlez.updated_at)} ago"
+        %h3
+          = link_to cms_articlez.title, "/#{cms_articlez.slug}"
+        / %br
+        / %time
+        /   = "#{time_ago_in_words(cms_articlez.updated_at)} ago"
   -counter += 1        
