@@ -1,0 +1,62 @@
+.row
+  .col-sm-12
+    Comapre 
+    %select#compare-to
+      - @mapped_output.each_with_index do |key,index|
+        - if index > 0
+          %option{value: "#{index-1}"}="#{key[0]}"
+
+    With
+    %select#compare-with
+      - @mapped_output.each_with_index do |key,index|
+        - if index > 0
+          %option{value: "#{index-1}"}="#{key[0]}"
+        -else
+          %option{value: ""}None
+
+    Time
+    %select#time-frame
+      %option{value: 1} Monthly
+      %option{value: 2} Quarter
+      %option{value: 3} Year
+      %option{value: 4, selected: "selected"} Maximum
+
+    #pie-chart{style: "height:500px; width:100%;"}
+
+.row
+  .col-sm-12
+    %h5 Transformed output
+    - if @mapped_output.present?
+      %table.bordered
+        - counter = 1
+        - @mapped_output.each do |key, set,set2,set3,set4|
+          %tr
+            - if counter == 1
+              - counter += 1
+              %th= key
+              %th= set
+              %th= set2
+              %th= set3
+              %th= set4
+            -else            
+              %td= key
+              %td= set
+              %td= set2
+              %td= set3
+              %td= set4
+:css
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 3.5px;
+  }

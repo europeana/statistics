@@ -439,9 +439,8 @@ function validateCompareToWith() {
 }
 
 function updateLineChartWithAxis(selector,data) {
-
-  var m = [80, 80, 80, 80]; 
-  var w = 700 - m[1] - m[3]; 
+  var m = [40, 80, 80, 80]; 
+  var w = $("#pie-chart").width() - m[1] - m[3]; 
   var h = 500 - m[0] - m[2]; 
       
   var line = d3.svg.line().interpolate("linear")
