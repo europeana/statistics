@@ -251,17 +251,65 @@ function GenereteDataWrapperChart(options) {
 }
 
 function GenerateCustomChart(chart_type,selector,data) {
-
   if (chart_type == "Bubble Chart") {
     GenerateCustomBubbleChart(selector,data);
+  }else if(chart_type == "Compare Line Chart") {
+    GenerateCustomLineChart(selector,data);
+  }
+}
+
+function formaToCustomLineData(data) {
+  var output = [];
+  for (var i = 0; i <= data.length - 1; i++) {
+    if (i > 0) {
+      output.push(data[i]);
+    }     
+  }
+  return output;
+}
+
+function GenerateCustomLineChart(selector,data) {  
+  data = d3.csv.parseRows(data);
+  data = formaToCustomLineData(data);
+  data = setDataByFilter(data);
+  updateLineChartWithAxis(selector,data);  
+}
+
+function setDataByFilter(data) {  
+  var compare_to_pos = $("#compare-to").val();  
+  var filtered_data = [getDataFromFilter(data[compare_to_pos])];
+  var compare_with_pos = $("#compare-with").val();  
+  var time_frame = $("#time-frame").val();
+  if (compare_with_pos > 0) {
+    filtered_data.push(getDataFromFilter(data[compare_with_pos]));
   }
 
+  var time_frames = ["Monthly","Quaterly","Yearly","All"];
+  var new_data_set = [];
+  for (var i = 0; i <= filtered_data.length - 1; i++) {
+    var qdata = filtered_data[i];
+    for (var j = 1; j <= time_frame ; j++) {
+      var format = {"y":parseInt(qdata[j]),"x":time_frames[j-1],
+                    "group": qdata[0]}
+      new_data_set.push(format);
+    };
+    
+  };
+
+  return new_data_set;
+}
+
+function getDataFromFilter(data) {
+  var filtered_data = [];
+  var time_frame = $("#time-frame").val();
+  for (var i = 0; i <= time_frame; i++) {
+    filtered_data.push(data[i]);
+  };
+  return filtered_data;
 }
 
 function GenerateCustomBubbleChart(selector,data) {
-  
-  console.log($(selector),selector)
-  
+    
   var diameter = 500  ,
       format = d3.format(",d"),
       color = d3.scale.category20c();
@@ -271,7 +319,6 @@ function GenerateCustomBubbleChart(selector,data) {
       .size([diameter, diameter])
       .padding(1.5);
 
-  console.log($(selector),selector);
   var svg = d3.select(selector).append("svg")
       .attr("width", diameter)
       .attr("height", diameter)
@@ -350,4 +397,143 @@ $.fn.insertAtCaret = function(text) {
   });
 };
 
+$(document).ready(function() {
+  $("#compare-to").change(function() {
+    
+    if (validateCompareToWith()) {
+    
+    }
 
+
+  });
+
+  $("#compare-with").change(function() {
+    
+    if (validateCompareToWith()) {
+
+    }
+
+  });
+
+});
+
+function validateCompareToWith() {
+  var compareTo   = $("#compare-to").val();
+  var compareWith = $("#compare-with").val();
+  if (compareTo === compareWith) {
+    alert("Compare To & With Value Cannot be Same");
+    return false;
+  }else {
+    return true;
+  }
+
+}
+
+function updateLineChartWithAxis(selector,data) {
+
+  var m = [80, 80, 80, 80]; 
+  var w = 1200 - m[1] - m[3]; 
+  var h = 500 - m[0] - m[2]; 
+      
+  var line = d3.svg.line().interpolate("linear")
+              .x(function(d) {return x(d.x);})
+              .y(function(d) {return y(d.y);
+              });
+
+  var x = d3.scale.ordinal().rangeRoundBands([0, w], .95);
+  var y = d3.scale.linear().range([h, 0]);
+  var xAxis = d3.svg.axis().scale(x).orient("bottom");
+  var yAxis = d3.svg.axis().scale(y).orient("left");
+
+  var graph = d3.select(selector).append("svg:svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+    .append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+  
+  x.domain(data.map(function(d) {return d.x;}));
+  y.domain([d3.min(data, function(d) {return d.y;}),
+            d3.max(data, function(d) {return d.y;})]);
+
+  graph.append("svg:g")
+       .attr("class", "x axis")
+       .attr("transform", "translate(0," + h + ")")
+       .call(xAxis);
+
+  var yAxisLeft = d3.svg.axis()
+          .scale(y)
+          .ticks(10)
+          .orient("left")
+          .tickSize(-w)
+          .tickSubdivide(true);
+
+  graph.append("svg:g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(-25,0)")
+          .call(yAxisLeft);
+
+  var groups = [];
+  var which_color = d3.scale.category10();
+  var colors = [];
+        
+  data.forEach(function(group) {
+    if (groups.indexOf(group.group) < 0) {
+      groups.push(group.group);
+      colors.push(which_color(group.group));
+    }
+  });
+
+        generate_chart(data);
+        function generate_chart(data) {
+          var class_name = "";
+          
+          groups.forEach(function(group) {
+
+            var line_data = [];
+            var g_line_data = [];
+            var color = "yellow";
+            class_name = group;
+            data.forEach(function(d) {
+              if (group.indexOf(d.group) >= 0) {
+                color = d.color;               
+                line_data.push({x: d.x, y: d.y, group: d.group});
+              } else {
+                g_line_data.push({x: d.x, y: d.y, group: d.group});
+              }
+            });
+
+
+            graph.append("svg:path")
+                    .attr("d", line(line_data))
+                    .attr("stroke", color)
+                    .attr("stroke-width", 3)
+                    .style("fill",color)
+                    .style("opacity", 1) 
+                    .attr("stroke-width", 1.5)
+                    .attr("class", "line point-line line-" + class_name);
+
+            graph.selectAll("circles")
+                    .data(line_data)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "dot line-" + class_name)
+                    .attr("cx", function(d) {
+                      return x(d.x);
+                    })
+                    .attr("cy", function(d) {
+                      return y(d.y);
+                    })
+                    .attr("fill", color)
+                    .attr("r", 3.5)
+                    .attr("stroke", color)
+                    .attr("stroke-width", 0);
+
+
+            
+          });
+          
+        }
+
+
+
+}

@@ -9,18 +9,67 @@
     %h5 Transformed output
     - if @mapped_output.present?
       %table.bordered
-        - @mapped_output.each do |key, set|
-          %tr
-            %td= set
-            %td= key            
+        - unless @viz_viz.chart == "Compare Line Chart"
+          - @mapped_output.each do |key, set|          
+            %tr
+              %td= set
+              %td= key
+        -else
+          - @mapped_output.each do |key, set,set2,set3,set4|
+            %tr
+              %td= key
+              %td= set              
+              %td= set2
+              %td= set3
+              %td= set4
+              
   .col-sm-8
+    - if @viz_viz.chart == "Compare Line Chart"
+      Comapre 
+      %select#compare-to
+        - @mapped_output.each_with_index do |key,index|
+          - if index > 0
+            %option{value: "#{index-1}"}="#{key[0]}"
+
+      With
+      %select#compare-with
+        - @mapped_output.each_with_index do |key,index|
+          - if index > 0
+            %option{value: "#{index-1}"}="#{key[0]}"
+          -else
+            %option{value: ""}None
+
+      Time
+      %select#time-frame
+        %option{value: 1} Monthly
+        %option{value: 2} Quarter
+        %option{value: 3} Year
+        %option{value: 4, selected: "selected"} Maximum
+
     #pie-chart{style: "height:500px; width:500px;"}
         
-- chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column" , "Line Chart" => "line" }
+- chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column", "Line Chart" => "line", "Compare Line Chart" => "custom-line" }
 
-:javascript
-  
-  var custom_chart = ["Bubble Chart"];
+- if @viz_viz.chart == "Compare Line Chart"
+  :css
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+      display: none;
+    }
+
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 3.5px;
+    }
+:javascript  
+  var custom_chart = ["Bubble Chart", "Compare Line Chart"];
   if (custom_chart.indexOf(gon.chart_type) >= 0) {
     GenerateCustomChart(gon.chart_type,"#pie-chart", gon.csv_data);
   }else {
@@ -32,4 +81,7 @@
         datasource:   dw.datasource.delimited({csv: gon.csv_data})
     });
   }
+
+
+
           
