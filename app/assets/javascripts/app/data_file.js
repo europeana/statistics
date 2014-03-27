@@ -439,9 +439,9 @@ function validateCompareToWith() {
 }
 
 function updateLineChartWithAxis(selector,data) {
-  var m = [40, 80, 80, 80]; 
+  var m = [30, 80, 50, 80]; 
   var w = $("#pie-chart").width() - m[1] - m[3]; 
-  var h = 500 - m[0] - m[2]; 
+  var h = $("#pie-chart").height() - m[0] - m[2]; 
       
   var line = d3.svg.line().interpolate("linear")
               .x(function(d) {return x(d.x);})
@@ -470,7 +470,7 @@ function updateLineChartWithAxis(selector,data) {
 
   var yAxisLeft = d3.svg.axis()
           .scale(y)
-          .ticks(10)
+          .ticks(5)
           .orient("left")
           .tickSize(-w)
           .tickSubdivide(true);
@@ -478,10 +478,10 @@ function updateLineChartWithAxis(selector,data) {
   graph.append("svg:g")
           .attr("class", "y axis")
           .attr("transform", "translate(0,0)")
+          .style("stroke-dasharray", ("3, 3"))
           .call(yAxisLeft);
 
   var groups = [];
-  var which_color = d3.scale.category10();
         
   data.forEach(function(group) {
     if (groups.indexOf(group.group) < 0) {
@@ -489,19 +489,26 @@ function updateLineChartWithAxis(selector,data) {
     }
   });
   var counter = 0;
+  var color   = "#51A6F9";
   groups.forEach(function(group) {
+    
+
+    if (counter > 0 ) {
+      color = "#6DBE3D"
+    }
     counter++;
+
     var line_data = [];    
     var class_name = group;
     data.forEach(function(d) {
-      if (group.indexOf(d.group) >= 0) {
+      if (group.indexOf(d.group) >= 0) {        
         line_data.push({x: d.x, y: d.y, group: d.group});
       }
     });
 
     graph.append("svg:path")
             .attr("d", line(line_data))
-            .attr("stroke", which_color(counter))
+            .attr("stroke", color)
             .attr("class", "line point-line line-" + class_name);
 
     graph.selectAll(".text-legend")
