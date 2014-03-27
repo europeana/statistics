@@ -398,19 +398,28 @@ $.fn.insertAtCaret = function(text) {
 };
 
 $(document).ready(function() {
+  
   $("#compare-to").change(function() {
-    
     if (validateCompareToWith()) {
-    
+      $("#pie-chart svg").remove()
+      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
     }
-
-
   });
 
   $("#compare-with").change(function() {
     
     if (validateCompareToWith()) {
+      $("#pie-chart svg").remove()
+      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
+    }
 
+  });
+
+  $("#time-frame").change(function() {
+    
+    if (validateCompareToWith()) {
+      $("#pie-chart svg").remove()
+      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
     }
 
   });
@@ -432,7 +441,7 @@ function validateCompareToWith() {
 function updateLineChartWithAxis(selector,data) {
 
   var m = [80, 80, 80, 80]; 
-  var w = 1200 - m[1] - m[3]; 
+  var w = 700 - m[1] - m[3]; 
   var h = 500 - m[0] - m[2]; 
       
   var line = d3.svg.line().interpolate("linear")
@@ -455,10 +464,10 @@ function updateLineChartWithAxis(selector,data) {
   y.domain([d3.min(data, function(d) {return d.y;}),
             d3.max(data, function(d) {return d.y;})]);
 
-  graph.append("svg:g")
-       .attr("class", "x axis")
-       .attr("transform", "translate(0," + h + ")")
-       .call(xAxis);
+  // graph.append("svg:g")
+  //      .attr("class", "x axis")
+  //      .attr("transform", "translate(0," + h + ")")
+  //      .call(xAxis);
 
   var yAxisLeft = d3.svg.axis()
           .scale(y)
@@ -469,71 +478,40 @@ function updateLineChartWithAxis(selector,data) {
 
   graph.append("svg:g")
           .attr("class", "y axis")
-          .attr("transform", "translate(-25,0)")
+          .attr("transform", "translate(0,0)")
           .call(yAxisLeft);
 
   var groups = [];
   var which_color = d3.scale.category10();
-  var colors = [];
         
   data.forEach(function(group) {
     if (groups.indexOf(group.group) < 0) {
       groups.push(group.group);
-      colors.push(which_color(group.group));
     }
   });
+  var counter = 0;
+  groups.forEach(function(group) {
+    counter++;
+    var line_data = [];    
+    var class_name = group;
+    data.forEach(function(d) {
+      if (group.indexOf(d.group) >= 0) {
+        line_data.push({x: d.x, y: d.y, group: d.group});
+      }
+    });
 
-        generate_chart(data);
-        function generate_chart(data) {
-          var class_name = "";
-          
-          groups.forEach(function(group) {
+    graph.append("svg:path")
+            .attr("d", line(line_data))
+            .attr("stroke", which_color(counter))
+            .attr("class", "line point-line line-" + class_name);
 
-            var line_data = [];
-            var g_line_data = [];
-            var color = "yellow";
-            class_name = group;
-            data.forEach(function(d) {
-              if (group.indexOf(d.group) >= 0) {
-                color = d.color;               
-                line_data.push({x: d.x, y: d.y, group: d.group});
-              } else {
-                g_line_data.push({x: d.x, y: d.y, group: d.group});
-              }
-            });
-
-
-            graph.append("svg:path")
-                    .attr("d", line(line_data))
-                    .attr("stroke", color)
-                    .attr("stroke-width", 3)
-                    .style("fill",color)
-                    .style("opacity", 1) 
-                    .attr("stroke-width", 1.5)
-                    .attr("class", "line point-line line-" + class_name);
-
-            graph.selectAll("circles")
-                    .data(line_data)
-                    .enter()
-                    .append("circle")
-                    .attr("class", "dot line-" + class_name)
-                    .attr("cx", function(d) {
-                      return x(d.x);
-                    })
-                    .attr("cy", function(d) {
-                      return y(d.y);
-                    })
-                    .attr("fill", color)
-                    .attr("r", 3.5)
-                    .attr("stroke", color)
-                    .attr("stroke-width", 0);
-
-
-            
-          });
-          
-        }
-
-
-
+    graph.selectAll(".text-legend")
+            .data(line_data)
+            .enter()
+            .append("text")
+            .attr("x", function(d){return x(d.x);})
+            .attr("y", function(d,i){return y(d.y) + i +10 ;})
+            .text(function(d) {return d.y;})
+    
+  });
 }
