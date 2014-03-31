@@ -1,7 +1,24 @@
 .row
-  .col-sm-3
-    = render partial: "cms_articles/sidebar"
-  .col-sm-9
-    %h1{style: "border-top: solid 5px #333333; padding-top: 20px;"}
-      Hi I Am All Articles
-      
+  .col-sm-12
+    %table.table-bordered
+      %thead
+        %tr
+          %th Title
+          %th Tag
+          %th Type
+          %th #
+      %tbody    
+      - @cms_articles.each do |cms_article|
+        %tr
+          %td
+            = link_to cms_article.title, "/#{cms_article.slug}"
+            -if cms_article.home_page
+              %a.tag{href: "#"}Default Home page
+          %td= link_to cms_article.tag, "/#{cms_article.slug}"
+          %td
+            %time= "#{time_ago_in_words(cms_article.updated_at)} ago"
+          %td
+            -if !cms_article.archieved
+              - if 
+              %a{href: "#", class: "btn alt"} Archived
+

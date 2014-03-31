@@ -18,7 +18,7 @@ class CmsArticlesController < ApplicationController
   end
 
   def allArticles
-    
+    @cms_articles = Cms::Article.all
   end
 
   def show
