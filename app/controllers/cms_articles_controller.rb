@@ -17,6 +17,10 @@ class CmsArticlesController < ApplicationController
     end
   end
 
+  def allArticles
+    
+  end
+
   def show
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
     @selected_article = @cms_article.slug

@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20140325103614) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "slug"
+    t.integer  "core_tag_id"
+    t.boolean  "is_star"
     t.string   "tag"
     t.boolean  "home_page"
     t.integer  "position"
@@ -45,6 +47,16 @@ ActiveRecord::Schema.define(:version => 20140325103614) do
     t.string   "name"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "core_tags", :force => true do |t|
+    t.string   "genre"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "slug"
+    t.integer  "sort_order"
   end
 
   create_table "data_filzs", :force => true do |t|
