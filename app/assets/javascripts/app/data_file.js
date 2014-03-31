@@ -283,8 +283,8 @@ function stringToNumArr(data_arr) {
 
 function GenerateBulletChart(selector,data) {
   var margin = {top: 5, right: 40, bottom: 20, left: 120},
-      width = $("#pie-chart").width() - margin.left - margin.right,
-      height = $("#pie-chart").height() - margin.top - margin.bottom;
+      width = $(selector).width() - margin.left - margin.right,
+      height = 50 - margin.top - margin.bottom;
 
   var chart = d3.bullet()
       .width(width)
