@@ -1,0 +1,48 @@
+.row
+  .col-sm-12
+    #pie-chart{style: "height:50px; width:100%;"}
+
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+%br
+.row
+  .col-sm-12
+    %h5 Transformed output
+    - if @mapped_output.present?
+      %table.bordered
+        - counter = 1
+        - @mapped_output.each do |key, set,set2,set3,set4|
+          %tr
+            - if counter == 1
+              - counter += 1
+              %th= key
+              %th= set
+              %th= set3
+              %th= set2              
+              %th= set4
+            -else            
+              %td= key
+              %td= set
+              %td= set2
+              %td= set3
+              %td= set4
+:css
+  .bullet { font: 10px sans-serif; }
+  .bullet .marker { stroke: #000; stroke-width: 2px; }
+  .bullet .tick line { stroke: #666; stroke-width: .5px; }
+  .bullet .range.s0 { fill: #eee; }
+  .bullet .range.s1 { fill: #ddd; }
+  .bullet .range.s2 { fill: #ccc; }
+  .bullet .measure.s0 { fill: lightsteelblue; }
+  .bullet .measure.s1 { fill: steelblue; }
+  .bullet .title { font-size: 14px; font-weight: bold; }
+  .bullet .subtitle { fill: #999; }

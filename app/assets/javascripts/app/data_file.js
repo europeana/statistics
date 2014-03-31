@@ -171,10 +171,9 @@ function GenereteChartInMarkdown() {
     var width = $(this).parent("div").attr("class");
 
     var div_id = $("#"+title).attr("id");
-    var custom_chart = ["Bubble Chart"];
+    var custom_chart = ["Bubble Chart", "Bullet Chart"];
     $.get("/generate/chart/"+title,function(vdata,status){      
-
-      console.log("#"+title);
+      console.log(custom_chart,vdata.chart_type,"charts")
       if (custom_chart.indexOf(vdata.chart_type) >= 0) {
         GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
       }else {
@@ -255,7 +254,66 @@ function GenerateCustomChart(chart_type,selector,data) {
     GenerateCustomBubbleChart(selector,data);
   }else if(chart_type == "Compare Line Chart") {
     GenerateCustomLineChart(selector,data);
+  }else if(chart_type === "Bullet Chart") {
+    GenerateBulletChart(selector,data);
   }
+}
+
+function convertDataToBulletChart(data) {
+  var output = [];
+  for (var i = 0; i <= data.length - 1; i++) {
+    if (i > 0) {
+      output.push({ "title":data[i][0],"subtitle":data[i][1],
+                    "ranges":stringToNumArr(data[i][2].split(",")),
+                    "measures":stringToNumArr(data[i][3].split(",")),
+                    "markers":stringToNumArr(data[i][4].split(","))
+                  });
+    }     
+  }
+  return output;
+}
+
+function stringToNumArr(data_arr) {
+  var output = [];
+  for (var i = 0; i <= data_arr.length - 1; i++) {
+    output.push(parseInt(data_arr[i]));
+  }
+  return output;
+}
+
+function GenerateBulletChart(selector,data) {
+  var margin = {top: 5, right: 40, bottom: 20, left: 120},
+      width = $("#pie-chart").width() - margin.left - margin.right,
+      height = $("#pie-chart").height() - margin.top - margin.bottom;
+
+  var chart = d3.bullet()
+      .width(width)
+      .height(height);
+
+  data = d3.csv.parseRows(data);    
+  data = convertDataToBulletChart(data);
+ var svg = d3.select(selector).selectAll(selector+" svg")
+      .data(data)
+    .enter().append("svg")
+      .attr("class", "bullet")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(chart);
+
+  var title = svg.append("g")
+      .style("text-anchor", "end")
+      .attr("transform", "translate(-6," + height / 2 + ")");
+
+  title.append("text")
+      .attr("class", "title")
+      .text(function(d) { return d.title; });
+
+  title.append("text")
+      .attr("class", "subtitle")
+      .attr("dy", "1em")
+      .text(function(d) { return d.subtitle; });  
 }
 
 function formaToCustomLineData(data) {

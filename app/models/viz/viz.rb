@@ -17,7 +17,7 @@ class Viz::Viz < ActiveRecord::Base
   CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],
              ["Column Chart"], ["Grouped Column Chart"],
              ["Line Chart"], ["Stacked Column Chart"],
-             ["Bubble Chart"], ["Compare Line Chart"]]
+             ["Bubble Chart"], ["Bullet Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
@@ -59,6 +59,11 @@ class Viz::Viz < ActiveRecord::Base
         ["Quaterly", "number", "O"],["Yearly", "number", "O"],
         ["All", "number", "0"]
       ]
+    elsif self.chart == "Bullet Chart"
+      [ ["X", "string", "M"],["Subtitle", "string", "M"],
+        ["Ranges", "string", "O"],["Measures", "string", "O"],
+        ["Markers", "string", "0"]
+      ]
     end
   end
   
@@ -97,6 +102,12 @@ class Viz::Viz < ActiveRecord::Base
         line2 = row[headings.index(map_json["Quaterly"])]
         line3 = row[headings.index(map_json["Yearly"])]
         line4 = row[headings.index(map_json["All"])]
+      elsif self.chart == "Bullet Chart"
+        label = row[headings.index(map_json["X"])]
+        value = row[headings.index(map_json["Subtitle"])]
+        value2= row[headings.index(map_json["Ranges"])]
+        value3= row[headings.index(map_json["Measures"])]
+        value4= row[headings.index(map_json["Markers"])]
       end
       if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart" or self.chart == "Bubble Chart"
         unique_label = label
@@ -134,8 +145,25 @@ class Viz::Viz < ActiveRecord::Base
            "line2" => line2.to_f,
            "line3" => line3.to_f,
            "line4" => line4.to_f
- }
+          }
         end
+      elsif self.chart == "Bullet Chart"  
+        unique_label = label
+        if h[unique_label].present?          
+          h[unique_label] = {"label" => label,
+           "value"  => h[unique_label]["Subtitle"],
+           "value2" => h[unique_label]["value2"],
+           "value3" => h[unique_label]["value3"],
+           "value4" => h[unique_label]["value4"]
+         }
+        else
+          h[unique_label] = {"label" => label,
+           "value" => value,           
+           "line2" => value2,
+           "line3" => value3,
+           "line4" => value4
+          }
+        end        
       end
     end
     if h != {}

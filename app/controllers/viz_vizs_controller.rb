@@ -76,7 +76,6 @@ class VizVizsController < ApplicationController
       mapped_output = JSON.parse(@viz_viz.mapped_output)
       mapped_output = Core::Services.twod_to_csv(mapped_output)
       json_data = { "chart_type" => @viz_viz.chart, "mapped_output" => mapped_output }
-
     else
       json_data = {}      
     end
