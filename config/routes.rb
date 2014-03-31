@@ -15,6 +15,7 @@ Pykhub::Application.routes.draw do
   get "/:file_id/delete", to: "cms_articles#destroy", as: "delete_cms_article"
   post "/sort/tags", to: "cms_articles#sort", as: "sort_tags"
   get "/all-articles", to: "cms_articles#allArticles", as: "all_articles"
+  get "/article/:file_id/:type", to: "cms_articles#publish_or_archieve", as: "pub_arch_article"
   
   #files
   get "/data", to: "data_filzs#index", as: "data_filzs"

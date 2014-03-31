@@ -6,7 +6,7 @@ class CmsArticlesController < ApplicationController
   def index        
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
     if params["tag"].present?
-      @cms_other_articles = Cms::Article.where("tag IS null OR tag = ''")
+      @cms_other_articles = Cms::Article.where(archieved: true)
       @selected_article = "other"
       @setting = Setting.first
     else
@@ -19,6 +19,18 @@ class CmsArticlesController < ApplicationController
 
   def allArticles
     @cms_articles = Cms::Article.all
+  end
+
+  def publish_or_archieve
+    msg = ""    
+    if params[:type] == "publish"
+      @cms_article.update_attributes(is_published: true)
+      msg = "Pusblish"    
+    elsif params[:type] == "archieved"
+      @cms_article.update_attributes(archieved: true)
+      msg = "Archieved"    
+    end  
+    redirect_to all_articles_path, notice: " Updated to #{msg}"
   end
 
   def show

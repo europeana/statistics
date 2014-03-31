@@ -5,8 +5,9 @@
         %tr
           %th Title
           %th Tag
-          %th Type
-          %th #
+          %th 
+          %th 
+          %th               
       %tbody    
       - @cms_articles.each do |cms_article|
         %tr
@@ -16,9 +17,13 @@
               %a.tag{href: "#"}Default Home page
           %td= link_to cms_article.tag, "/#{cms_article.slug}"
           %td
-            %time= "#{time_ago_in_words(cms_article.updated_at)} ago"
-          %td
-            -if !cms_article.archieved
-              - if 
-              %a{href: "#", class: "btn alt"} Archived
-
+            - unless cms_article.archieved
+              - if !cms_article.is_published 
+                %a{href: "#{pub_arch_article_path(cms_article,'publish')}"} Pusblish
+              -else 
+                %a{href: "#{pub_arch_article_path(cms_article,'archieved')}"} Archive
+          %td      
+            = link_to "Edit", edit_cms_article_path(cms_article)
+          %td  
+            = link_to "Delete", delete_cms_article_path(cms_article),  confirm: 'Are you sure?'
+                
