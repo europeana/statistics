@@ -15,7 +15,7 @@
             = link_to cms_article.title, "/#{cms_article.slug}"
             -if cms_article.home_page
               %a.tag{href: "#"}Default Home page
-          %td= link_to cms_article.tag, "/#{cms_article.slug}"
+          %td= cms_article.tag
           %td
             - unless cms_article.archieved
               - if !cms_article.is_published 
