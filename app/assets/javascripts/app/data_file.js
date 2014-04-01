@@ -366,12 +366,32 @@ function getDataFromFilter(data) {
   return filtered_data;
 }
 
+function clubDataForBubbleChart(data) {
+  var filtered_data = [];
+  var how_much = 50;
+  for (var i = 0; i <= data.length - 1; i++) {    
+    if (how_much >= i) {
+      filtered_data.push(data[i]);
+    }else {
+      var prev_data0 = "Others";
+      var current_val = parseInt(data[i][1]);
+      if (filtered_data[how_much]) {
+        current_val += parseInt(filtered_data[how_much][1]);
+        filtered_data[how_much] =  [prev_data0,current_val];
+      }else {
+        filtered_data.push([prev_data0,current_val]);
+      }      
+    }
+    
+  };
+  return filtered_data;  
+}
 function GenerateCustomBubbleChart(selector,data) {
     
   var diameter = 500  ,
       format = d3.format(",d"),
       color = d3.scale.category20c();
-
+  
   var bubble = d3.layout.pack()
       .sort(null)
       .size([diameter, diameter])
@@ -383,6 +403,8 @@ function GenerateCustomBubbleChart(selector,data) {
       .attr("class", "bubble");
 
   var data = d3.csv.parseRows(data);
+  var data = clubDataForBubbleChart(data);
+  console.log(data,"bubble chart")
 
   var node = svg.selectAll(".node")
                 .data(bubble.nodes(classes(data))
