@@ -4,12 +4,6 @@
   - url = update_cms_article_path(@cms_article.slug)
   - headline = "Edit story"
 
-.row
-  .col-sm-12
-    %ul.breadcrumbs
-      %li= link_to "Home", root_url
-      - if @cms_article.id
-        %li= link_to @cms_article.title, cms_article_path(file_id: @cms_article.slug)
 %h2.headline= headline      
 
 .row

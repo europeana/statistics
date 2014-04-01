@@ -1,13 +1,10 @@
 .row
-  .col-sm-12
-    %ul.breadcrumbs
-      %li= link_to "Home", root_url
-.row
   .col-sm-6
-    %h2.headline Data
   .col-sm-6  
     = link_to "Manually add new data", new_data_filzs_path, class: "btn pull-right"
-
+%br    
+%br
+%br    
 - if @data_filzs.first.present?
   %table.bordered
     %thead

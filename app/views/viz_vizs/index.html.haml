@@ -1,12 +1,10 @@
 .row
-  .col-sm-12
-    %ul.breadcrumbs
-      %li= link_to "Home", root_url
-.row
   .col-sm-6
-    %h2.headline Visualizations
   .col-sm-6  
     = link_to "Add new visualization", new_viz_vizs_path, class: "btn pull-right"
+%br    
+%br    
+%br        
 
 - if @viz_vizs.first.present?
   %table.bordered
