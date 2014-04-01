@@ -68,7 +68,7 @@ class VizVizsController < ApplicationController
   
   def destroy
     @viz_viz.destroy
-    redirect_to viz_vizs_path
+    redirect_to viz_vizs_path, notice: "Record deleted."
   end
 
   def generate_chart        

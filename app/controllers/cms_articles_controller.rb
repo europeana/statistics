@@ -89,7 +89,7 @@ class CmsArticlesController < ApplicationController
 
   def destroy
     @cms_article.destroy
-    redirect_to root_url
+    redirect_to all_articles_path, notice: "Record deleted."
   end
 
   def sort

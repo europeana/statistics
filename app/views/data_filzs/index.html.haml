@@ -13,9 +13,11 @@
         %th Source
         %th Last updated
         %th Download
+        %th
     - @data_filzs.each do |data_filz|
       %tr
         %td= link_to "#{data_filz.file_file_name}", data_filz_path(file_id: data_filz.slug)
         %td= data_filz.genre == "API" ? "APIs" : "Manual"
         %td= "#{time_ago_in_words(data_filz.updated_at)} ago"
         %td= link_to "CSV", csv_data_filz_path(file_id: data_filz.slug)
+        %td= link_to "Delete", delete_data_filz_path(data_filz.slug),confirm: 'Are you sure?'
