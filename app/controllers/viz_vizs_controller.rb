@@ -4,7 +4,7 @@ class VizVizsController < ApplicationController
   before_filter :find_objects
   
   def index
-    @viz_vizs = Viz::Viz.all
+    @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
   end
   
   def map

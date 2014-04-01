@@ -18,7 +18,7 @@ class CmsArticlesController < ApplicationController
   end
 
   def allArticles
-    @cms_articles = Cms::Article.all
+    @cms_articles = Cms::Article.find(:all, order: "updated_at desc")
   end
 
   def publish_or_archieve
@@ -42,7 +42,7 @@ class CmsArticlesController < ApplicationController
 
   def new
     @cms_article = Cms::Article.new
-    @viz_vizs = Viz::Viz.all
+    @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
     gon.width = "300px"
     gon.height = "300px"
   end
@@ -63,7 +63,7 @@ class CmsArticlesController < ApplicationController
     if @cms_article.save
       redirect_to cms_article_path(file_id: @cms_article.slug), notice: t("c.s")
     else
-      @viz_vizs = Viz::Viz.all
+      @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
       gon.errors = @cms_article.errors
       gon.width = "300px"
       gon.height = "300px"      
@@ -82,7 +82,7 @@ class CmsArticlesController < ApplicationController
     else
       gon.width = "300px"
       gon.height = "300px"      
-      @viz_vizs = Viz::Viz.all
+      @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
       render action: "edit"
     end
   end
@@ -106,7 +106,7 @@ class CmsArticlesController < ApplicationController
     if params[:file_id].present? 
       @cms_article = Cms::Article.find(params[:file_id])
     end    
-    @viz_vizs = Viz::Viz.all
+    @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
   end
     
 end

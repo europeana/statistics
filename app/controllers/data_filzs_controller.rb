@@ -3,7 +3,7 @@ class DataFilzsController < ApplicationController
   before_filter :authenticate_user!, :find_objects
   
   def index
-    @data_filzs = Data::Filz.where(genre: nil)
+    @data_filzs = Data::Filz.where(genre: nil).order("updated_at desc")
   end
     
   def csv
