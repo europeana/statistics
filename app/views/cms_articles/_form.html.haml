@@ -39,9 +39,9 @@
 
 - if @viz_vizs.first.present?
   #chart-selector.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-    .modal-dialog
+    .modal-dialog 
       .modal-content
-        .modal-body
+        .modal-body{style: "height:600px; overflow-y:scroll;"}
           %table.table.table-bordred.table-hovered 
             - @viz_vizs.each do |viz|
               %tr
