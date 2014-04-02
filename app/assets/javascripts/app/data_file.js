@@ -182,7 +182,7 @@ function GenereteChartInMarkdown() {
       if (custom_chart.indexOf(vdata.chart_type) >= 0) {
         gon.mapped_output["#"+title] = vdata.mapped_output
         gon.lineChartData["#"+title] = vdata.chart_data
-        GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
+        GenerateCustomChart(vdata.chart_type,"#"+title, vdata.chart_data);
         if (vdata.chart_type === "Compare Line Chart") {
           $("#"+title+" .filter-compare-to-line").trigger("change");
           that.addClass("compare-custom-line-chart");
@@ -412,7 +412,7 @@ function GenerateCustomBubbleChart(selector,data) {
       .attr("height", diameter)
       .attr("class", "bubble");
 
-  //var data = d3.csv.parseRows(data);
+  var data = d3.csv.parseRows(data);
   var data = clubDataForBubbleChart(data);
 
   var node = svg.selectAll(".node")
