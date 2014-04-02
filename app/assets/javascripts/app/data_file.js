@@ -572,10 +572,16 @@ function appendSelectCustomLineChart(selector,mapped_output) {
 }
 
 function updateLineChartWithAxis(selector,data,mapped_output) {
+  if ($(selector).height() < 60) {
+    height = 300
+  }else {
+    height = $(selector).height() ;
+  }
+
   var m = [30, 80, 50, 80]; 
   var w = $(selector).width() - m[1] - m[3]; 
-  var h = $(selector).height() - m[0] - m[2]; 
-      
+  var h = height - m[0] - m[2]; 
+  
   var line = d3.svg.line().interpolate("linear")
               .x(function(d) {return x(d.x);})
               .y(function(d) {return y(d.y);
