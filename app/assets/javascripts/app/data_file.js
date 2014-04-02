@@ -186,6 +186,10 @@ function GenereteChartInMarkdown() {
         if (vdata.chart_type === "Compare Line Chart") {
           $("#"+title+" .filter-compare-to-line").trigger("change");
           that.addClass("compare-custom-line-chart");
+
+          if ($("#"+title).height() < 100) {
+            $("#"+title).css("height","300px")
+          }
         }
         
       }else {
@@ -196,7 +200,7 @@ function GenereteChartInMarkdown() {
             type: chart_types[vdata.chart_type] + "-chart", 
             theme: 'default', 
             container: that,
-            datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
+            datasource:   dw.datasource.delimited({csv: vdata.chart_data})        
           })          
         }
       }
