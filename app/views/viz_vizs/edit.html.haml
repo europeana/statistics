@@ -3,7 +3,14 @@
     %ul.breadcrumbs
       %li= link_to "Home", root_url
       %li= link_to "Visualizations", viz_vizs_path
-    %h2.headline= @viz_viz.title
+
+    = form_for(@viz_viz, url: update_viz_viz_path, :html => { role: "form" }) do |f|
+      .form-group
+        %strong.headline
+          Title
+        = f.text_field :title, class: "form-control", placeholder: "Title", autofocus: true, style: "width: 400px;"
+        = f.submit "Save", id: "submit", class: "btn alt", style: "width: 100px;"
+
 - if @viz_viz.chart == "Bullet Chart" 
   = render partial: "viz_vizs/bullet-chart"
 -elsif @viz_viz.chart == "Compare Line Chart"
