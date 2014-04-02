@@ -17,7 +17,7 @@ class Viz::Viz < ActiveRecord::Base
   CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],
              ["Column Chart"], ["Grouped Column Chart"],
              ["Line Chart"], ["Stacked Column Chart"],
-             ["Bubble Chart"], ["Bullet Chart"]]
+             ["Bubble Chart"], ["Compare Line Chart"], ["Bullet Chart"]]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart

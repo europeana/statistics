@@ -517,14 +517,14 @@ function validateCompareToWith() {
 
 function updateLineChartWithAxis(selector,data) {
   var m = [30, 80, 50, 80]; 
-  var w = $("#pie-chart").width() - m[1] - m[3]; 
-  var h = $("#pie-chart").height() - m[0] - m[2]; 
+  var w = $(selector).width() - m[1] - m[3]; 
+  var h = $(selector).height() - m[0] - m[2]; 
       
   var line = d3.svg.line().interpolate("linear")
               .x(function(d) {return x(d.x);})
               .y(function(d) {return y(d.y);
               });
-
+  console.log(selector,data,"custom line chart")
   var x = d3.scale.ordinal().rangeRoundBands([0, w], .95);
   var y = d3.scale.linear().range([h, 0]);
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
