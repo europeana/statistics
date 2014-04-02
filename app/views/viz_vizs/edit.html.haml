@@ -27,8 +27,7 @@
 :javascript  
   var custom_chart = ["Bubble Chart", "Compare Line Chart", "Bullet Chart"];
   if (custom_chart.indexOf(gon.chart_type) >= 0) {
-    GenerateCustomChart(gon.chart_type,"#pie-chart", gon.csv_data);
-
+    GenerateCustomChart(gon.chart_type,"#pie-chart", gon.csv_data, gon.mapped_output);
   }else {
     // display Echart if datawrapper
     dw.visualize({

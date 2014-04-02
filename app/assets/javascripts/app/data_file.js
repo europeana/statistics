@@ -99,6 +99,10 @@ function generate_article_chart() {
   $(".wmd-input").hide();
   var converter = new Showdown.converter();
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
+  gon.mapped_output = {}
+  gon.lineChartData = {}
+  // gon.mapped_output["#pie-chart"] = @mapped_output
+  // gon.lineChartData["#pie-chart"] = gon.csv_data
 
   $.each(gon.cms_articles, function(index, data) {    
 
@@ -124,10 +128,13 @@ function generate_article_chart() {
           "width": "180px"
         })
       .appendTo(class_name)
-
+      var custom_chart = ["Bubble Chart", "Bullet Chart","Compare Line Chart"];
       $.get("/generate/chart/"+title,function(vdata,status){
-
         if (custom_chart.indexOf(vdata.chart_type) >= 0) {
+  // gon.mapped_output["#pie-chart"] = @mapped_output
+  // gon.lineChartData["#pie-chart"] = gon.csv_data
+  console.log("this works")
+
           GenerateCustomChart(vdata.chart_type,'#'+title+"_Id_"+data.id, vdata.mapped_output);
         }else{  
           if (vdata) {
@@ -163,18 +170,19 @@ function generate_article_chart() {
 function GenereteChartInMarkdown() {
 
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
+  gon.mapped_output = {}
+  gon.lineChartData = {}
 
-  $(".pykih-viz").each(function(index) {      
-
+  $(".pykih-viz").each(function(index) {
     var title = $(this).attr("data-slug-id");   
     var that  = $(this);   
     var width = $(this).parent("div").attr("class");
-
     var div_id = $("#"+title).attr("id");
-    var custom_chart = ["Bubble Chart", "Bullet Chart"];
+    var custom_chart = ["Bubble Chart", "Bullet Chart","Compare Line Chart"];
     $.get("/generate/chart/"+title,function(vdata,status){      
-      console.log(custom_chart,vdata.chart_type,"charts")
       if (custom_chart.indexOf(vdata.chart_type) >= 0) {
+        gon.mapped_output["#"+title] = vdata.mapped_output
+        gon.lineChartData["#"+title] = vdata.mapped_output
         GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
       }else {
         if (vdata) {
@@ -227,7 +235,7 @@ function GenereteDataWrapperChart(options) {
   var title = options.title;   
   $("#"+options.id).addClass("col-sm-12");
   $("#"+options.id).css("height","250px");
-  var custom_chart = ["Bubble Chart"];
+  var custom_chart = ["Bubble Chart","Compare Line Chart","Bullet Chart"];
   $.get("/generate/chart/"+title,function(vdata,status){
 
     if (vdata) {      
@@ -240,20 +248,16 @@ function GenereteDataWrapperChart(options) {
           container: options.selector,
           datasource:   dw.datasource.delimited({csv: vdata.mapped_output})        
         })          
-
       }
-  
-
     }
-
   });      
 }
 
-function GenerateCustomChart(chart_type,selector,data) {
+function GenerateCustomChart(chart_type,selector,data,mapped_output) {
   if (chart_type == "Bubble Chart") {
     GenerateCustomBubbleChart(selector,data);
   }else if(chart_type == "Compare Line Chart") {
-    GenerateCustomLineChart(selector,data);
+    GenerateCustomLineChart(selector,gon.lineChartData[selector],gon.mapped_output[selector]);
   }else if(chart_type === "Bullet Chart") {
     GenerateBulletChart(selector,data);
   }
@@ -326,20 +330,24 @@ function formaToCustomLineData(data) {
   return output;
 }
 
-function GenerateCustomLineChart(selector,data) {  
+function GenerateCustomLineChart(selector,data,mapped_output) {  
+  
   data = d3.csv.parseRows(data);
   data = formaToCustomLineData(data);
-  data = setDataByFilter(data);
-  updateLineChartWithAxis(selector,data);  
+  data = setDataByFilter(data,selector);  
+  console.log(data,"ssss")
+
+  updateLineChartWithAxis(selector,data,mapped_output);  
 }
 
-function setDataByFilter(data) {  
-  var compare_to_pos = $("#compare-to").val();  
-  var filtered_data = [getDataFromFilter(data[compare_to_pos])];
-  var compare_with_pos = $("#compare-with").val();  
-  var time_frame = $("#time-frame").val();
+function setDataByFilter(data,selector) {  
+  var compare_to_pos = $(selector+" .filter-compare-to-line").val();    
+  var filtered_data = [getDataFromFilter(data[compare_to_pos],selector)];  
+  console.log("==========",filtered_data,selector,compare_to_pos)
+  var compare_with_pos = $(selector+" .filter-compare-with-line").val();
+  var time_frame = $(selector+" .filter-time-frame-line").val();
   if (compare_with_pos > 0) {
-    filtered_data.push(getDataFromFilter(data[compare_with_pos]));
+    filtered_data.push(getDataFromFilter(data[compare_with_pos],selector));
   }
 
   var time_frames = ["Monthly","Quaterly","Yearly","All"];
@@ -350,16 +358,14 @@ function setDataByFilter(data) {
       var format = {"y":parseInt(qdata[j]),"x":time_frames[j-1],
                     "group": qdata[0]}
       new_data_set.push(format);
-    };
-    
+    };    
   };
-
   return new_data_set;
 }
 
-function getDataFromFilter(data) {
+function getDataFromFilter(data,selector) {
   var filtered_data = [];
-  var time_frame = $("#time-frame").val();
+  var time_frame = $(selector+" .filter-time-frame-line").val();
   for (var i = 0; i <= time_frame; i++) {
     filtered_data.push(data[i]);
   };
@@ -404,7 +410,6 @@ function GenerateCustomBubbleChart(selector,data) {
 
   var data = d3.csv.parseRows(data);
   var data = clubDataForBubbleChart(data);
-  console.log(data,"bubble chart")
 
   var node = svg.selectAll(".node")
                 .data(bubble.nodes(classes(data))
@@ -479,34 +484,57 @@ $.fn.insertAtCaret = function(text) {
 
 $(document).ready(function() {
   
-  $("#compare-to").change(function() {
-    if (validateCompareToWith()) {
-      $("#pie-chart svg").remove()
-      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
+  $(document).on("change",".filter-compare-to-line",function() {    
+    var selector  = $(this).attr("data-selector");
+    var compareTo   = $(selector+" .filter-compare-to-line").val();
+    var compareWith = $(selector+" .filter-compare-with-line").val();
+    var timeFrame   = $(selector+" .filter-time-frame-line").val();
+    if (validateCompareToWith(selector)) {      
+      $(selector+" svg").remove()
+      GenerateCustomChart("Compare Line Chart",selector, gon.lineChartData[selector], gon.mapped_output[selector]);
     }
+    $(selector+" .filter-compare-to-line").val(compareTo);
+    $(selector+" .filter-compare-with-line").val(compareWith);
+    $(selector+" .filter-time-frame-line").val(timeFrame);
+
   });
 
-  $("#compare-with").change(function() {
-    
-    if (validateCompareToWith()) {
-      $("#pie-chart svg").remove()
-      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
-    }
+  $(".filter-compare-to-line").trigger("change");
 
+  $(document).on("change",".filter-compare-with-line",function() {
+
+    var selector = $(this).attr("data-selector");
+    var compareTo   = $(selector+" .filter-compare-to-line").val();
+    var compareWith = $(selector+" .filter-compare-with-line").val();
+    var timeFrame   = $(selector+" .filter-time-frame-line").val();
+    if (validateCompareToWith(selector)) {
+      $(selector+" svg").remove()
+      GenerateCustomChart("Compare Line Chart",selector, gon.lineChartData[selector], gon.mapped_output[selector]);
+    }
+    $(selector+" .filter-compare-to-line").val(compareTo);
+    $(selector+" .filter-compare-with-line").val(compareWith);
+    $(selector+" .filter-time-frame-line").val(timeFrame);
   });
 
-  $("#time-frame").change(function() {    
-    if (validateCompareToWith()) {
-      $("#pie-chart svg").remove()
-      GenerateCustomChart("Compare Line Chart","#pie-chart", gon.csv_data);
+  $(document).on("change",".filter-time-frame-line",function() {    
+    var selector = $(this).attr("data-selector");
+    var compareTo   = $(selector+" .filter-compare-to-line").val();
+    var compareWith = $(selector+" .filter-compare-with-line").val();
+    var timeFrame   = $(selector+" .filter-time-frame-line").val();
+    if (validateCompareToWith(selector)) {
+      $(selector+" svg").remove()
+      GenerateCustomChart("Compare Line Chart",selector, gon.lineChartData[selector], gon.mapped_output[selector]);
     }
+    $(selector+" .filter-compare-to-line").val(compareTo);
+    $(selector+" .filter-compare-with-line").val(compareWith);
+    $(selector+" .filter-time-frame-line").val(timeFrame);
   });
 
 });
 
-function validateCompareToWith() {
-  var compareTo   = $("#compare-to").val();
-  var compareWith = $("#compare-with").val();
+function validateCompareToWith(selector) {
+  var compareTo   = $(selector+" .filter-compare-to-line").val();
+  var compareWith = $(selector+" .filter-compare-with-line").val();
   if (compareTo === compareWith) {
     alert("Compare To & With Value Cannot be Same");
     return false;
@@ -515,7 +543,31 @@ function validateCompareToWith() {
   }
 }
 
-function updateLineChartWithAxis(selector,data) {
+function appendSelectCustomLineChart(selector,mapped_output) {
+  var lable_name = "Compare";
+  var html_template = "";
+  var class_name = "filter-compare-to-line";
+  for (var i = 1; i <= 2; i++) {
+    html_template += " <strong>"+lable_name+"</strong>";
+    html_template += "<select class='"+class_name+"' data-selector='"+selector+"'>";
+    for (var j = 1; j <= mapped_output.length -1; j++) {
+      if (i > 1 && j <= 1) {
+        html_template += "<option value=''>None</option>";
+      }
+      var key = j-1;      
+      html_template += "<option value="+key.toString()+">"+ mapped_output[j][0]+ "</option>";
+    };
+    html_template += "</select>";
+    lable_name = " With";
+    class_name = "filter-compare-with-line";
+  };
+  class_name = "filter-time-frame-line";
+  html_template += " <strong>Time</strong>";
+  html_template += '<select class="'+class_name+'" data-selector="'+selector+'"><option value="1">Monthly</option><option value="2">Quarter</option><option value="3">Year</option><option selected="selected" value="4">Maximum</option></select>';
+  return html_template;
+}
+
+function updateLineChartWithAxis(selector,data,mapped_output) {
   var m = [30, 80, 50, 80]; 
   var w = $(selector).width() - m[1] - m[3]; 
   var h = $(selector).height() - m[0] - m[2]; 
@@ -524,7 +576,9 @@ function updateLineChartWithAxis(selector,data) {
               .x(function(d) {return x(d.x);})
               .y(function(d) {return y(d.y);
               });
-  console.log(selector,data,"custom line chart")
+  var html_template = appendSelectCustomLineChart(selector,mapped_output);
+  $(selector).html(html_template);
+  
   var x = d3.scale.ordinal().rangeRoundBands([0, w], .95);
   var y = d3.scale.linear().range([h, 0]);
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
@@ -567,8 +621,7 @@ function updateLineChartWithAxis(selector,data) {
   });
   var counter = 0;
   var color   = "#51A6F9";
-  groups.forEach(function(group) {
-    
+  groups.forEach(function(group) {    
 
     if (counter > 0 ) {
       color = "#6DBE3D"

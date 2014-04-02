@@ -31,6 +31,10 @@ class VizVizsController < ApplicationController
     @mapped_output = JSON.parse(@viz_viz.mapped_output)
     gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
     gon.chart_type = @viz_viz.chart
+    gon.mapped_output = {}
+    gon.mapped_output["#pie-chart"] = @mapped_output
+    gon.lineChartData = {}
+    gon.lineChartData["#pie-chart"] = gon.csv_data
   end
 
   def create    

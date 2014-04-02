@@ -1,26 +1,5 @@
 .row
   .col-sm-12
-    Comapre 
-    %select#compare-to
-      - @mapped_output.each_with_index do |key,index|
-        - if index > 0
-          %option{value: "#{index-1}"}="#{key[0]}"
-
-    With
-    %select#compare-with
-      - @mapped_output.each_with_index do |key,index|
-        - if index > 0
-          %option{value: "#{index-1}"}="#{key[0]}"
-        -else
-          %option{value: ""}None
-
-    Time
-    %select#time-frame
-      %option{value: 1} Monthly
-      %option{value: 2} Quarter
-      %option{value: 3} Year
-      %option{value: 4, selected: "selected"} Maximum
-
     #pie-chart{style: "height:500px; width:100%;background:#DDDEE0;"}
 
 %br    
