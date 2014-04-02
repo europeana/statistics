@@ -52,3 +52,24 @@ ul.pages{
 .bullet .measure.s1 { fill: steelblue; }
 .bullet .title { font-size: 14px; font-weight: bold; }
 .bullet .subtitle { fill: #999; }
+
+.compare-custom-line-chart {
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 4.5px;
+  }
+  .domain {
+    display: none;
+  }    
+}

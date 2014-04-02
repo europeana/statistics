@@ -133,7 +133,6 @@ function generate_article_chart() {
         if (custom_chart.indexOf(vdata.chart_type) >= 0) {
   // gon.mapped_output["#pie-chart"] = @mapped_output
   // gon.lineChartData["#pie-chart"] = gon.csv_data
-  console.log("this works")
 
           GenerateCustomChart(vdata.chart_type,'#'+title+"_Id_"+data.id, vdata.mapped_output);
         }else{  
@@ -172,18 +171,23 @@ function GenereteChartInMarkdown() {
   var chart_types = { "Pie Chart" : "pie", "Election Donut Chart": "election-donut" , "Donut Chart": "donut", "Bar Chart": "bar", "Column Chart": "column", "Grouped Column Chart": "grouped-column" , "Line Chart": "line" }
   gon.mapped_output = {}
   gon.lineChartData = {}
-
   $(".pykih-viz").each(function(index) {
     var title = $(this).attr("data-slug-id");   
     var that  = $(this);   
     var width = $(this).parent("div").attr("class");
     var div_id = $("#"+title).attr("id");
+
     var custom_chart = ["Bubble Chart", "Bullet Chart","Compare Line Chart"];
     $.get("/generate/chart/"+title,function(vdata,status){      
       if (custom_chart.indexOf(vdata.chart_type) >= 0) {
         gon.mapped_output["#"+title] = vdata.mapped_output
-        gon.lineChartData["#"+title] = vdata.mapped_output
+        gon.lineChartData["#"+title] = vdata.chart_data
         GenerateCustomChart(vdata.chart_type,"#"+title, vdata.mapped_output);
+        if (vdata.chart_type === "Compare Line Chart") {
+          $("#"+title+" .filter-compare-to-line").trigger("change");
+          that.addClass("compare-custom-line-chart");
+        }
+        
       }else {
         if (vdata) {
           $(that).addClass("col-sm-12");
@@ -330,20 +334,16 @@ function formaToCustomLineData(data) {
   return output;
 }
 
-function GenerateCustomLineChart(selector,data,mapped_output) {  
-  
+function GenerateCustomLineChart(selector,data,mapped_output) {    
   data = d3.csv.parseRows(data);
   data = formaToCustomLineData(data);
   data = setDataByFilter(data,selector);  
-  console.log(data,"ssss")
-
   updateLineChartWithAxis(selector,data,mapped_output);  
 }
 
 function setDataByFilter(data,selector) {  
   var compare_to_pos = $(selector+" .filter-compare-to-line").val();    
-  var filtered_data = [getDataFromFilter(data[compare_to_pos],selector)];  
-  console.log("==========",filtered_data,selector,compare_to_pos)
+  var filtered_data = [getDataFromFilter(data[compare_to_pos],selector)];
   var compare_with_pos = $(selector+" .filter-compare-with-line").val();
   var time_frame = $(selector+" .filter-time-frame-line").val();
   if (compare_with_pos > 0) {
@@ -408,7 +408,7 @@ function GenerateCustomBubbleChart(selector,data) {
       .attr("height", diameter)
       .attr("class", "bubble");
 
-  var data = d3.csv.parseRows(data);
+  //var data = d3.csv.parseRows(data);
   var data = clubDataForBubbleChart(data);
 
   var node = svg.selectAll(".node")

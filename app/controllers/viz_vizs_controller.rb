@@ -78,8 +78,9 @@ class VizVizsController < ApplicationController
   def generate_chart        
     if @viz_viz
       mapped_output = JSON.parse(@viz_viz.mapped_output)
+      mapped_output2 = mapped_output
       mapped_output = Core::Services.twod_to_csv(mapped_output)
-      json_data = { "chart_type" => @viz_viz.chart, "mapped_output" => mapped_output }
+      json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2 }
     else
       json_data = {}      
     end
