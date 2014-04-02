@@ -24,9 +24,12 @@
               %li= link_to "Articles", "/all-articles", class: (controller_name == "cms_articles" and (action_name == "allArticles" )) ? "current" : nil
               %li= link_to "Settings", edit_settings_path, class: (controller_name == "settings") ? "current" : nil
               %li= link_to "Logout", "/logout"
-      - if (params[:file_id] && params[:file_id].downcase == Cms::Article.where(home_page: true)[0].slug.downcase)
-        .row.row--full
-          = image_tag "banner.png", style: "width:100%;"
+      - if params[:file_id]
+        - article = Cms::Article.where(home_page: true).first
+        -if article.present?
+          -if params[:file_id].downcase == article.slug.downcase
+            .row.row--full
+              = image_tag "banner.png", style: "width:100%;"
       .row
         .col-sm-12
           %br
