@@ -16,10 +16,11 @@
         %th Last Updated
         %th
     - @viz_vizs.each do |viz|
-      - s
       %tr
         %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
-        %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
+        %td
+          - if viz.data_filz.nil?
+            = link_to "#{viz.data_filz.file_file_name}",data_filz_path(file_id: viz.data_filz.slug)
         %td= viz.chart
         %td= "#{time_ago_in_words(viz.updated_at)} ago"
         %td= link_to "Delete", delete_viz_viz_path(viz.slug),confirm: 'Are you sure?'
