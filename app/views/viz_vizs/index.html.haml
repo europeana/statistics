@@ -16,6 +16,7 @@
         %th Last Updated
         %th
     - @viz_vizs.each do |viz|
+      - s
       %tr
         %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
         %td= link_to "#{viz.data_filz.file_file_name}", data_filz_path(file_id: viz.data_filz.slug)
