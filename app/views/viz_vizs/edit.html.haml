@@ -10,6 +10,8 @@
   = render partial: "viz_vizs/bullet-chart"
 -elsif @viz_viz.chart == "Compare Line Chart"
   = render partial: "cms_articles/line-chart"
+-elsif @viz_viz.chart == "Cross Filter"
+  = render partial: "viz_vizs/cross-filter"
 -else 
   .row
     .col-sm-4
@@ -27,9 +29,14 @@
 - chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column", "Line Chart" => "line", "Compare Line Chart" => "custom-line", "Bullet Chart" => "bullet-chart" }
 
 :javascript  
-  var custom_chart = ["Bubble Chart", "Compare Line Chart", "Bullet Chart"];
+  var custom_chart = ["Bubble Chart", "Compare Line Chart", "Bullet Chart", "Cross Filter"];
   if (custom_chart.indexOf(gon.chart_type) >= 0) {
-    GenerateCustomChart(gon.chart_type,"#pie-chart", gon.csv_data, gon.mapped_output);
+    if (gon.chart_type !== "Cross Filter") {
+      selector =  "#pie-chart";
+    }else {
+      selector =  "#cross-filter-body";
+    }
+    GenerateCustomChart(gon.chart_type,selector, gon.csv_data, gon.mapped_output);
   }else {
     // display Echart if datawrapper
     dw.visualize({

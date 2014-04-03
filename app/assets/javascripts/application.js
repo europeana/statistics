@@ -48,3 +48,4 @@
 //= require_tree ./app/
 //= require vendor/lib/d3.v3
 //= require vendor/lib/d3-bullet-chart
+//= require vendor/lib/crossfilter.v1.min

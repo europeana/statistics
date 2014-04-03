@@ -17,7 +17,9 @@ class Viz::Viz < ActiveRecord::Base
   CHARTS = [ ["Pie Chart"], ["Election Donut Chart"],
              ["Column Chart"], ["Grouped Column Chart"],
              ["Line Chart"], ["Stacked Column Chart"],
-             ["Bubble Chart"], ["Compare Line Chart"], ["Bullet Chart"]]
+             ["Bubble Chart"], ["Compare Line Chart"],
+             ["Bullet Chart"], ["Cross Filter"]
+           ]
 
   #ACCESSORS
   attr_accessible :data_filz_id, :map, :mapped_output, :settings, :title, :slug, :chart
@@ -59,6 +61,11 @@ class Viz::Viz < ActiveRecord::Base
         ["Quaterly", "number", "O"],["Yearly", "number", "O"],
         ["All", "number", "0"]
       ]
+    elsif self.chart == "Cross Filter"
+      [ ["Date", "string", "M"],["Delay", "number", "0"],
+        ["Distance", "number", "O"],["Origin", "string", "M"],
+        ["Destination", "string", "M"]
+      ]      
     elsif self.chart == "Bullet Chart"
       [ ["X", "string", "M"],["Subtitle", "string", "M"],
         ["Ranges", "string", "O"],["Measures", "string", "O"],
@@ -102,6 +109,12 @@ class Viz::Viz < ActiveRecord::Base
         line2 = row[headings.index(map_json["Quaterly"])]
         line3 = row[headings.index(map_json["Yearly"])]
         line4 = row[headings.index(map_json["All"])]
+      elsif self.chart == "Cross Filter"
+        label = row[headings.index(map_json["Date"])]
+        value = row[headings.index(map_json["Delay"])]
+        line2 = row[headings.index(map_json["Distance"])]
+        line3 = row[headings.index(map_json["Origin"])]
+        line4 = row[headings.index(map_json["Destination"])]
       elsif self.chart == "Bullet Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Subtitle"])]
@@ -145,6 +158,23 @@ class Viz::Viz < ActiveRecord::Base
            "line2" => line2.to_f,
            "line3" => line3.to_f,
            "line4" => line4.to_f
+          }
+        end
+      elsif self.chart == "Cross Filter"
+        unique_label = label
+        if h[unique_label].present?          
+          h[unique_label] = {"label" => label,
+           "value" => h[unique_label]["Delay"].to_f + value.to_f,
+           "line2" => h[unique_label]["Distance"].to_f + line2.to_f,
+           "line3" => h[unique_label]["Origin"],
+           "line4" => h[unique_label]["Destination"]
+         }
+        else
+          h[unique_label] = {"label" => label,
+           "value" => value.to_f,           
+           "line2" => line2.to_f,
+           "line3" => line3,
+           "line4" => line4
           }
         end
       elsif self.chart == "Bullet Chart"  

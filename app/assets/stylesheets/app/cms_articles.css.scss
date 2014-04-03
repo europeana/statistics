@@ -73,3 +73,110 @@ ul.pages{
     display: none;
   }    
 }
+
+.cross-filter-body {
+    position: relative;
+}
+
+.cross-filter-charts {
+    padding: 10px 0;
+}
+
+.cross-filter-chart {
+    display: inline-block;
+    height: 151px;
+    margin-bottom: 20px;
+}
+
+.cross-filter-body .reset {
+    padding-left: 1em;
+    font-size: smaller;
+    color: #ccc;
+}
+
+.cross-filter-body .background.bar {
+    fill: #ccc;
+}
+
+.cross-filter-body .foreground.bar {
+    fill: steelblue;
+}
+
+.cross-filter-body .axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.cross-filter-body .axis text {
+    font: 10px sans-serif;
+}
+
+.cross-filter-body .brush rect.extent {
+    fill: steelblue;
+    fill-opacity: .125;
+}
+
+.cross-filter-body .brush .resize path {
+    fill: #eee;
+    stroke: #666;
+}
+
+.cross-filter-body #hour-chart {
+    width: 260px;
+}
+
+.cross-filter-body #delay-chart {
+    width: 230px;
+}
+
+.cross-filter-body #distance-chart {
+    width: 420px;
+}
+
+.cross-filter-body #date-chart {
+    width: 920px;
+}
+
+.cross-filter-body #flight-list {
+    min-height: 1024px;
+}
+
+.cross-filter-body #flight-list .date,
+#flight-list .day {
+    margin-bottom: .4em;
+}
+
+.cross-filter-body #flight-list .flight {
+    line-height: 1.5em;
+    background: #eee;
+    width: 640px;
+    margin-bottom: 1px;
+}
+
+.cross-filter-body #flight-list .time {
+    color: #999;
+}
+
+.cross-filter-body #flight-list .flight div {
+    display: inline-block;
+    width: 100px;
+}
+
+.cross-filter-body #flight-list div.distance,
+#flight-list div.delay {
+    width: 160px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.cross-filter-body #flight-list .early {
+    color: green;
+}
+
+.cross-filter-body aside {
+    position: absolute;
+    left: 740px;
+    font-size: smaller;
+    width: 220px;
+}
