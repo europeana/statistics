@@ -9,3 +9,4 @@ config/database.yml
 public/uploads/*
 config/environments/development.rb
 config/environments/_development.rb
+nbproject/
