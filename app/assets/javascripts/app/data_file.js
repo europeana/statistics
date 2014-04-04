@@ -710,14 +710,6 @@ function generateCrossFilterChart(options) {
 
     
         flights = d3.csv.parse(options.data);
-        flights.forEach(function(value,index) {          
-          var time = new Date().getTime(flights[index].date);
-          var date = new Date(time);
-          var newd = date.toString();
-
-          flights[index].delay = parseInt(flights[index].delay);
-          flights[index].distance = parseInt(flights[index].distance);
-        });
 
         // Various formatters.
         var formatNumber = d3.format(",d"),
@@ -734,11 +726,11 @@ function generateCrossFilterChart(options) {
         // A little coercion, since the CSV is untyped.
         flights.forEach(function(d, i) {
             d.index = i;
-            d.date = parseDate(d.date);
+            d.date = parseDate("0"+d.date);
             d.delay = +d.delay;
             d.distance = +d.distance;
         });
-
+        console.log(flights[0],"first elements");
         // Create the crossfilter for the relevant dimensions and groups.
         var flight = crossfilter(flights),
                 all = flight.groupAll(),
@@ -801,6 +793,7 @@ function generateCrossFilterChart(options) {
                 .each(function(chart) {
                     chart.on("brush", renderAll).on("brushend", renderAll);
                 });
+
 
         // Render the initial lists.
         var list = d3.selectAll(".list")
