@@ -25,7 +25,7 @@
               = image_tag "cursor_drag_arrow.png", class: "custom-glyphicon", size: "15x15"
               &nbsp;
           = cms_article.tag
-    %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Other articles", root_url(tag: "other")
+    %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Archive", root_url(tag: "other")
 
 :javascript
   $(".fix-side-bar").affix({

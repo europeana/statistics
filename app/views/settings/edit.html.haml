@@ -2,7 +2,7 @@
   .col-sm-12           
     = simple_form_for(@setting, url: settings_path, html: {role: "form"}) do |f|
       %label 
-        %strong Select View Type for Other Articles page.
+        %strong Select View Type for Archive Articles page.
 
       = f.input :masonry, collection: {"List View" => "o", "Grid View" => "m" }, label: false, include_blank: false
 
