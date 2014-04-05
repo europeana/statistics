@@ -3,4 +3,5 @@
 - @cms_other_articles.each do |cms_articlez|
   .col-sm-4
     .grid-view-home
-      %h4= link_to cms_articlez.title, "/#{cms_articlez.slug}"
+      - word_limit = h truncate(cms_articlez.title, :length => 80)
+      %h4= link_to word_limit, "/#{cms_articlez.slug}"
