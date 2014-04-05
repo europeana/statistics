@@ -4,7 +4,7 @@
     line-height: 18px;
     padding: 0;
     margin: 2px;
-    font-size: 11px;
+    font-size: 0.688em;
 }
 
 .takes-drop{
@@ -14,7 +14,7 @@
     border: 1px dashed #aaa;
     text-transform: uppercase;
     font-weight: 800;
-    font-size: 11px;
+    font-size: 0.688em;
     line-height: 22px;
     text-align: center;
     color: #fff;

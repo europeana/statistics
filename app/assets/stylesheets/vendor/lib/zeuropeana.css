@@ -218,7 +218,7 @@ body {
   word-wrap: break-word;
   background: #fcfcfc;
   font: 100%/1.4 "dejarip", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
-  font-size: 16px;
+  font-size: 1em;
   font-size: 1rem;
   -webkit-text-size-adjust: 100%;
   color: #232323; }
@@ -251,55 +251,55 @@ h1, h2, h3, h4, h5, h6 {
 
 /* line 99, scss/base/_headings.scss */
 .tera {
-  font-size: 104px;
+  font-size: 6.500em;
   font-size: 6.5rem;
   margin-bottom: 0.24615rem; }
 
 /* line 99, scss/base/_headings.scss */
 .giga {
-  font-size: 80px;
+  font-size: 5.000em;
   font-size: 5rem;
   margin-bottom: 0.32rem; }
 
 /* line 99, scss/base/_headings.scss */
 .mega {
-  font-size: 64px;
+  font-size: 4.000em;
   font-size: 4rem;
   margin-bottom: 0.4rem; }
 
 /* line 99, scss/base/_headings.scss */
 .alpha, h1 {
-  font-size: 53px;
+  font-size: 3.313em;
   font-size: 3.3125rem;
   margin-bottom: 0.48302rem; }
 
 /* line 99, scss/base/_headings.scss */
 .beta, h2 {
-  font-size: 43px;
+  font-size: 2.688em;
   font-size: 2.6875rem;
   margin-bottom: 0.59535rem; }
 
 /* line 99, scss/base/_headings.scss */
 .gamma, h3 {
-  font-size: 32px;
+  font-size: 2.000em;
   font-size: 2rem;
   margin-bottom: 0.8rem; }
 
 /* line 99, scss/base/_headings.scss */
 .delta, h4 {
-  font-size: 21px;
+  font-size: 1.313em;
   font-size: 1.3125rem;
   margin-bottom: 1.21905rem; }
 
 /* line 99, scss/base/_headings.scss */
 .epsilon, h5 {
-  font-size: 19px;
+  font-size: 1.188em;
   font-size: 1.1875rem;
   margin-bottom: 1.34737rem; }
 
 /* line 99, scss/base/_headings.scss */
 .zeta, h6 {
-  font-size: 16px;
+  font-size: 1em;
   font-size: 1rem;
   margin-bottom: 1.6rem; }
 
@@ -3160,7 +3160,7 @@ td {
   max-height: 0;
   font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
   font-size: 1rem;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 500; }
   /* line 13, scss/objects/_nav.scss */
   .nav a {
@@ -3317,14 +3317,14 @@ td {
 /* line 12, scss/objects/_text.scss */
 .pullquote {
   color: #212121;
-  font-size: 42px;
+  font-size: 2.625em;
   font-size: 2.625rem;
   border-left: none;
   padding: 0;
   position: relative; }
   /* line 19, scss/objects/_text.scss */
   .pullquote:before, .pullquote:after {
-    font-size: 64px;
+    font-size: 4.000em;
     font-size: 4rem;
     color: #b13030; }
   /* line 25, scss/objects/_text.scss */
@@ -4426,7 +4426,7 @@ html:hover [class^="icon-"] {
   background: transparent;
   color: #212121;
   border: solid 5px #212121;
-  font-size: 12.8px;
+  font-size: 0.800em;
   font-size: 0.8rem;
   line-height: 1;
   font-weight: bold;
@@ -4478,7 +4478,7 @@ html:hover [class^="icon-"] {
 \*------------------------------------*/
 /* line 6, scss/objects/_tags.scss */
 .tags a {
-  font-size: 9.6px;
+  font-size: 0.600em;
   font-size: 0.6rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -4511,7 +4511,7 @@ html:hover [class^="icon-"] {
       color: #611a1a; }
   /* line 39, scss/objects/_tags.scss */
   .tag .icon {
-    font-size: 9px;
+    font-size: 0.563em;
     text-align: center;
     background-color: white;
     border-radius: 5em;
@@ -4537,7 +4537,7 @@ html:hover [class^="icon-"] {
 
 /* line 69, scss/objects/_tags.scss */
 .tags-large .tag, .tag-large {
-  font-size: 12.8px;
+  font-size: 0.800em;
   font-size: 0.8rem; }
 
 /* line 76, scss/objects/_tags.scss */
@@ -4720,13 +4720,13 @@ html:hover [class^="icon-"] {
 /* line 212, scss/objects/_blocks.scss */
 .subhead {
   font-weight: bold;
-  font-size: 19.2px;
+  font-size: 1.200em;
   font-size: 1.2rem; }
 
 /* line 217, scss/objects/_blocks.scss */
 .subnav {
   padding: 0 1rem; }
-  /* line 220, scss/objects/_blocks.scss */
+  /* line 220, scss/objec1.200emts/_blocks.scss */
   .subnav .tags {
     margin-bottom: 1.6rem; }
 
@@ -5100,7 +5100,7 @@ border-color:#ccc;
 .bootstrap-btn {
 display:inline-block;
 margin-bottom:0;
-font-size:14px;
+font-size:0.875em;
 font-weight:400;
 line-height:1.428571429;
 text-align:center;
@@ -5221,7 +5221,7 @@ padding:1px 5px;
 }
 
 .btn-xs > .bootstrap-btn {
-  font-size:12px;
+  font-size:0.750em;
   line-height:1.5;
   border-radius:3px;
   padding:5px 10px;

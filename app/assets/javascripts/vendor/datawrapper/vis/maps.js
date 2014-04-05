@@ -243,7 +243,7 @@
                         var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
                         var css = {
                             color: fill,
-                            'font-size': '13px',
+                            'font-size': '0.813em',
                             'line-height': '15px',
                             'text-shadow': ('0 1px 0 %, 1px 0 0 %, 0 -1px 0 %, -1px 0 0 %,'+
                                 '1px 1px 0 %, 1px -1px 0 %, -1px -1px 0 %, -1px 1px 0 %,'+

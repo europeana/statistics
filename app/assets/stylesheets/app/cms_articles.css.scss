@@ -1,7 +1,7 @@
 ul.pages{
     margin: 0;padding: 0;
     li{
-        font-size: 12px;
+        font-size: 0.750em;
         padding: 5px;
         cursor: pointer;
         list-style-type: none;
@@ -18,7 +18,7 @@ ul.pages{
 }
 
 #sort-tags .handle {
-  font-size: 12px;
+  font-size: 0.750em;
   color: #777;
   cursor: move;
 }        
@@ -42,7 +42,7 @@ ul.pages{
 
 }
 
-.bullet { font: 10px sans-serif; }
+.bullet { font: 0.625em sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 2px; }
 .bullet .tick line { stroke: #666; stroke-width: .5px; }
 .bullet .range.s0 { fill: #eee; }
@@ -50,7 +50,7 @@ ul.pages{
 .bullet .range.s2 { fill: #ccc; }
 .bullet .measure.s0 { fill: lightsteelblue; }
 .bullet .measure.s1 { fill: steelblue; }
-.bullet .title { font-size: 14px; font-weight: bold; }
+.bullet .title { font-size: 0.875em; font-weight: bold; }
 .bullet .subtitle { fill: #999; }
 
 .compare-custom-line-chart {

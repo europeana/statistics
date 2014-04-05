@@ -11,13 +11,13 @@ a { color: #0088CC; }
 body.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 0.750em;
     margin: 0 5px;
     background: #fff;
 }
 
 h1 {
-    font-size: 22px;
+    font-size: 1.375em;
     font-weight: 300;
     margin: 0 0 10px;
     text-align: left;
@@ -40,7 +40,7 @@ a img { border:0px; }
 }
 
 .label {
-    font-size: 12px;
+    font-size: 0.750em;
 }
 
 .label span {
@@ -65,7 +65,7 @@ a img { border:0px; }
 }
 
 .label.highlighted, .label.axis {
-    font-size: 12px;
+    font-size: 0.750em;
     z-index: 100;
 }
 
@@ -82,11 +82,11 @@ a img { border:0px; }
 }
 
 .label.value span {
-    font-size: 12px;
+    font-size: 0.750em;
 }
 
 .label.series span {
-    font-size: 12px;
+    font-size: 0.750em;
 }
 
 
@@ -276,7 +276,7 @@ svg .axis, svg .tick, svg .grid, svg rect {
     border-radius: 4px 4px 4px 4px;
     padding: 4px 6px;
     vertical-align: middle;
-    font-size: 12px;
+    font-size: 0.750em;
 }
 
 .line-chart .tooltip {

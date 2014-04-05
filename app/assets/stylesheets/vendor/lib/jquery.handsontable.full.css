@@ -271,7 +271,7 @@ AutocompleteRenderer down arrow
 
 .handsontable .htAutocompleteArrow {
   float: right;
-  font-size: 10px;
+  font-size: 0.625em;
   color: #EEE;
   cursor: default;
   width: 16px;
