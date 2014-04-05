@@ -1,5 +1,9 @@
 .row
   .col-sm-12
+    .pull-right
+      %strong
+        Note*
+      Delete in two steps.
     %table.table-bordered.pretty
       %thead
         %tr
@@ -24,6 +28,9 @@
                 %a{href: "#{pub_arch_article_path(cms_article,'publish')}"} Publish
               -else 
                 %a{href: "#{pub_arch_article_path(cms_article,'archieved')}"} Archive
+            -else 
+              %a{href: "#{pub_arch_article_path(cms_article,'re-publish')}"} Re-publish
+                
           %td      
             = link_to "Edit", edit_cms_article_path(cms_article)
           %td  

@@ -5,7 +5,7 @@ class CmsArticlesController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index        
-    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true ").order(:position)
     if params["tag"].present?
       @cms_other_articles = Cms::Article.where(archieved: true)
       @selected_article = "other"
@@ -28,8 +28,11 @@ class CmsArticlesController < ApplicationController
       @cms_article.update_attributes(is_published: true)
       msg = "Pusblish"    
     elsif params[:type] == "archieved"
-      @cms_article.update_attributes(archieved: true)
-      msg = "Archieved"    
+      @cms_article.update_attributes(archieved: true,is_published: false)
+      msg = "Archieved"
+    elsif params[:type] == "re-publish"
+      @cms_article.update_attributes(archieved: false,is_published: true)
+      msg = "Re-publish Article"
     end  
     redirect_to all_articles_path, notice: " Updated to #{msg}"
   end
