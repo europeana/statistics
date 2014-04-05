@@ -789,8 +789,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
     if (counter > 0) {
       color = "#6DBE3D"
-    }
-    counter++;
+    }  
 
     var line_data = [];
     var class_name = group;
@@ -809,19 +808,31 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
       .attr("stroke", color)
       .attr("class", "line point-line line-" + class_name);
 
+    console.log(line_data,"sssss");
     graph.selectAll(".text-legend")
       .data(line_data)
       .enter()
       .append("text")
       .attr("x", function (d) {
-        return x(d.x);
+        var x_pos = x(d.x);
+        if (counter > 0) {
+          x_pos -= 20;
+        }
+        return x_pos;
       })
       .attr("y", function (d, i) {
-        return y(d.y) + i + 10;
+        var y_pos = y(d.y) + i + 15;
+        if (counter > 0) {
+          y_pos -= 25;
+        }
+        return y_pos ;
       })
       .text(function (d) {
         return d.y;
       })
+      .style("fill", color)
+
+    counter++;  
 
   });
 }
