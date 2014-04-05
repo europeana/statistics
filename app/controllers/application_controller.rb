@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   #GEMS  
   #CALLBACKS
   after_filter :after_filter_set
-  
+
   #PRIVATE
   private
 

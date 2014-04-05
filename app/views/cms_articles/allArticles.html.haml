@@ -1,13 +1,15 @@
 .row
   .col-sm-12
-    %table.table-bordered
+    %table.table-bordered.pretty
       %thead
         %tr
-          %th Article name
-          %th Sidebar menu
-          %th Settings
-          %th 
-          %th               
+          %th{style:"width:60%"}
+            =sortable "title", "Article name"
+          %th{style:"width:25%"}
+            =sortable "tag", "Sidebar menu" 
+          %th{style:"width:5%"} Settings
+          %th{style:"width:5%"} 
+          %th{style:"width:5%"}
       %tbody    
       - @cms_articles.each do |cms_article|
         %tr

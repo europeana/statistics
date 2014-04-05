@@ -2,6 +2,7 @@ class CmsArticlesController < ApplicationController
   
   before_filter :authenticate_user!, except: [:show, :index]
   before_filter :find_objects
+  helper_method :sort_column, :sort_direction
 
   def index        
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
@@ -18,7 +19,7 @@ class CmsArticlesController < ApplicationController
   end
 
   def allArticles
-    @cms_articles = Cms::Article.find(:all, order: "updated_at desc")
+    @cms_articles = Cms::Article.find(:all, order: sort_column + " " + sort_direction)
   end
 
   def publish_or_archieve
@@ -108,5 +109,13 @@ class CmsArticlesController < ApplicationController
     end    
     @viz_vizs = Viz::Viz.find(:all, order: "updated_at desc")
   end
+  
+  def sort_column
+    Cms::Article.column_names.include?(params[:sort]) ? params[:sort] : "updated_at"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+  end  
     
 end
