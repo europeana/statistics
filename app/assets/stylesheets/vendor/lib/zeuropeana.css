@@ -58,13 +58,13 @@ font-style:normal;font-weight:500;
     $TABLE OF CONTENTS
 \*------------------------------------*/
 /**
- * VARIABLES..............................Declarations of Sass variables 
+ * VARIABLES..............................Declarations of Sass variables
  * .....Colors
  * .....Typography
  * .....Layout
  * .....Defaults
  * .....Breakpoints
- * MIXINS.................................Sass mixins 
+ * MIXINS.................................Sass mixins
  * RESET..................................Set reset defaults
  * GLOBAL CLASSES.........................Set reset defaults
  * GLOBAL ELEMENTS........................Establish global styles
@@ -88,7 +88,7 @@ font-style:normal;font-weight:500;
 /* CSS Transition
 	Usage: @include transition(width,0.3s,ease-out);
  */
-/* Rem Unit font sizes with relative fallback http:/seesparkbox.com/foundry/scss_rem_mixin_now_with_a_better_fallback  
+/* Rem Unit font sizes with relative fallback http:/seesparkbox.com/foundry/scss_rem_mixin_now_with_a_better_fallback
 	Usage: @include font-size(1, large);
 */
 /*------------------------------------*\
@@ -217,9 +217,10 @@ body {
   hyphens: auto;
   word-wrap: break-word;
   background: #fcfcfc;
-  font: 100%/1.4 "dejarip", "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+  font: 100%/1.4 "Open Sans", "Arial", sans-serif;
   font-size: 1em;
   font-size: 1rem;
+  line-height: 1.48;
   -webkit-text-size-adjust: 100%;
   color: #232323; }
 
@@ -247,7 +248,9 @@ h1, h2, h3, h4, h5, h6 {
   word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
-  hyphens: auto; }
+  hyphens: auto;
+  font-family: "Ubuntu", "Arial", sans-serif;
+}
 
 /* line 99, scss/base/_headings.scss */
 .tera {
@@ -305,23 +308,24 @@ h1, h2, h3, h4, h5, h6 {
 
 /* line 105, scss/base/_headings.scss */
 h1 {
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Ubuntu", "Arial", sans-serif;
   font-weight: normal; }
 
 /* line 118, scss/base/_headings.scss */
 h3 {
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Ubuntu", "Arial", sans-serif;
   font-style: italic;
   font-weight: normal; }
 
 /* line 137, scss/base/_headings.scss */
 h6 {
+  font-family: "Ubuntu", "Arial", sans-serif;
   text-transform: uppercase; }
 
 /* Subheadings */
 /* line 146, scss/base/_headings.scss */
 .subheading {
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Ubuntu", "Arial", sans-serif;
   font-weight: normal; }
 
 /* line 151, scss/base/_headings.scss */
@@ -3192,7 +3196,7 @@ td {
 /* line 48, scss/objects/_nav.scss */
 .pagination {
   overflow: hidden;
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Ubuntu", "Arial", sans-serif;
   margin-bottom: 1.6rem; }
   /* line 54, scss/objects/_nav.scss */
   .pagination li {
@@ -3229,7 +3233,9 @@ td {
 .breadcrumbs {
   list-style: none;
   line-height: 1;
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif; }
+  font-family: "Ubuntu", "Arial", sans-serif;
+}
+
   /* line 101, scss/objects/_nav.scss */
   .breadcrumbs a {
     display: inline-block;
@@ -3308,7 +3314,8 @@ td {
 /* Global Font Classes */
 /* line 2, scss/objects/_text.scss */
 .font-secondary {
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif; }
+  font-family: "Open Sans", "Arial", sans-serif;
+}
 
 /* line 7, scss/objects/_text.scss */
 .intro {
@@ -4831,7 +4838,7 @@ html:hover [class^="icon-"] {
 .acc-handle {
   background: #212121;
   color: white;
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Ubuntu", "Arial", sans-serif;
   display: block;
   position: relative;
   padding: 0.5rem;
@@ -4854,7 +4861,7 @@ html:hover [class^="icon-"] {
 /* line 1, scss/objects/_tabs.scss */
 .tabs {
   overflow: hidden;
-  font-family: "ff-more-web-pro", Georgia, Times, "Times New Roman", serif;
+  font-family: "Open Sans", "Arial", sans-serif;
   margin-bottom: 1.6rem; }
   /* line 7, scss/objects/_tabs.scss */
   .tabs a {
