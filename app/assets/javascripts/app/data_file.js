@@ -839,7 +839,9 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 function generateCrossFilterChart(options) {
 
   flights = d3.csv.parse(options.data);
-  console.log(flights[0]);
+  var keys = [];
+  for(var k in flights[0]) keys.push(k);
+
   // Various formatters.
   var formatNumber = d3.format(",d"),
     formatChange = d3.format("+,d"),
@@ -855,9 +857,9 @@ function generateCrossFilterChart(options) {
   // A little coercion, since the CSV is untyped.
   flights.forEach(function (d, i) {
     d.index = i;
-    d.date = parseDate("0" + d.date);
-    d.delay = +d.delay;
-    d.distance = +d.distance;
+    d.date = parseDate("0" + d[keys[0]]);
+    d.delay = +d[keys[1]];
+    d.distance = +d[keys[2]];
   });
 
   // Create the crossfilter for the relevant dimensions and groups.
