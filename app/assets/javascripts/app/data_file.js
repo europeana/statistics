@@ -326,7 +326,7 @@ function GenerateCustomChart(chart_type, selector, data, mapped_output) {
       chart_type: chart_type,
       data: data
     };
-    beforCrossfilterAppendHtml(selector);
+    beforCrossfilterAppendHtml(options);
     generateCrossFilterChart(options);
   }
 }
@@ -789,7 +789,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
     if (counter > 0) {
       color = "#6DBE3D"
-    }  
+    }
 
     var line_data = [];
     var class_name = group;
@@ -808,7 +808,6 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
       .attr("stroke", color)
       .attr("class", "line point-line line-" + class_name);
 
-    console.log(line_data,"sssss");
     graph.selectAll(".text-legend")
       .data(line_data)
       .enter()
@@ -825,14 +824,14 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
         if (counter > 0) {
           y_pos -= 25;
         }
-        return y_pos ;
+        return y_pos;
       })
       .text(function (d) {
         return d.y;
       })
       .style("fill", color)
 
-    counter++;  
+    counter++;
 
   });
 }
@@ -840,7 +839,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 function generateCrossFilterChart(options) {
 
   flights = d3.csv.parse(options.data);
-
+  console.log(flights[0]);
   // Various formatters.
   var formatNumber = d3.format(",d"),
     formatChange = d3.format("+,d"),
@@ -860,7 +859,7 @@ function generateCrossFilterChart(options) {
     d.delay = +d.delay;
     d.distance = +d.distance;
   });
-  
+
   // Create the crossfilter for the relevant dimensions and groups.
   var flight = crossfilter(flights),
     all = flight.groupAll(),
@@ -918,7 +917,7 @@ function generateCrossFilterChart(options) {
   // Given our array of charts, which we assume are in the same order as the
   // .chart elements in the DOM, bind the charts to the DOM and render them.
   // We also listen to the chart's brush events to update the display.
-  var chart = d3.selectAll(options.selector+" .cross-filter-chart")
+  var chart = d3.selectAll(options.selector + " .cross-filter-chart")
     .data(charts)
     .each(function (chart) {
       chart.on("brush", renderAll)
@@ -926,11 +925,11 @@ function generateCrossFilterChart(options) {
     });
 
   // Render the initial lists.
-  var list = d3.selectAll(options.selector+ " .list")
+  var list = d3.selectAll(options.selector + " .list")
     .data([flightList]);
 
   // Render the total.
-  d3.selectAll(options.selector+" #total")
+  d3.selectAll(options.selector + " #total")
     .text(formatNumber(flight.size()));
 
   renderAll();
@@ -945,7 +944,7 @@ function generateCrossFilterChart(options) {
   function renderAll() {
     chart.each(render);
     list.each(render);
-    d3.select(options.selector+" #active")
+    d3.select(options.selector + " #active")
       .text(formatNumber(all.value()));
   }
 
@@ -975,7 +974,7 @@ function generateCrossFilterChart(options) {
 
     div.each(function () {
       var date = d3.select(this)
-        .selectAll(options.selector+" .date")
+        .selectAll(options.selector + " .date")
         .data(flightsByDate, function (d) {
           return d.key;
         });
@@ -993,7 +992,7 @@ function generateCrossFilterChart(options) {
         .remove();
 
       var flight = date.order()
-        .selectAll(options.selector+ " .flight")
+        .selectAll(options.selector + " .flight")
         .data(function (d) {
           return d.values;
         }, function (d) {
@@ -1078,7 +1077,7 @@ function generateCrossFilterChart(options) {
 
         // Create the skeletal chart.
         if (g.empty()) {
-          div.select(options.selector+" .title")
+          div.select(options.selector + " .title")
             .append("a")
             .attr("href", "javascript:reset(" + id + ")")
             .attr("class", "reset")
@@ -1097,7 +1096,7 @@ function generateCrossFilterChart(options) {
             .attr("width", width)
             .attr("height", height);
 
-          g.selectAll(options.selector+" .bar")
+          g.selectAll(options.selector + " .bar")
             .data(["background", "foreground"])
             .enter()
             .append("path")
@@ -1106,7 +1105,7 @@ function generateCrossFilterChart(options) {
             })
             .datum(group.all());
 
-          g.selectAll(options.selector+" .foreground.bar")
+          g.selectAll(options.selector + " .foreground.bar")
             .attr("clip-path", "url(#clip-" + id + ")");
 
           g.append("g")
@@ -1118,9 +1117,9 @@ function generateCrossFilterChart(options) {
           var gBrush = g.append("g")
             .attr("class", "brush")
             .call(brush);
-          gBrush.selectAll(options.selector+" rect")
+          gBrush.selectAll(options.selector + " rect")
             .attr("height", height);
-          gBrush.selectAll(options.selector+" .resize")
+          gBrush.selectAll(options.selector + " .resize")
             .append("path")
             .attr("d", resizePath);
         }
@@ -1128,23 +1127,23 @@ function generateCrossFilterChart(options) {
         // Only redraw the brush if set externally.
         if (brushDirty) {
           brushDirty = false;
-          g.selectAll(options.selector+" .brush")
+          g.selectAll(options.selector + " .brush")
             .call(brush);
-          div.select(options.selector+" .title a")
+          div.select(options.selector + " .title a")
             .style("display", brush.empty() ? "none" : null);
           if (brush.empty()) {
-            g.selectAll(options.selector+" #clip-" + id + " rect")
+            g.selectAll(options.selector + " #clip-" + id + " rect")
               .attr("x", 0)
               .attr("width", width);
           } else {
             var extent = brush.extent();
-            g.selectAll(options.selector+" #clip-" + id + " rect")
+            g.selectAll(options.selector + " #clip-" + id + " rect")
               .attr("x", x(extent[0]))
               .attr("width", x(extent[1]) - x(extent[0]));
           }
         }
 
-        g.selectAll(options.selector+" .bar")
+        g.selectAll(options.selector + " .bar")
           .attr("d", barPath);
       });
 
@@ -1170,7 +1169,7 @@ function generateCrossFilterChart(options) {
 
     brush.on("brushstart.chart", function () {
       var div = d3.select(this.parentNode.parentNode.parentNode);
-      div.select(options.selector+" .title a")
+      div.select(options.selector + " .title a")
         .style("display", null);
     });
 
@@ -1178,11 +1177,11 @@ function generateCrossFilterChart(options) {
       var g = d3.select(this.parentNode),
         extent = brush.extent();
       if (round)
-        g.select(options.selector+" .brush")
+        g.select(options.selector + " .brush")
           .call(brush.extent(extent = extent.map(round)))
-          .selectAll(options.selector+" .resize")
+          .selectAll(options.selector + " .resize")
           .style("display", null);
-      g.select(options.selector+" #clip-" + id + " rect")
+      g.select(options.selector + " #clip-" + id + " rect")
         .attr("x", x(extent[0]))
         .attr("width", x(extent[1]) - x(extent[0]));
       dimension.filterRange(extent);
@@ -1191,9 +1190,9 @@ function generateCrossFilterChart(options) {
     brush.on("brushend.chart", function () {
       if (brush.empty()) {
         var div = d3.select(this.parentNode.parentNode.parentNode);
-        div.select(options.selector+" .title a")
+        div.select(options.selector + " .title a")
           .style("display", "none");
-        div.select(options.selector+" #clip-" + id + " rect")
+        div.select(options.selector + " #clip-" + id + " rect")
           .attr("x", null)
           .attr("width", "100%");
         dimension.filterAll();
@@ -1261,19 +1260,22 @@ function generateCrossFilterChart(options) {
 
 }
 
-function beforCrossfilterAppendHtml(selector) {
+function beforCrossfilterAppendHtml(options) {
+  var selector = options.selector;
+  var data = d3.csv.parseRows(options.data)[0];
+
   $(selector).wrap("<div class='cross-filter-body'></div>");
   $(selector).addClass("cross-filter-charts");
 
-  var hours_html_template = '<div id="hour-chart" class="cross-filter-chart"><div class="title">Time of Day</div></div>';
-  var delay_html_template = '<div id="delay-chart" class="cross-filter-chart"><div class="title">Arrival Delay (min.)</div></div>';
-  var _dist_html_template = '<div id="distance-chart" class="cross-filter-chart"><div class="title">Distance (mi.)</div></div>';
-  var _date_html_template = '<div id="date-chart" class="cross-filter-chart"><div class="title">Date</div></div>';
-  var aside_html_template = '<aside id="totals"><span id="active">-</span>of<span id="total">-</span>flights selected.</aside><div id="lists"><div id="flight-list" class="list"></div></div>';
+  var hours_html_template = '<div id="hour-chart" class="cross-filter-chart"><div class="title">'+data[3]+'</div></div>';
+  var delay_html_template = '<div id="delay-chart" class="cross-filter-chart"><div class="title">'+data[1]+'</div></div>';
+  var _dist_html_template = '<div id="distance-chart" class="cross-filter-chart"><div class="title">'+data[2]+'</div></div>';
+  var _date_html_template = '<div id="date-chart" class="cross-filter-chart"><div class="title">'+data[0]+'</div></div>';
+  var aside_html_template = '<aside id="totals"><span id="active"> -</span>of<span id="total"> -</span> selected.</aside><div id="lists"><div id="flight-list" class="list"></div></div>';
 
   var html_template = hours_html_template + delay_html_template +
-                      _dist_html_template + _date_html_template;
-  
-  $(selector).append(html_template+aside_html_template);
+    _dist_html_template + _date_html_template;
+
+  $(selector).append(html_template + aside_html_template);
   //$(selector).after(aside_html_template);
 }

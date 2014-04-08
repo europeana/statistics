@@ -62,9 +62,9 @@ class Viz::Viz < ActiveRecord::Base
         ["All", "number", "0"]
       ]
     elsif self.chart == "Cross Filter"
-      [ ["Date", "string", "M"],["Delay", "number", "0"],
-        ["Distance", "number", "O"],["Origin", "string", "M"],
-        ["Destination", "string", "M"]
+      [ ["Date", "string", "M"],["D-1", "number", "O"],
+        ["D-2", "number", "O"],["D-3", "string", "O"],
+        ["D-4", "string", "O"]
       ]      
     elsif self.chart == "Bullet Chart"
       [ ["X", "string", "M"],["Subtitle", "string", "M"],
@@ -111,10 +111,10 @@ class Viz::Viz < ActiveRecord::Base
         line4 = row[headings.index(map_json["All"])]
       elsif self.chart == "Cross Filter"
         label = row[headings.index(map_json["Date"])]
-        value = row[headings.index(map_json["Delay"])]
-        line2 = row[headings.index(map_json["Distance"])]
-        line3 = row[headings.index(map_json["Origin"])]
-        line4 = row[headings.index(map_json["Destination"])]
+        value = row[headings.index(map_json["D-1"])]
+        line2 = row[headings.index(map_json["D-2"])]
+        line3 = row[headings.index(map_json["D-3"])]
+        line4 = row[headings.index(map_json["D-4"])]
       elsif self.chart == "Bullet Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Subtitle"])]
@@ -164,10 +164,10 @@ class Viz::Viz < ActiveRecord::Base
         unique_label = label
         if h[unique_label].present?          
           h[unique_label] = {"label" => label,
-           "value" => h[unique_label]["Delay"].to_f + value.to_f,
-           "line2" => h[unique_label]["Distance"].to_f + line2.to_f,
-           "line3" => h[unique_label]["Origin"],
-           "line4" => h[unique_label]["Destination"]
+           "value" => h[unique_label]["D-1"].to_f + value.to_f,
+           "line2" => h[unique_label]["D-2"].to_f + line2.to_f,
+           "line3" => h[unique_label]["D-3"],
+           "line4" => h[unique_label]["D-4"]
          }
         else
           h[unique_label] = {"label" => label,
