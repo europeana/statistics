@@ -838,7 +838,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
 function generateCrossFilterChart(options) {
 
-  flights = d3.csv.parse(options.data);
+  flights = d3.csv.parse(options.data);  
   var keys = [];
   for(var k in flights[0]) keys.push(k);
 
@@ -846,7 +846,8 @@ function generateCrossFilterChart(options) {
   var formatNumber = d3.format(",d"),
     formatChange = d3.format("+,d"),
     formatDate = d3.time.format("%B %d, %Y"),
-    formatTime = d3.time.format("%I:%M %p");
+    formatTime = d3.time.format("%I:%M %p"),
+    formatYear = d3.time.format("%Y");
 
   // A nest operator, for grouping the flight list.
   var nestByDate = d3.nest()
@@ -854,71 +855,84 @@ function generateCrossFilterChart(options) {
       return d3.time.day(d.date);
     });
 
+  var days_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   // A little coercion, since the CSV is untyped.
   flights.forEach(function (d, i) {
-    d.index = i;
-    d.date = parseDate("0" + d[keys[0]]);
-    d.delay = +d[keys[1]];
-    d.distance = +d[keys[2]];
+    d.index = i;    
+    d.date = parseDate(d[keys[0]]);
+    d.year = formatYear(d.date);
+    d.origin = d[keys[4]];
+    d.destination = Math.floor(days_week.indexOf(d[keys[3]]));
+    d.delay = +d[keys[2]];
+    d.distance = +d[keys[1]];
   });
 
   // Create the crossfilter for the relevant dimensions and groups.
   var flight = crossfilter(flights),
     all = flight.groupAll(),
-    date = flight.dimension(function (d) {
+    month = flight.dimension(function (d) {
+      return d.origin;
+    }),
+    day = flight.dimension(function (d) {
+      return d.destination;
+    }),
+    years = flight.dimension(function (d) {
+      return d.year;
+    }),
+    dates = flight.dimension(function (d) {
       return d.date;
     }),
-    dates = date.group(d3.time.day),
-    hour = flight.dimension(function (d) {
-      return d.date.getHours() + d.date.getMinutes() / 60;
+    distanceMonth = month.group().reduceSum(function (d) {
+      return d.distance
     }),
-    hours = hour.group(Math.floor),
-    delay = flight.dimension(function (d) {
-      return Math.max(-60, Math.min(149, d.delay));
+    distanceDay = day.group().reduceSum(function (d) {
+      return d.distance;
     }),
-    delays = delay.group(function (d) {
-      return Math.floor(d / 10) * 10;
+    distanceYears = years.group().reduceSum(function (d) {
+      return d.distance;
     }),
-    distance = flight.dimension(function (d) {
-      return Math.min(1999, d.distance);
-    }),
-    distances = distance.group(function (d) {
-      return Math.floor(d / 50) * 50;
+    distanceDates = dates.group().reduceSum(function (d) {
+      return d.distance;
     });
 
+  var all_year = [];
+  distanceYears.top(Infinity).forEach(function(d,i) {
+    all_year.push(d.key)
+  });
+  var x_dates = d3.extent(dates.top(Infinity), function(d) {return d.date; });
+  console.log(month.top(20))
   var charts = [
             barChart()
-                    .dimension(hour)
-                    .group(hours)
+                    .dimension(month)
+                    .group(distanceMonth)
                     .x(d3.scale.linear()
-      .domain([0, 24])
-      .rangeRound([0, 10 * 24])),
+                    .domain([0, 13])
+                    .range([0, 200])),
             barChart()
-                    .dimension(delay)
-                    .group(delays)
+                    .dimension(day)
+                    .group(distanceDay)                    
                     .x(d3.scale.linear()
-      .domain([-60, 150])
-      .rangeRound([0, 10 * 21])),
+                    .domain([0,7])
+                    .rangeRound([0,170])),
             barChart()
-                    .dimension(distance)
-                    .group(distances)
-                    .x(d3.scale.linear()
-      .domain([0, 2000])
-      .rangeRound([0, 10 * 40])),
-            barChart()
-                    .dimension(date)
-                    .group(dates)
-                    .round(d3.time.day.round)
+                    .dimension(years)
+                    .group(distanceYears)
+                    .round(d3.time.year)
                     .x(d3.time.scale()
-      .domain([new Date(2001, 0, 1), new Date(2001, 3, 1)])
-      .rangeRound([0, 10 * 90]))
-                    .filter([new Date(2001, 1, 1), new Date(2001, 2, 1)])
-
+                    .domain([d3.min(all_year), new Date().getFullYear()])
+                    .rangeRound([0, 200])),
+            barChart()
+                    .dimension(dates)
+                    .group(distanceDates)
+                    .x(d3.time.scale()
+                    .domain(x_dates)
+                    .rangeRound([0, 1000]))                  
         ];
 
   // Given our array of charts, which we assume are in the same order as the
   // .chart elements in the DOM, bind the charts to the DOM and render them.
   // We also listen to the chart's brush events to update the display.
+
   var chart = d3.selectAll(options.selector + " .cross-filter-chart")
     .data(charts)
     .each(function (chart) {
@@ -952,11 +966,10 @@ function generateCrossFilterChart(options) {
 
   // Like d3.time.format, but faster.
   function parseDate(d) {
-    return new Date(2001,
-      d.substring(0, 2) - 1,
-      d.substring(2, 4),
-      d.substring(4, 6),
-      d.substring(6, 8));
+    var year = d.substring(0, 4);
+    var month = d.substring(5, 6) -1;
+    var day = d.substring(7, 8);
+    return new Date(year,month,day);
   }
 
   window.filter = function (filters) {
@@ -972,6 +985,7 @@ function generateCrossFilterChart(options) {
   };
 
   function flightList(div) {
+    return false;
     var flightsByDate = nestByDate.entries(date.top(40));
 
     div.each(function () {
@@ -1066,7 +1080,7 @@ function generateCrossFilterChart(options) {
       dimension,
       group,
       round;
-
+    
     function chart(div) {
       var width = x.range()[1],
         height = y.range()[0];
@@ -1114,6 +1128,7 @@ function generateCrossFilterChart(options) {
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
             .call(axis);
+          
 
           // Initialize the brush component with pretty resize handles.
           var gBrush = g.append("g")
@@ -1260,6 +1275,22 @@ function generateCrossFilterChart(options) {
     return d3.rebind(chart, brush, "on");
   }
 
+  
+  d3.selectAll(options.selector + " #hour-chart .tick text")
+    .text(function(d,i) {
+      if (d === 13 || d === 0) {
+        return "";
+      }else {
+        return d;
+      }
+    });
+
+
+  var days_week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var ss = d3.selectAll(options.selector + " #delay-chart .tick text")
+    .text(function(d,i) {return days_week[i]});
+
+    
 }
 
 function beforCrossfilterAppendHtml(options) {
