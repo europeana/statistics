@@ -900,7 +900,7 @@ function generateCrossFilterChart(options) {
     all_year.push(d.key)
   });
   var x_dates = d3.extent(dates.top(Infinity), function(d) {return d.date; });
-  console.log(month.top(20))
+
   var charts = [
             barChart()
                     .dimension(month)
@@ -919,7 +919,7 @@ function generateCrossFilterChart(options) {
                     .group(distanceYears)
                     .round(d3.time.year)
                     .x(d3.time.scale()
-                    .domain([d3.min(all_year), new Date().getFullYear()])
+                    .domain([d3.min(all_year), new Date().getFullYear()+1])
                     .rangeRound([0, 200])),
             barChart()
                     .dimension(dates)
@@ -986,7 +986,7 @@ function generateCrossFilterChart(options) {
 
   function flightList(div) {
     return false;
-    var flightsByDate = nestByDate.entries(date.top(40));
+    var flightsByDate = nestByDate.entries(dates.top(40));
 
     div.each(function () {
       var date = d3.select(this)
@@ -1065,9 +1065,9 @@ function generateCrossFilterChart(options) {
 
     var margin = {
       top: 10,
-      right: 10,
+      right: 30,
       bottom: 20,
-      left: 10
+      left: 15
     },
       x,
       y = d3.scale.linear()
@@ -1285,10 +1285,18 @@ function generateCrossFilterChart(options) {
       }
     });
 
-
   var days_week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   var ss = d3.selectAll(options.selector + " #delay-chart .tick text")
     .text(function(d,i) {return days_week[i]});
+
+  d3.selectAll(options.selector + " #distance-chart .tick text")
+    .text(function(d,i) {
+      if (i === 5) {
+        return "";
+      }else {
+        return "201"+i;
+      }
+    });
 
     
 }
