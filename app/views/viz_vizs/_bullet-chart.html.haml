@@ -20,7 +20,7 @@
     - if @mapped_output.present?
       %table.bordered
         - counter = 1
-        - @mapped_output.each do |key, set,set2,set3,set4|
+        - @mapped_output.each do |key,set,set2,set3,set4,set5,set6|
           %tr
             - if counter == 1
               - counter += 1
@@ -29,9 +29,13 @@
               %th= set3
               %th= set2              
               %th= set4
+              %th= set5
+              %th= set6
             -else            
               %td= key
               %td= set
               %td= set2
               %td= set3
               %td= set4
+              %th= set5
+              %th= set6

@@ -335,12 +335,15 @@ function convertDataToBulletChart(data) {
   var output = [];
   for (var i = 0; i <= data.length - 1; i++) {
     if (i > 0) {
+      var ranges = [data[i][2],data[i][3],data[i][4]];
+      var measures = [data[i][5]];
+      var markers = [data[i][6]];
       output.push({
         "title": data[i][0],
         "subtitle": data[i][1],
-        "ranges": stringToNumArr(data[i][2].split(",")),
-        "measures": stringToNumArr(data[i][3].split(",")),
-        "markers": stringToNumArr(data[i][4].split(","))
+        "ranges": stringToNumArr(ranges),
+        "measures": stringToNumArr(measures),
+        "markers": stringToNumArr(markers)
       });
     }
   }

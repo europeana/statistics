@@ -68,8 +68,9 @@ class Viz::Viz < ActiveRecord::Base
       ]      
     elsif self.chart == "Bullet Chart"
       [ ["X", "string", "M"],["Subtitle", "string", "M"],
-        ["Ranges", "string", "O"],["Measures", "string", "O"],
-        ["Markers", "string", "0"]
+        ["Ranges 1", "number", "O"],["Ranges 2", "number", "O"],
+        ["Ranges 3", "number", "O"],["Value", "number", "O"],
+        ["Target", "number", "0"]
       ]
     end
   end
@@ -117,10 +118,12 @@ class Viz::Viz < ActiveRecord::Base
         line4 = row[headings.index(map_json["D-4"])]
       elsif self.chart == "Bullet Chart"
         label = row[headings.index(map_json["X"])]
-        value = row[headings.index(map_json["Subtitle"])]
-        value2= row[headings.index(map_json["Ranges"])]
-        value3= row[headings.index(map_json["Measures"])]
-        value4= row[headings.index(map_json["Markers"])]
+        stitle= row[headings.index(map_json["Subtitle"])]
+        range1= row[headings.index(map_json["Ranges 1"])]
+        range2= row[headings.index(map_json["Ranges 2"])]
+        range3= row[headings.index(map_json["Ranges 3"])]
+        value = row[headings.index(map_json["Value"])]
+        target= row[headings.index(map_json["Target"])]
       end
       if self.chart == "Pie Chart" or self.chart == "Election Donut Chart" or self.chart == "Donut Chart" or self.chart == "Bar Chart" or self.chart == "Column Chart" or self.chart == "Line Chart" or self.chart == "Bubble Chart"
         unique_label = label
@@ -181,17 +184,21 @@ class Viz::Viz < ActiveRecord::Base
         unique_label = label
         if h[unique_label].present?          
           h[unique_label] = {"label" => label,
-           "value"  => h[unique_label]["Subtitle"],
-           "value2" => h[unique_label]["value2"],
-           "value3" => h[unique_label]["value3"],
-           "value4" => h[unique_label]["value4"]
+           "stitle"  => h[unique_label]["Subtitle"],
+           "range1" => h[unique_label]["Range 1"],
+           "range2" => h[unique_label]["Range 2"],
+           "range3" => h[unique_label]["Range 3"],
+           "value"  => h[unique_label]["value"],
+           "target" => h[unique_label]["Target"]
          }
         else
           h[unique_label] = {"label" => label,
-           "value" => value,           
-           "line2" => value2,
-           "line3" => value3,
-           "line4" => value4
+           "stitle"  => stitle, 
+           "range1" => range1,           
+           "range2" => range2,
+           "range3" => range3,
+           "value" => value,
+           "target" => target
           }
         end        
       end
