@@ -872,7 +872,6 @@ function generateCrossFilterChart(options) {
   });
   _.each(flights, function(d){
     if(d.year === 2009){
-      //console.log(d);
     }
   })
   // Create the crossfilter for the relevant dimensions and groups.
@@ -910,11 +909,17 @@ function generateCrossFilterChart(options) {
   });
 
   var x_dates = d3.extent(dates.top(Infinity), function(d) {return d.date; });
-  console.log(x_dates[1],"extent dates")
 
   var future_date = new Date(x_dates[1]);
   var future_month = future_date.getMonth() + 2;
-  future_date = new Date(future_date.getFullYear()+"-"+future_month +"-01")
+  var future_year;
+  if(future_month===13){
+    future_year = future_date.getFullYear()+1;
+    future_month = "01";
+  }else{
+    future_year = future_date.getFullYear();
+  }
+  future_date = new Date(future_year+"-"+future_month +"-01")
 
   var charts = [
             barChart()
@@ -940,7 +945,7 @@ function generateCrossFilterChart(options) {
                     .group(distanceDates)
                     .x(d3.time.scale()
                     .domain([x_dates[0],future_date])
-                    .rangeRound([0, 1000]))
+                    .rangeRound([0, 700]))
         ];
 
   // Given our array of charts, which we assume are in the same order as the
@@ -1326,7 +1331,7 @@ function beforCrossfilterAppendHtml(options) {
   var delay_html_template = '<div id="delay-chart" class="cross-filter-chart"><div class="title">Days</div></div>';
   var _dist_html_template = '<div id="distance-chart" class="cross-filter-chart"><div class="title">Years</div></div>';
   var _date_html_template = '<div id="date-chart" class="cross-filter-chart"><div class="title">Data for all dates</div></div>';
-  var aside_html_template = '<aside id="totals"><span id="active"> -</span>of<span id="total"> -</span> selected.</aside><div id="lists"><div id="flight-list" class="list"></div></div>';
+  var aside_html_template = '<aside id="totals"><span id="active"> -</span> of <span id="total"> -</span> selected.</aside><div id="lists"><div id="flight-list" class="list"></div></div>';
 
   var html_template = hours_html_template + delay_html_template +
     _dist_html_template + _date_html_template;
