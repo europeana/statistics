@@ -841,7 +841,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
 function generateCrossFilterChart(options) {
 
-  flights = d3.csv.parse(options.data);  
+  flights = d3.csv.parse(options.data);
   var keys = [];
   for(var k in flights[0]) keys.push(k);
 
@@ -850,6 +850,7 @@ function generateCrossFilterChart(options) {
     formatChange = d3.format("+,d"),
     formatDate = d3.time.format("%B %d, %Y"),
     formatTime = d3.time.format("%I:%M %p"),
+    formatMonth = d3.time.format("%b");
     formatYear = d3.time.format("%Y");
 
   // A nest operator, for grouping the flight list.
@@ -861,15 +862,19 @@ function generateCrossFilterChart(options) {
   var days_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   // A little coercion, since the CSV is untyped.
   flights.forEach(function (d, i) {
-    d.index = i;    
+    d.index = i;
     d.date = parseDate(d[keys[0]]);
-    d.year = formatYear(d.date);
-    d.origin = d[keys[4]];
-    d.destination = Math.floor(days_week.indexOf(d[keys[3]]));
+    d.year = parseInt(formatYear(d.date));
+    d.origin = +d[keys[4]];
+    d.destination = days_week.indexOf(d[keys[3]]);
     d.delay = +d[keys[2]];
     d.distance = +d[keys[1]];
   });
-
+  _.each(flights, function(d){
+    if(d.year === 2009){
+      //console.log(d);
+    }
+  })
   // Create the crossfilter for the relevant dimensions and groups.
   var flight = crossfilter(flights),
     all = flight.groupAll(),
@@ -898,38 +903,44 @@ function generateCrossFilterChart(options) {
       return d.distance;
     });
 
+
   var all_year = [];
   distanceYears.top(Infinity).forEach(function(d,i) {
     all_year.push(d.key)
   });
+
   var x_dates = d3.extent(dates.top(Infinity), function(d) {return d.date; });
+  console.log(x_dates[1],"extent dates")
+
+  var future_date = new Date(x_dates[1]);
+  var future_month = future_date.getMonth() + 2;
+  future_date = new Date(future_date.getFullYear()+"-"+future_month +"-01")
 
   var charts = [
             barChart()
                     .dimension(month)
                     .group(distanceMonth)
                     .x(d3.scale.linear()
-                    .domain([0, 13])
+                    .domain([1, 13])
                     .range([0, 200])),
             barChart()
                     .dimension(day)
-                    .group(distanceDay)                    
+                    .group(distanceDay)
                     .x(d3.scale.linear()
                     .domain([0,7])
                     .rangeRound([0,170])),
             barChart()
                     .dimension(years)
                     .group(distanceYears)
-                    .round(d3.time.year)
                     .x(d3.time.scale()
-                    .domain([d3.min(all_year), new Date().getFullYear()+1])
-                    .rangeRound([0, 200])),
+                    .domain([d3.min(all_year), d3.max(all_year)+1])
+                    .rangeRound([0, 150])),
             barChart()
                     .dimension(dates)
                     .group(distanceDates)
                     .x(d3.time.scale()
-                    .domain(x_dates)
-                    .rangeRound([0, 1000]))                  
+                    .domain([x_dates[0],future_date])
+                    .rangeRound([0, 1000]))
         ];
 
   // Given our array of charts, which we assume are in the same order as the
@@ -969,9 +980,9 @@ function generateCrossFilterChart(options) {
 
   // Like d3.time.format, but faster.
   function parseDate(d) {
-    var year = d.substring(0, 4);
-    var month = d.substring(5, 6) -1;
-    var day = d.substring(7, 8);
+    var year = d.substr(0, 4);
+    var month = d.substr(4, 2) -1;
+    var day = d.substr(6, 2);
     return new Date(year,month,day);
   }
 
@@ -1083,7 +1094,7 @@ function generateCrossFilterChart(options) {
       dimension,
       group,
       round;
-    
+
     function chart(div) {
       var width = x.range()[1],
         height = y.range()[0];
@@ -1131,7 +1142,7 @@ function generateCrossFilterChart(options) {
             .attr("class", "axis")
             .attr("transform", "translate(0," + height + ")")
             .call(axis);
-          
+
 
           // Initialize the brush component with pretty resize handles.
           var gBrush = g.append("g")
@@ -1278,7 +1289,7 @@ function generateCrossFilterChart(options) {
     return d3.rebind(chart, brush, "on");
   }
 
-  
+
   d3.selectAll(options.selector + " #hour-chart .tick text")
     .text(function(d,i) {
       if (d === 13 || d === 0) {
@@ -1301,7 +1312,7 @@ function generateCrossFilterChart(options) {
       }
     });
 
-    
+
 }
 
 function beforCrossfilterAppendHtml(options) {
@@ -1311,10 +1322,10 @@ function beforCrossfilterAppendHtml(options) {
   $(selector).wrap("<div class='cross-filter-body'></div>");
   $(selector).addClass("cross-filter-charts");
 
-  var hours_html_template = '<div id="hour-chart" class="cross-filter-chart"><div class="title">'+data[3]+'</div></div>';
-  var delay_html_template = '<div id="delay-chart" class="cross-filter-chart"><div class="title">'+data[1]+'</div></div>';
-  var _dist_html_template = '<div id="distance-chart" class="cross-filter-chart"><div class="title">'+data[2]+'</div></div>';
-  var _date_html_template = '<div id="date-chart" class="cross-filter-chart"><div class="title">'+data[0]+'</div></div>';
+  var hours_html_template = '<div id="hour-chart" class="cross-filter-chart"><div class="title">Month</div></div>';
+  var delay_html_template = '<div id="delay-chart" class="cross-filter-chart"><div class="title">Days</div></div>';
+  var _dist_html_template = '<div id="distance-chart" class="cross-filter-chart"><div class="title">Years</div></div>';
+  var _date_html_template = '<div id="date-chart" class="cross-filter-chart"><div class="title">Data for all dates</div></div>';
   var aside_html_template = '<aside id="totals"><span id="active"> -</span>of<span id="total"> -</span> selected.</aside><div id="lists"><div id="flight-list" class="list"></div></div>';
 
   var html_template = hours_html_template + delay_html_template +
