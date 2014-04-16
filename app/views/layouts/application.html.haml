@@ -31,6 +31,9 @@
           -if params[:file_id].downcase == article.slug.downcase
             .row.row--full
               = image_tag "banner.png", style: "width:100%;"
+          -else
+            %br
+            = image_tag "header-small.png", style: "width:100%;"      
       .row
         .col-sm-12
           %br
