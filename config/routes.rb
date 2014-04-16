@@ -44,6 +44,9 @@ Pykhub::Application.routes.draw do
   get "/generate/chart/:file_id", to: "viz_vizs#generate_chart", as: "generate_viz_chart"
   
   get "/:file_id", to: "cms_articles#show", as: "cms_article"
+
+  #Embed
+  get "/embed/:file_id", to: "viz_vizs#embed", as: "embed_viz"
   
   #root
   root :to => 'cms_articles#index'

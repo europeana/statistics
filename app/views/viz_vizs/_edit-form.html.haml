@@ -4,3 +4,8 @@
       Title
     = f.text_field :title, class: "form-control", placeholder: "Title", autofocus: true, style: "width: 400px;"
     = f.submit "Save", id: "submit", class: "btn alt", style: "width: 100px;"
+
+%Strong
+  Embed chart copy url:
+  = text_field_tag 'name', root_url+"embed/"+@viz_viz.slug, style:"width:500px", disabled: true
+%br  

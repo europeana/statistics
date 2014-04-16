@@ -37,6 +37,16 @@ class VizVizsController < ApplicationController
     gon.lineChartData["#pie-chart"] = gon.csv_data
   end
 
+  def embed
+    @mapped_output = JSON.parse(@viz_viz.mapped_output)
+    gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
+    gon.chart_type = @viz_viz.chart
+    gon.mapped_output = {}
+    gon.mapped_output["#embed-chart"] = @mapped_output
+    gon.lineChartData = {}
+    gon.lineChartData["#embed-chart"] = gon.csv_data
+  end
+
   def create    
     @viz_viz = Viz::Viz.new(params[:viz_viz])
     if @viz_viz.save

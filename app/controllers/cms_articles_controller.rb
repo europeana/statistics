@@ -38,7 +38,7 @@ class CmsArticlesController < ApplicationController
   end
 
   def show
-    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> ''").order(:position)
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
     @selected_article = @cms_article.slug
     gon.width = ""
     gon.height = ""
@@ -92,7 +92,8 @@ class CmsArticlesController < ApplicationController
   end
 
   def destroy
-    @cms_article.destroy
+    @cms_article.update_attributes(is_published: false,
+      archieved: false, is_deleted: true)
     redirect_to all_articles_path, notice: "Record deleted."
   end
 

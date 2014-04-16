@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140331070956) do
+ActiveRecord::Schema.define(:version => 20140416135233) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -21,10 +21,13 @@ ActiveRecord::Schema.define(:version => 20140331070956) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "slug"
+    t.integer  "core_tag_id"
+    t.boolean  "is_star"
     t.string   "tag"
     t.boolean  "home_page"
     t.integer  "position"
     t.boolean  "archieved"
+    t.boolean  "is_deleted"
   end
 
   add_index "cms_articles", ["slug"], :name => "index_cms_articles_on_slug"
@@ -46,6 +49,16 @@ ActiveRecord::Schema.define(:version => 20140331070956) do
     t.string   "name"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "core_tags", :force => true do |t|
+    t.string   "genre"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "slug"
+    t.integer  "sort_order"
   end
 
   create_table "data_filzs", :force => true do |t|

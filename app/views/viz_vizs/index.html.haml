@@ -11,13 +11,17 @@
     %thead
       %tr
         %th Title
+        %th Embed url
         %th Source Data
         %th Chart Name
         %th Last Updated
         %th
     - @viz_vizs.each do |viz|
       %tr
-        %td= link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
+        %td
+          = link_to "#{viz.title}", viz_viz_path(file_id: viz.slug)
+        %td  
+          = link_to root_url+"embed/"+viz.slug, embed_viz_path(viz.slug)
         %td
           - unless viz.data_filz.nil?
             = link_to "#{viz.data_filz.file_file_name}",data_filz_path(file_id: viz.data_filz.slug)

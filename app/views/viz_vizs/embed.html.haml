@@ -1,0 +1,36 @@
+-if @viz_viz.chart == "Compare Line Chart"
+  .row
+    .col-sm-12
+      #pie-chart{style: "height:500px; width:100%;background:#DDDEE0;"}
+-elsif @viz_viz.chart == "Cross Filter"
+  .row
+    .col-sm-12    
+      #cross-filter-chart
+-else 
+  #embed-chart{style: "height:500px; width:500px;"}
+  
+        
+- chart_types = { "Pie Chart" => "pie", "Election Donut Chart" => "election-donut" , "Donut Chart" => "donut", "Bar Chart" => "bar", "Column Chart" => "column", "Grouped Column Chart" => "grouped-column", "Line Chart" => "line", "Compare Line Chart" => "custom-line", "Bullet Chart" => "bullet-chart" }
+
+:javascript  
+  var custom_chart = ["Bubble Chart", "Compare Line Chart", "Bullet Chart", "Cross Filter"];
+  if (custom_chart.indexOf(gon.chart_type) >= 0) {
+    if (gon.chart_type !== "Cross Filter") {
+      selector =  "#embed-chart";
+    }else {
+      selector =  "#cross-filter-chart";
+    }
+    GenerateCustomChart(gon.chart_type,selector, gon.csv_data, gon.mapped_output);
+  }else {
+    // display Echart if datawrapper
+    dw.visualize({
+        type: '#{chart_types[@viz_viz.chart]}-chart', 
+        theme: 'default', 
+        container: $('#embed-chart'),
+        datasource:   dw.datasource.delimited({csv: gon.csv_data})
+    });
+  }
+
+
+
+          
