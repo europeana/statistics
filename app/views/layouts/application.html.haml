@@ -30,6 +30,9 @@
         -if article.present?
           -if params[:file_id].downcase == article.slug.downcase
             .row.row--full
+              %br
+              %h6
+                Europeana makes Europe’s culture available for all, across borders and generations and for creative re-use – follow how at #AllezCulture 
               = image_tag "banner.png", style: "width:100%;"
           -else
             %br
