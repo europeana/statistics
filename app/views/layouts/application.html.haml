@@ -30,11 +30,15 @@
           - article = Cms::Article.where(home_page: true).first
           -if article.present?
             -if params[:file_id].downcase == article.slug.downcase
-              .row.row--full
+              .row.row--full                
                 %br
-                %h6
-                  Europeana makes Europe’s culture available for all, across borders and generations and for creative re-use – follow how at #AllezCulture 
-                = image_tag "banner.png", style: "width:100%;"
+                  .imgBox
+                    %p.imgText 
+                      %h1
+                        Europeana Statistics
+                      %h2  
+                        Explore Europeana in numbers. 
+                      Go behind the scenes and discover statistics related to the organisation, its services, and the reach of the collections aggregated from over 2,000 of Europe’s galleries, libraries, archives and museums.                
             -else
               %br
               = image_tag "header-small.png", style: "width:100%;"      
