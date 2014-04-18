@@ -26,22 +26,16 @@
                 %li= link_to "All Articles", "/all-articles", class: (controller_name == "cms_articles" and (action_name == "allArticles" )) ? "current" : nil
                 %li= link_to "Settings", edit_settings_path, class: (controller_name == "settings") ? "current" : nil
                 %li= link_to "Logout", "/logout"
-        - if params[:file_id]
-          - article = Cms::Article.where(home_page: true).first
-          -if article.present?
-            -if params[:file_id].downcase == article.slug.downcase
-              .row.row--full                
-                %br
-                  .imgBox
-                    %p.imgText 
-                      %h1
-                        Europeana Statistics
-                      %h2  
-                        Explore Europeana in numbers. 
-                      Go behind the scenes and discover statistics related to the organisation, its services, and the reach of the collections aggregated from over 2,000 of Europe’s galleries, libraries, archives and museums.                
-            -else
-              %br
-              = image_tag "header-small.png", style: "width:100%;"      
+
+        - if params[:file_id] or params[:tag] == "other"
+          .row.row--full                
+            %br
+              .imgBox
+                %p.imgText
+                  %h1{style:"color:white;margin-left:30px;"}
+                    Europeana Statistics
+                  %div{style:"color:white;width:520px;margin-left:30px;"}
+                    Explore Europeana in numbers.Go behind the scenes and discover statistics related to the organisation, its services, and the reach of the collections aggregated from over 2,000 of Europe’s galleries, libraries, archives and museums.                      
         .row
           .col-sm-12
             %br
