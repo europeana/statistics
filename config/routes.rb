@@ -27,6 +27,7 @@ Pykhub::Application.routes.draw do
   get "/data/:file_id/delete", to: "data_filzs#destroy", as: "delete_data_filz"
   get "/data/:file_id/raw", to: "data_filzs#raw", as: "raw_data_filz"
   get "/data/:file_id", to: "data_filzs#show", as: "data_filz"
+  get "/data/:file_id/json", to: "data_filzs#json_data", as: "data_filz_json"
     
   #images
   post "/images/create", to: "cms_images#create", as: "create_cms_images"

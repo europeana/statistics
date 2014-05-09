@@ -246,6 +246,111 @@ function GenereteChartInMarkdown() {
         }
       });
     });
+
+  if ($("#top-viewed-items-europena")) {
+    var data_source = $("#top-viewed-items-europena").attr("data-src");
+
+    $.get( "/data/"+data_source+"/json", function( data ) {
+      var new_data = [];
+      var new_head = [];      
+      data = JSON.parse(data.content);
+      
+      for(i in data[0]) {
+        new_head.push(data[0][i].split(":")[0]);
+      }
+
+      for(i in data) {
+        if (i > 0) {
+          var tmp_arr = {};
+          for(j in data[i]) {            
+            tmp_arr[new_head[j]] = data[i][j];
+          }
+          new_data.push(tmp_arr);
+        }
+      }
+
+      var html_template = "<strong>Year</strong><select id='top-view-year'>";
+      var tmp_arr = [];
+
+      for(i in new_data) {
+        var year = new_data[i].year;
+        if (tmp_arr.indexOf(year) < 0) {
+          tmp_arr.push(year);
+        }
+      }
+      tmp_arr.sort(function(a,b) {
+        return a - b;
+      });
+
+      var selected = "selected";
+      for(i in tmp_arr) {
+        var year = tmp_arr[i];
+        html_template += "<option value='"+year+"' "+selected+">"+year+"</option>";
+        selected = "";
+      }
+      html_template += "</select>";
+
+      /// Provider
+      html_template += "<strong style='padding-left:10px;'>Provider</strong><select id='top-view-provider'>";
+      var tmp_arr = [];
+
+      for(i in new_data) {
+        var provider = new_data[i].provider;
+        if (tmp_arr.indexOf(provider) < 0) {
+          tmp_arr.push(provider);
+          html_template += "<option value='"+provider+"' "+selected+">"+provider+"</option>";
+          selected = "";
+        }
+      }
+      html_template += "</select>";
+      html_template += "&nbsp;<strong style='font-size:small;'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";      
+
+      function changeItemPerViewData(new_data) {
+        var provider = $("#top-view-provider").val();
+        var year = $("#top-view-year").val();
+
+        var html_template = "";
+        var counter = 1;
+        for(i in new_data) {
+          if (new_data[i].year === year && new_data[i].provider === provider) {
+            if (counter === 1 || counter === 3) {
+              html_template += "<div class='row' style='margin-top:15px;'>";
+            }
+            html_template += "<div class='col-sm-6'>";
+            html_template += '<div class="media"><a class="pull-left" href="'+new_data[i].title_url+'" style="padding-right:25px;" target="_blank"><img class="media-object" src="'+new_data[i].img_url+'" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">'+counter+'.</h4><a href="'+new_data[i].title_url+'" target="_blank" class="comment more" >'+new_data[i].title+'</a><p><strong>'+new_data[i].total_views+' views</strong></p></div></div>';
+            html_template += "</div>";
+            if (counter === 2 || counter === 4) {
+              html_template += "</div>";
+            }
+            counter++;
+          }
+
+        }
+        return html_template;        
+      }
+
+      $("#top-viewed-items-europena").html(html_template);
+
+      $("#top-view-year").change(function() {
+        $("#item-view-content").html(changeItemPerViewData(new_data));
+        $(".comment").shorten({"showChars" : 20, "moreText"  : ""});
+      });
+
+      $("#top-view-provider").change(function() {
+        $("#item-view-content").html(changeItemPerViewData(new_data));
+        $(".comment").shorten({"showChars" : 20, "moreText"  : ""});
+      });
+
+
+      $("#top-view-year").trigger("change");
+      
+
+            
+    });
+
+    
+
+  }
 }
 
 function get_html_template(layout_type, style) {
@@ -1339,3 +1444,53 @@ function beforCrossfilterAppendHtml(options) {
   $(selector).append(html_template + aside_html_template);
   //$(selector).after(aside_html_template);
 }
+(function($) {
+$.fn.shorten = function (settings) {
+
+  var config = {
+    showChars: 100,
+    ellipsesText: "...",
+    moreText: "more",
+    lessText: "less"
+  };
+
+  if (settings) {
+    $.extend(config, settings);
+  }
+
+  $(document).off("click", '.morelink');
+
+  $(document).on({click: function () {
+
+      var $this = $(this);
+      if ($this.hasClass('less')) {
+        $this.removeClass('less');
+        $this.html(config.moreText);
+      } else {
+        $this.addClass('less');
+        $this.html(config.lessText);
+      }
+      $this.parent().prev().toggle();
+      $this.prev().toggle();
+      return false;
+    }
+  }, '.morelink');
+
+  return this.each(function () {
+    var $this = $(this);
+    if($this.hasClass("shortened")) return;
+
+    $this.addClass("shortened");
+    var content = $this.html();
+    if (content.length > config.showChars) {
+      var c = content.substr(0, config.showChars);
+      var h = content.substr(config.showChars, content.length - config.showChars);
+      var html = c + '<span class="moreellipses">' + config.ellipsesText + ' </span><span class="morecontent"><span>' + h + '</span> <a href="#" class="morelink">' + config.moreText + '</a></span>';
+      $this.html(html);
+      $(".morecontent span").hide();
+    }
+  });
+
+};
+
+})(jQuery);

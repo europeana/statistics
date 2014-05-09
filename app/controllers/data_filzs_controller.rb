@@ -50,6 +50,12 @@ class DataFilzsController < ApplicationController
     @data_filz.destroy
     redirect_to data_filzs_path
   end
+
+  def json_data
+    respond_to do |format|
+      format.json { render :json => @data_filz.to_json, head: "ok"  }
+    end          
+  end
     
   private
   
