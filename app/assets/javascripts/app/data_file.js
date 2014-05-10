@@ -326,8 +326,11 @@ function GenereteChartInMarkdown() {
           }
 
         }
+
         if (counter < 2) {
           html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No Record Found </h3></center>";
+        }else if (counter === 4) {          
+          $("<div style='clear:both'>&nbsp;</div>").appendTo("#top-viewed-items-europena")
         }
         return html_template;        
       }
