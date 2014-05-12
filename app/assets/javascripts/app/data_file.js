@@ -313,13 +313,13 @@ function GenereteChartInMarkdown() {
         var counter = 1;
         for(i in new_data) {
           if (new_data[i].year === year && new_data[i].provider === provider) {
-            if (counter === 1 || counter === 3) {
+            if (counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
               html_template += "<div class='row' style='margin-top:15px;'>";
             }
             html_template += "<div class='col-sm-6'>";
             html_template += '<div class="media"><a class="pull-left" href="'+new_data[i].title_url+'" style="padding-right:25px;" target="_blank"><img class="media-object" src="'+new_data[i].img_url+'" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">'+counter+'.</h4><a href="'+new_data[i].title_url+'" target="_blank" class="comment more" >'+new_data[i].title+'</a><p><strong>'+new_data[i].total_views+' views</strong></p></div></div>';
             html_template += "</div>";
-            if (counter === 2 || counter === 4) {
+            if (counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
               html_template += "</div>";
             }
             counter++;
