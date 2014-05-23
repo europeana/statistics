@@ -1,6 +1,6 @@
 class DataFilzsController < ApplicationController
   
-  before_filter :authenticate_user!, :find_objects, except: [:json_data]
+  before_filter :authenticate_user!, :find_objects, except: [:json_data, :euro_api]
   before_filter :find_objects
 
   def index
@@ -56,6 +56,11 @@ class DataFilzsController < ApplicationController
     respond_to do |format|
       format.json { render :json => @data_filz.to_json, head: "ok"  }
     end          
+  end
+
+  def euro_api
+    idata = Data::Filz.getDataFromEuropeana
+    render :json => idata.to_json
   end
     
   private

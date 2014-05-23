@@ -867,7 +867,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
     return d.x;
   }));
   y.domain([d3.min(data, function (d) {
-      return d.y;
+      return 0;
     }),
         d3.max(data, function (d) {
       return d.y;
@@ -880,7 +880,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
   var yAxisLeft = d3.svg.axis()
     .scale(y)
-    .ticks(5)
+    .ticks(10)
     .orient("left")
     .tickSize(-w)
     .tickSubdivide(true);

@@ -28,6 +28,7 @@ Pykhub::Application.routes.draw do
   get "/data/:file_id/raw", to: "data_filzs#raw", as: "raw_data_filz"
   get "/data/:file_id", to: "data_filzs#show", as: "data_filz"
   get "/data/:file_id/json", to: "data_filzs#json_data", as: "data_filz_json"
+  get "/data/euro/api", to: "data_filzs#euro_api", as: "euro_api_json"
     
   #images
   post "/images/create", to: "cms_images#create", as: "create_cms_images"
