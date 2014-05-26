@@ -880,10 +880,8 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
   var yAxisLeft = d3.svg.axis()
     .scale(y)
-    .orient("left")
-    .tickSize(-w)
-    .tickSubdivide(true);
-
+    .orient("left");
+    
   graph.append("svg:g")
     .attr("class", "y axis")
     .attr("transform", "translate(0,0)")
