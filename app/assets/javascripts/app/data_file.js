@@ -880,7 +880,24 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
 
   var yAxisLeft = d3.svg.axis()
     .scale(y)
-    .orient("left");
+    .orient("left")
+    .tickSize(-w)
+    .tickValues(tickValues);
+
+  function tickValues() {
+    var values = [];
+    var min = y.domain()[0];
+    var max = y.domain()[1];
+    var ran = max / 8;
+    values.push(min);
+    for(var i = 1; i <= 8; i++) {
+      values.push(ran * i);
+    }
+
+    values.push(max);
+
+    return values;
+  }
     
   graph.append("svg:g")
     .attr("class", "y axis")
