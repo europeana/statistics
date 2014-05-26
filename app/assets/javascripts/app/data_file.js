@@ -867,7 +867,7 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
     return d.x;
   }));
   y.domain([d3.min(data, function (d) {
-      return 0;
+      return d.y;
     }),
         d3.max(data, function (d) {
       return d.y;
