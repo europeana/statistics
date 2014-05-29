@@ -303,19 +303,33 @@ function GenereteChartInMarkdown() {
         }
       }
       html_template += "</select>";
-      html_template += "&nbsp;<strong style='font-size:small;'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";      
+      html_template += "&nbsp;<strong style='font-size:small;' id='top-view-digital-object'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";      
 
       function changeItemPerViewData(new_data) {
-        var provider = $("#top-view-provider").val();
-        var year = $("#top-view-year").val();
 
+        var provider = $("#top-view-provider").val();
+        var year = $("#top-view-year").val();        
+
+        var data_provider_all_count = 0;
+        var data_provider_year_count = 0;
         var html_template = "";
         var counter = 1;
         for(i in new_data) {
+          if (new_data[i].provider === provider) {
+            if (parseInt(new_data[i].total_views) > 0) {
+              data_provider_all_count += parseInt(new_data[i].total_views);
+            }            
+          }
+  
           if (new_data[i].year === year && new_data[i].provider === provider) {
-            if (counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
-              html_template += "<div class='row' style='margin-top:15px;'>";
+            if (parseInt(new_data[i].total_views) > 0) {
+              data_provider_year_count += parseInt(new_data[i].total_views);   
             }
+            
+            if (counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
+              html_template += "<div class='row' style='margin-top:15px;'>";              
+            }
+
             html_template += "<div class='col-sm-6'>";
             html_template += '<div class="media"><a class="pull-left" href="'+new_data[i].title_url+'" style="padding-right:25px;" target="_blank"><img class="media-object" src="'+new_data[i].img_url+'" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">'+counter+'.</h4><a href="'+new_data[i].title_url+'" target="_blank" class="comment more" >'+new_data[i].title+'</a><p><strong>'+new_data[i].total_views+' views</strong></p></div></div>';
             html_template += "</div>";
@@ -324,8 +338,9 @@ function GenereteChartInMarkdown() {
             }
             counter++;
           }
-
         }
+        
+        $("#top-view-digital-object").html(data_provider_all_count+" digital objects generating "+data_provider_year_count+" views on Europeana")
 
         if (counter < 2) {
           html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No Record Found </h3></center>";
