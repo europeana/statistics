@@ -317,7 +317,8 @@ function GenereteChartInMarkdown() {
         for(i in new_data) {
           if (new_data[i].provider === provider) {
             if (parseInt(new_data[i].total_views) > 0) {
-              data_provider_all_count += parseInt(new_data[i].total_views);
+              //data_provider_all_count += parseInt(new_data[i].total_views);
+              data_provider_all_count = new_data[i].total_objects;
             }            
           }
   

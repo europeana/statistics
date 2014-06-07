@@ -40,8 +40,12 @@ class Data::Filz < ActiveRecord::Base
       '06588F2BC6CBC66BCEE7F428E62B8426D2ED4984'
      ]
     year = 2011
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22Rijksmuseum%22&rows=0"
 
     total_views = [7, 7, 3, 3, 3, 2, 2, 2, 2, 1 ]  
+
+    uri = URI("http://europeana.eu/api//v2/record/#{data_prodvier}/#{jsurl}.json?wskey=api2demo&profile=full")
+    total_obj = JSON.parse(Net::HTTP.get(uri))['totalResults']
 
     dump = []
     counter = 0 
@@ -68,9 +72,8 @@ class Data::Filz < ActiveRecord::Base
         img_url = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
       end
 
-
       dump << {"year" => year, "provider"=> provider_name, "title" => title, "title_url" => title_url,
-              "total_views" => tot_views, "img_url" => img_url}
+              "total_views" => tot_views, "img_url" => img_url, "total_object" => total_obj}
       
       counter += 1
     end    
@@ -85,6 +88,7 @@ class Data::Filz < ActiveRecord::Base
       'collectie_SK_A_1892', 'collectie_RP_P_1956_733', 'collectie_RP_P_1894_A_18320',
       'collectie_SK_A_133']    
     total_views = [857,129,89,86,80,70,60,55,46,44]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22Rijksmuseum%22&rows=0"
   end
 
   def rij2013
@@ -97,6 +101,7 @@ class Data::Filz < ActiveRecord::Base
     year = 2013  
 
     total_views = [1105,879,486,475,322,203,196,156,154,148]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22Rijksmuseum%22&rows=0"
     
   end
 
@@ -110,6 +115,7 @@ class Data::Filz < ActiveRecord::Base
     year = 2012  
 
     total_views = [1103,375,194,115,107,86,72,61,60,59]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22Rijksmuseum%22&rows=0"
     
   end
 
@@ -130,7 +136,7 @@ class Data::Filz < ActiveRecord::Base
         title_url = "http://www.europeana.eu/portal/record/#{data_prodvier}/#{tt}.html" 
       end
 
-
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3A%22EYE+Film+Instituut+Nederland%22&rows=0"
   end
 
   def eye2013
@@ -143,6 +149,7 @@ class Data::Filz < ActiveRecord::Base
     year = 2013
 
     total_views = [9,13,6,6,6,5,5,5,4,4]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3A%22EYE+Film+Instituut+Nederland%22&rows=0"
   end
 
   def eye2014
@@ -151,6 +158,7 @@ class Data::Filz < ActiveRecord::Base
     json_url = ['cat41703', 'poster2411', 'cat6923', 'poster5682', 'cat31131', 'cat34784', 'cat51754', 'cat19602', 'cat36456', 'cat33439']
     year = 2014
     total_views = [15,12,10,10,9,8,8,7,7,6]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3A%22EYE+Film+Instituut+Nederland%22&rows=0"
   end
 
   def fch2014
@@ -162,7 +170,9 @@ class Data::Filz < ActiveRecord::Base
     ]
     year = 2014
 
-    total_views = [21,12,6,5,10,4,3,3,3,3]  
+    total_views = [21,12,6,5,10,4,3,3,3,3]
+
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER:%22National%20Library%20of%20France%22&rows=0"  
 
   end
 
@@ -175,6 +185,7 @@ class Data::Filz < ActiveRecord::Base
     ]
     year = 2013
     total_views = [10,6,5,5,4,4,4,4,4,3]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER:%22National%20Library%20of%20France%22&rows=0"  
   end
 
   def fch2012
@@ -191,8 +202,8 @@ class Data::Filz < ActiveRecord::Base
       '82B5FB173E88270EDBBC8801387254EE30E742AA',
       '140EC680DF0D50DB3E0CF9E94966663F56E15CEB' ]
     year = 2012
-
     total_views = [19,10,9,8,8,7,7,6,6,5]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER:%22National%20Library%20of%20France%22&rows=0"  
     
   end
 
@@ -212,7 +223,7 @@ class Data::Filz < ActiveRecord::Base
     year = 2012
 
     total_views = [4209, 993, 490,467, 382, 252, 194, 158, 145, 134]      
-    
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22MIMO%20-%20Musical%20Instrument%20Museums%20Online%22&rows=0"
   end
 
   def mio2013
@@ -231,8 +242,8 @@ class Data::Filz < ActiveRecord::Base
 
     ]
     year = 2013
-
     total_views = [311, 537, 184, 72, 126, 118, 90, 80, 78, 74 ]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22MIMO%20-%20Musical%20Instrument%20Museums%20Online%22&rows=0"
     
   end
 
@@ -242,9 +253,8 @@ class Data::Filz < ActiveRecord::Base
     json_url = ['_ULEI_M0003234', '_CM_0130214', '_CM_0961918', '_spk_obj_257393',
       '_CM_0866640', '_CM_0866889', '_RMAH_110160_NL', '_ULEI_M0003134', '_ULEI_M0004303', '__AF_IT_DSMFI_STR0001_0000163']
     year = 2014
-
     total_views = [144, 67, 63, 43, 37, 37, 37, 37, 37, 36]  
-    
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22MIMO%20-%20Musical%20Instrument%20Museums%20Online%22&rows=0"    
   end
 
   def dis2014
@@ -262,8 +272,8 @@ class Data::Filz < ActiveRecord::Base
       'oai_eu_dismarc_ISPAN_00000T258012'
     ]
     year = 2014
-
     total_views = [117,65,58,38,38,30,30,28,27,26]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22DISMARC%20-%20EuropeanaConnect%22&rows=0"
   end
 
   def dis2013
@@ -282,6 +292,7 @@ class Data::Filz < ActiveRecord::Base
     ]
     year = 2013
     total_views = [123,94,93,89,45,35,34,31,30,26]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22DISMARC%20-%20EuropeanaConnect%22&rows=0"
   end
 
   def mio2011
@@ -300,8 +311,8 @@ class Data::Filz < ActiveRecord::Base
 
      ]
     year = 2011
-
     total_views = [24,21,19,19,18,17,15,14,13,13]      
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22DISMARC%20-%20EuropeanaConnect%22&rows=0"
     
   end
 
@@ -320,8 +331,8 @@ class Data::Filz < ActiveRecord::Base
       '1AE19673FE4ABDBB19D440F0CA1B6E536EBCF9C5'
      ]
     year = 2011
-
     total_views = [125,59,32,29,27,25,21,16,13,12]  
+    total_object_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=PROVIDER%3a%22DISMARC%20-%20EuropeanaConnect%22&rows=0"
     
   end
 
