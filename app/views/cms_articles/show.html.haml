@@ -1,14 +1,14 @@
 .row
-  .col-sm-3
+  .col-sm-2
     = render partial: "cms_articles/sidebar"
-  .col-sm-9
-    %h1{style: "border-top: solid 5px #333333; padding-top: 20px;"}
+  .col-sm-10
+    %h3{style: "padding-top:50px;"}
       = @cms_article.title
       - if current_user.present?
         %span.right.f11
           = link_to "Edit", edit_cms_article_path(@cms_article), class: "btn"
           = link_to "Delete", delete_cms_article_path(@cms_article),  confirm: 'Are you sure?', class: "btn"
-    %hr
+    %hr{style: "margin: 0px 0px 30px 0px;height: 1px;"}
     #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
     #preview.wmd-preview
           

@@ -6,7 +6,7 @@
   @media (min-width: 479px) {
     .fix-side-bar.affix-top {
       position: static;
-      margin-top:95px;
+      margin-top:40px;
     }
     
     .fix-side-bar.affix {
@@ -16,7 +16,7 @@
   }
 
 - if @cms_articles.first.present?  
-  %ul.tabs.tabs-v.fix-side-bar{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path}
+  %ul.tabs.tabs-v.fix-side-bar{id: current_user.present? ? "sort-tags" : nil , "data-update-url" => sort_tags_path, style: "width: 200px;"}
     - @cms_articles.each do |cms_article|
       %li{id: cms_article.slug} 
         %a{href: "/#{cms_article.slug}"}
@@ -30,9 +30,9 @@
 :javascript
   $(".fix-side-bar").affix({
     offset: { 
-     top: 320
+     top: 55
     , bottom: function () {
-        return (this.bottom = $('.col-sm-9').outerHeight(true))
+        return (this.bottom = $('.col-sm-10').outerHeight(true))
       }
     }
   });
