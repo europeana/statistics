@@ -1,5 +1,6 @@
 .row
-  .col-sm-12           
+  .col-sm-4{style: "margin-left: 70px;"}
+    %br
     = simple_form_for(@setting, url: settings_path, html: {role: "form", multipart: true}) do |f|
       %label 
         %strong Select View Type for Archive Articles page.
@@ -8,7 +9,10 @@
       = f.input :header_name
       = f.input :image, as: :file
 
-      = f.submit "Save", class: "btn alt", id: "submit", style: "width: 200px;"
+      -unless @setting.image.blank?
+        %img{src: "#{@setting.image}", style: "margin-bottom: 20px;"}
+      = f.submit "Save", class: "btn alt", id: "submit", style: "width: 200px; margin-bottom: 20px;"
+      
 
 %br      
 
