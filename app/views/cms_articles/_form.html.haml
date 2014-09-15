@@ -64,12 +64,13 @@
             %tr
               %td Box one with 50% width
               %td Box two with 50% width
-        %a{class: "layout-chart", src: "1x3", style: "color: white;"}
-          %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
-            %tr
-              %td Box one with 33% width
-              %td Box two with 33% width
-              %td Box three with 33% width
+        - if 1 == 2      
+          %a{class: "layout-chart", src: "1x3", style: "color: white;"}
+            %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+              %tr
+                %td Box one with 33% width
+                %td Box two with 33% width
+                %td Box three with 33% width
         %input{name: "vehicle", type: "checkbox", id: "allow-grid-view-box"}With Grid View
 
 - chart_type = ""
