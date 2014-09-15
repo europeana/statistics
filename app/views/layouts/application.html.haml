@@ -37,8 +37,13 @@
 
         - if params[:file_id] or params[:tag] == "other" and !current_user.present?
           %div{class: "#{row_2}"}
-            #header-box
-              %h3 Europeana Statistics
+            #header-box                          
+              -if !@setting.header_name.blank?  
+                %h3= @setting.header_name
+              -elsif !@setting.image.blank?   
+                %img{src: "#{@setting.image}", style: "height: 50px;width: 100%:"}
+              -else
+                %h3 Europeana Statistics  
 
       - if flash.present?
         - if flash.first.present?

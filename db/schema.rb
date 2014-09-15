@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140416135233) do
+ActiveRecord::Schema.define(:version => 20140915121741) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20140416135233) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "slug"
+    t.integer  "core_tag_id"
+    t.boolean  "is_star"
     t.string   "tag"
     t.boolean  "home_page"
     t.integer  "position"
@@ -73,8 +75,10 @@ ActiveRecord::Schema.define(:version => 20140416135233) do
 
   create_table "settings", :force => true do |t|
     t.boolean  "masonry"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "image"
+    t.string   "header_name"
   end
 
   create_table "users", :force => true do |t|

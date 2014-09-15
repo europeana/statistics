@@ -40,6 +40,7 @@ class CmsArticlesController < ApplicationController
   def show
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
     @selected_article = @cms_article.slug
+    @setting = Setting.first
     gon.width = ""
     gon.height = ""
   end

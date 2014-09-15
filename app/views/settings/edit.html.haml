@@ -1,10 +1,12 @@
 .row
   .col-sm-12           
-    = simple_form_for(@setting, url: settings_path, html: {role: "form"}) do |f|
+    = simple_form_for(@setting, url: settings_path, html: {role: "form", multipart: true}) do |f|
       %label 
         %strong Select View Type for Archive Articles page.
 
       = f.input :masonry, collection: {"List View" => "o", "Grid View" => "m" }, label: false, include_blank: false
+      = f.input :header_name
+      = f.input :image, as: :file
 
       = f.submit "Save", class: "btn alt", id: "submit", style: "width: 200px;"
 
