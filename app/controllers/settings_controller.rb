@@ -18,8 +18,15 @@ class SettingsController < ApplicationController
     else 
       params[:setting][:masonry] = false
     end
-    if @setting.update_attributes(params[:setting])
-      redirect_to root_url, notice: "Setting Updated"
+
+    if params[:remove_image].present?
+      if params[:remove_image] == "on"
+        @setting.remove_image!
+      end
+    end
+
+    if @setting.update_attributes(params[:setting])      
+      redirect_to edit_settings_path, notice: "Setting Updated"
     end
   end  
 

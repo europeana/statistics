@@ -10,7 +10,9 @@
       = f.input :image, as: :file
 
       -unless @setting.image.blank?
-        %img{src: "#{@setting.image}", style: "margin-bottom: 20px;"}
+        %input{type: "checkbox", name: "remove_image"}  Remove image
+        %br
+        %img{src: "#{@setting.image}", style: "margin-bottom: 20px;"}      
       = f.submit "Save", class: "btn alt", id: "submit", style: "width: 200px; margin-bottom: 20px;"
       
 
