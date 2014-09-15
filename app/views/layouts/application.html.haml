@@ -54,7 +54,7 @@
                 - else
                   %p.alert.alert-info
                     %span.icon-info= msg
-      -if current_user.present?
+      -if current_user.present? 
         %hr{style: "height: 5px; background: #333; margin-bottom:0px;"}              
       = yield
       -unless controller_name == "viz_vizs" and action_name == "embed"      
