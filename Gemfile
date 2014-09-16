@@ -16,14 +16,14 @@ gem 'unf' #brother of fog
 gem 'gon'
 gem 'acts_as_list'
 gem 'jquery-ui-rails'
+gem 'gattica', :git => 'git://github.com/chrisle/gattica.git'
 
 # User Interface
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'jquery-rails'
-  
+  gem 'jquery-rails'  
 end
 gem 'haml'
 gem "bcrypt-ruby", :require => "bcrypt"

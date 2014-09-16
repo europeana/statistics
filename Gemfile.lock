@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/chrisle/gattica.git
+  revision: bb99363eabd1a4a69b5e139efce42d3a40fd8e88
+  specs:
+    gattica (0.6.2)
+      hpricot
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -112,6 +119,7 @@ GEM
       railties (>= 3.1, < 4.1)
     hash-deep-merge (0.1.1)
     hike (1.2.3)
+    hpricot (0.8.6)
     i18n (0.6.1)
     jbuilder (2.0.6)
       activesupport (>= 3.0.0, < 5)
@@ -228,6 +236,7 @@ DEPENDENCIES
   fog
   friendly_id (~> 4.0.1)
   g_ruby (= 0.0.11)
+  gattica!
   gon
   haml
   haml-rails
