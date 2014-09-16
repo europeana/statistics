@@ -361,7 +361,7 @@ class Data::Filz < ActiveRecord::Base
         :"9200105" => "Wellcome Library",
         :"90402" => "Rijksmuseum",
         :"92081" => "French National Library",
-        :"920025" => "British Library"
+        :"920025" => "British Library",
         :"09102" => "MIMO",
         :"9200182" => "National Library of Wales",
         :"91909" => "Biblioteca de Catalunya",
@@ -380,8 +380,81 @@ class Data::Filz < ActiveRecord::Base
         :"2021610" => "Netherlands Institute for Sound and Vision"
     }
 
-  #girish write code here  
-    
+    ga = Gattica.new({:email => 'al@pykih.com', :password => 'developer22'})
+    ga.profile_id = 25899454
+    page_view_data = []
+    page_view_country = []
+    page_path_data = []
+    page_events = []
+    data_prodviers.each do |key, value|      
+
+      # First query
+      tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"]})
+      tmp_data.points.each do |d|
+        require_fld = {}  
+        d.dimensions.each do |c|          
+          c.each do |k,v|            
+            if k.to_s == "month" or k.to_s == "year"
+              require_fld[k] = v
+            end
+          end
+        end
+        require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+        require_fld["provider_id"] = key
+        require_fld["provider_name"] = value
+        page_view_data << require_fld
+      end
+
+      # second query
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'country'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 25 })      
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|            
+      #       if k.to_s == "month" or k.to_s == "year" or k.to_s == "country"
+      #         require_fld[k] = v
+      #       end
+      #     end
+      #   end
+      #   require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      #   page_view_country << require_fld
+      # end
+
+      # #third query
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['pageTitle', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 10 })      
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|                        
+      #       require_fld[k] = v
+      #     end
+      #   end
+      #   require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      #   page_path_data << require_fld
+      # end
+
+      # # fourth query
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'eventCategory'], :metrics => ['totalEvents'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}", 'eventCategory == Europeana Redirects']})      
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|                        
+      #       require_fld[k] = v
+      #     end
+      #   end
+      #   require_fld["total_events"] = d.metrics[0][:totalEvents].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      #   page_events << require_fld
+      # end
+
+    end
+    all_data = {page_views: page_view_data, page_country: page_view_country, page_path: page_path_data, page_events: page_events}
+    all_data
   end
   #UPSERT
   #JOBS
