@@ -356,25 +356,31 @@ class Data::Filz < ActiveRecord::Base
     
   end
 
-  def ga_fetch_data
-    data_prodvier = { Wellcome Library (9200105)
-    Rijksmuseum (90402) 
-    French National Library (92081) 
-    British Library (920025)
-    MIMO (09102) 
-    National Library of Wales (9200182)
-    Biblioteca de Catalunya (91909, 91910)
-    Europeana 1914-1918 (2020601)
-    Linked Heritage (20238)
-    HOPE (20220)
-    National Library of Portugal (92039)
-    Partage Plus (20261)
-    Macedonian Museum of Contemporary Art for Greece (2026005)
-    Naturkunde Museum Berlin (11622)
-    Imperial War Museum (2022360)
-    Netherlands Institute for Sound and Vision (09209, 2021601, 2022102, 2021610)
+  def self.ga_fetch_data
+    data_prodviers = {
+        :"9200105" => "Wellcome Library",
+        :"90402" => "Rijksmuseum",
+        :"92081" => "French National Library",
+        :"920025" => "British Library"
+        :"09102" => "MIMO",
+        :"9200182" => "National Library of Wales",
+        :"91909" => "Biblioteca de Catalunya",
+        :"91910" => "Biblioteca de Catalunya",
+        :"2020601" => "Europeana 1914-1918",
+        :"20238" => "Linked Heritage",
+        :"20220" => "HOPE",
+        :"92039" => "National Library of Portugal",
+        :"20261" => "Partage Plus",
+        :"2026005" => "Macedonian Museum of Contemporary Art for Greece",
+        :"11622" => "Naturkunde Museum Berlin",
+        :"2022360" =>"Imperial War Museum",
+        :"09209" => "Netherlands Institute for Sound and Vision", 
+        :"2021601" => "Netherlands Institute for Sound and Vision",
+        :"2022102" => "Netherlands Institute for Sound and Vision",
+        :"2021610" => "Netherlands Institute for Sound and Vision"
+    }
 
-
+  #girish write code here  
     
   end
   #UPSERT
