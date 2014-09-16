@@ -355,6 +355,28 @@ class Data::Filz < ActiveRecord::Base
     total_views = [7, 7, 3, 3, 3, 2, 2, 2, 2, 1 ]      
     
   end
+
+  def ga_fetch_data
+    data_prodvier = { Wellcome Library (9200105)
+    Rijksmuseum (90402) 
+    French National Library (92081) 
+    British Library (920025)
+    MIMO (09102) 
+    National Library of Wales (9200182)
+    Biblioteca de Catalunya (91909, 91910)
+    Europeana 1914-1918 (2020601)
+    Linked Heritage (20238)
+    HOPE (20220)
+    National Library of Portugal (92039)
+    Partage Plus (20261)
+    Macedonian Museum of Contemporary Art for Greece (2026005)
+    Naturkunde Museum Berlin (11622)
+    Imperial War Museum (2022360)
+    Netherlands Institute for Sound and Vision (09209, 2021601, 2022102, 2021610)
+
+
+    
+  end
   #UPSERT
   #JOBS
   #PRIVATE
