@@ -387,7 +387,7 @@ class Data::Filz < ActiveRecord::Base
     page_path_data = []
     page_events = []
     data_prodviers.each do |key, value|      
-
+      key = key.to_s
       # First query
       tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"]})
       tmp_data.points.each do |d|
