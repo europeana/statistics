@@ -38,13 +38,14 @@ class CmsArticlesController < ApplicationController
   end
 
   def show
-    page_views = Data::Filz.ga_fetch_data[:page_views]
-    render text: page_views.to_json
-    # @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
-    # @selected_article = @cms_article.slug
-    # @setting = Setting.first
-    # gon.width = ""
-    # gon.height = ""
+    #page_views = Data::Filz.ga_fetch_data[:page_views]
+    # page_views = Data::Filz.ga_fetch_data[:page_country]    
+    # render text: page_views.to_json
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
+    @selected_article = @cms_article.slug
+    @setting = Setting.first
+    gon.width = ""
+    gon.height = ""
   end
 
   def new

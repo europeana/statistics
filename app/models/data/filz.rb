@@ -389,29 +389,12 @@ class Data::Filz < ActiveRecord::Base
     data_prodviers.each do |key, value|      
       key = key.to_s
       # First query
-      tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"]})
-      tmp_data.points.each do |d|
-        require_fld = {}  
-        d.dimensions.each do |c|          
-          c.each do |k,v|            
-            if k.to_s == "month" or k.to_s == "year"
-              require_fld[k] = v
-            end
-          end
-        end
-        require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
-        require_fld["provider_id"] = key
-        require_fld["provider_name"] = value
-        page_view_data << require_fld
-      end
-
-      # second query
-      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'country'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 25 })      
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"]})
       # tmp_data.points.each do |d|
       #   require_fld = {}  
       #   d.dimensions.each do |c|          
       #     c.each do |k,v|            
-      #       if k.to_s == "month" or k.to_s == "year" or k.to_s == "country"
+      #       if k.to_s == "month" or k.to_s == "year"
       #         require_fld[k] = v
       #       end
       #     end
@@ -419,8 +402,25 @@ class Data::Filz < ActiveRecord::Base
       #   require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
       #   require_fld["provider_id"] = key
       #   require_fld["provider_name"] = value
-      #   page_view_country << require_fld
+      #   page_view_data << require_fld
       # end
+
+      #second query
+      tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'country'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 25 })      
+      tmp_data.points.each do |d|
+        require_fld = {}  
+        d.dimensions.each do |c|          
+          c.each do |k,v|            
+            if k.to_s == "month" or k.to_s == "year" or k.to_s == "country"
+              require_fld[k] = v
+            end
+          end
+        end
+        require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+        require_fld["provider_id"] = key
+        require_fld["provider_name"] = value
+        page_view_country << require_fld
+      end
 
       # #third query
       # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['pageTitle', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 10 })      
