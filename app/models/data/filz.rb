@@ -46,7 +46,7 @@ class Data::Filz < ActiveRecord::Base
 
     uri = URI("http://europeana.eu/api//v2/record/#{data_prodvier}/#{jsurl}.json?wskey=api2demo&profile=full")
     total_obj = JSON.parse(Net::HTTP.get(uri))['totalResults']
-
+    
     dump = []
     counter = 0 
     json_url.each do |jsurl|
@@ -432,7 +432,7 @@ class Data::Filz < ActiveRecord::Base
         custom_regex = "#{key}"
         d.dimensions.each do |c|          
           c.each do |k,v|            
-            if k.to_s == "month" or k.to_s == "year" or k.to_s == "country"
+            if k.to_s == "year" or k.to_s == "country"
               require_fld[k] = v
               custom_regex += "<__>#{v}"
             end
@@ -449,15 +449,14 @@ class Data::Filz < ActiveRecord::Base
         require_fld["provider_name"] = value
       end
 
-    
       page_view_country_aggr.each do |pk, pv|        
         final_value = {}
         pp = pk.split("<__>")
         final_value['pageviews'] = pv
         final_value['provider_id'] = pp[0]
-        final_value['month'] = pp[1]
-        final_value['year'] = pp[2]
-        final_value['country'] = pp[3]
+        #final_value['month'] = pp[1]
+        final_value['year'] = pp[1]
+        final_value['country'] = pp[2]
         page_view_country << final_value
     
       end
@@ -501,7 +500,7 @@ class Data::Filz < ActiveRecord::Base
   #PRIVATE
   private
   
-  def before_save_set    
+  def before_save_set        
     if self.content.present?
       con = self.content.class.to_s == "String" ? JSON.parse(self.content) : self.content
       con.delete_if{ |row| row.flatten.compact.empty? }
