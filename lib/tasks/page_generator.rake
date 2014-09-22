@@ -20,6 +20,7 @@ namespace :page_generator do
   task :ga_traffic, [:name, :id]  do |t, args|
     provider_name = args[:name]
     provider_id = args[:id]
+    provider_name_slug = provider_name.gsub(" ","%20")
 
     #GA Authentication
     ga_client_id = "79004200365-im8ha2tnhhq01j2qr0d4i7dodhctqaua.apps.googleusercontent.com"
@@ -28,14 +29,15 @@ namespace :page_generator do
     ga_refresh_token = "1/R96LIdJ7mepE1WVdhi9WtPxZI9JTh2FmIzYcrTaGRnQ"
 
     get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
-    access_token = JSON.parse(get_access_token.to_json)['access_token']
-
+    access_token = JSON.parse(get_access_token.to_json)['access_token']    
     
     ##################################################################  
     page_view_aggr = {}
     page_view_data = []
     page_event_aggr = {}
     page_event_data = []
+    page_country_aggr = {}
+    page_country_data = []
      
     #, max_results: 999999999
     ga_start_date = '2013-01-01'
@@ -143,8 +145,7 @@ namespace :page_generator do
     params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
 
     #Get Media type    
-    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22National%20Library%20of%20Portugal%22&facet=TYPE&profile=facets&rows=0").read
-    
+    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
       media_type_data = {}
@@ -175,8 +176,8 @@ namespace :page_generator do
       end
       params[:media_types] = data_filz.slug
     end
-    #Get Reusable    
-    provider_name_slug = provider_name.gsub(" ","%20")
+
+    #Get Reusable        
     reusable = open("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY").read
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
@@ -190,7 +191,7 @@ namespace :page_generator do
       reusable_data_formatted =  values_data
 
       # Now add or update to Reusable type table      
-      file_name = provider_name + "Reusable"
+      file_name = provider_name + " Reusable"
       data_filz = Data::Filz.where(file_file_name: file_name).first
       if data_filz.nil?
         data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: reusable_data_formatted.to_s )
@@ -209,10 +210,63 @@ namespace :page_generator do
       params[:reusable] = data_filz.slug
     end
 
-      
+    # For top 25 countries
+    ga_start_date = '2005-01-01'
+    ga_end_date   = Date.today.strftime("%Y-%m-%d")
+    ga_dimension  = "ga:month,ga:year,ga:country"
+    ga_metrics    = "ga:pageviews"
+    ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+    ga_sort       = '-ga:pageviews'
+    ga_max_result = 25
+
+
+    tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
+    tmp_data = JSON.parse(tmp_data.to_json)["rows"]
+
+    tmp_data.each do |d|
+      custom_regex = "#{provider_id}"
+      custom_regex += "<__>#{d[0]}"
+      custom_regex += "<__>#{d[1]}"
+      custom_regex += "<__>#{d[2]}"
+      if !page_country_aggr[custom_regex]
+        page_country_aggr[custom_regex] = d[3].to_i
+      else  
+        page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
+      end      
+    end
+
+    page_country_aggr.each do |px, y|
+      final_value = {}
+      x = px.split("<__>")
+      final_value['pageviews'] = y
+      final_value['provider_id'] = x[0]
+      final_value['month'] = x[1]
+      final_value['year'] = x[2]
+      final_value['country'] = x[3]
+      if page_country_aggr[px]
+        final_value['events'] = page_event_aggr[px]
+      end
+      page_country_data << final_value
+    end
+    #{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
+    page_country_data_arr = [["month", "year", "country", "size"]]
+    page_country_data.each do |kvalue|
+      page_country_data_arr << [kvalue['month'], kvalue['year'], kvalue['country'], kvalue['pageviews']]
+    end
+    
+    # Now add or update to top 20 countries table      
+    file_name = provider_name + " Top 25 Countries"
+    data_filz = Data::Filz.where(file_file_name: file_name).first
+    if data_filz.nil?
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr.to_s )
+    else
+      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr.to_s})
+    end
+
+    params[:top_countries] = data_filz.slug
+
     #adding to Article    
     Rake::Task['page_generator:article'].invoke(params)
-
 
   end
 
@@ -222,6 +276,7 @@ namespace :page_generator do
     name = params[:name]    
     id = params[:id]    
     page_view_data_name = params[:pageviews]
+    page_country_data_name = params[:top_countries]
     article = Cms::Article.where(title: name).first    
 
     if 1 == 1 #article.nil?
@@ -248,17 +303,19 @@ namespace :page_generator do
       html_template += "#{reusable_chart} </div></div>"
 
       #View on Europeana
-      page_view_chart = "<div class='pykih-viz' data-slug-id='#{page_view_data_name}' id='#{page_view_data_name}'></div>"
+      page_view_chart = "<div data-slug-id='#{page_view_data_name}' id='page_view_click_chart' chart='custom-column-group-chart'></div>"
       html_template += "<h2>Views on Europeana</h2><p></p>"
+      html_template += "<div class='row'><div class='col-sm-12'><div id='menu'></div></div></div><p></p>"
       html_template += "For the selected time period the data and charts in the category are based on the number of views of the Wellcome Library collection on Europeana.eu. The number of views for a collection are dependant on a number of factors such as the size of the collection, the quality of the meta-data that accompanies each digital object and the re-usability of the collection."
       html_template += "<div class='row'><div class='col-sm-12'><h4>Views & Click-Throughs</h4>"
       html_template += "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted."
       html_template += "#{page_view_chart} </div></div>"    
 
       #Countries
+      page_country_chart = "<div class='pykih-viz' chart='custom-country-map' data-slug-id='#{page_country_data_name}' id='#{page_country_data_name}'></div>"
       html_template += "<div class='row'><div class='col-sm-12'><h4>Top 25 Countries</h4>"
       html_template += "This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu."
-      html_template += "<h1>South Africa</h1> </div></div>"
+      html_template += "#{page_country_chart} </div></div>"
 
       #Digital Objects
       html_template += "<h4>Top 10 Digital Objects</h4>"

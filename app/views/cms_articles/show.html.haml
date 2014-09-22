@@ -12,6 +12,19 @@
     #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
     #preview.wmd-preview
 
+:css
+  .menu {
+    float: left;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+  #menu ul {
+    list-style-type: none;
+  }
+  .menu.active {
+    text-decoration: underline;
+  }
+
 :javascript
   $( window ).load(function() {
 
@@ -31,3 +44,11 @@
     },500);
     
   });
+
+-fpath1 = "src/js/"
+-files = ["lib/topojson.js", "pyk.js", "maps.js", "oneLayer.js", "multiD.js", "columnChart.js", "common.js"]
+
+- files.each_with_index do |file, index|
+  - src = file
+  - src = fpath1 + src if index > 0
+  %script{src: "/columnandmapchart/#{src}"}  
