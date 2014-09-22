@@ -196,9 +196,9 @@ function GenereteChartInMarkdown() {
     $.get("/data/" + data_source + "/json", function(data) {
       var new_data = [];
       var new_head = [];
-      data = JSON.parse(data.content);
+      data = JSON.parse(data.content);      
       for(i in data[0]) {
-        new_head.push(data[0][i].split(":")[0]);
+        new_head.push(data[0][i].split(":")[0]);        
       }
       for(i in data) {
         if(i > 0) {
@@ -273,7 +273,7 @@ function GenereteChartInMarkdown() {
           }
         }
         
-        //$("#top-view-digital-object").html(data_provider_all_count+" digital objects generating "+data_provider_year_count+" views on Europeana")
+        $("#top-view-digital-object").html(data_provider_all_count+" digital objects generating "+data_provider_year_count+" views on Europeana")
 
         if (counter < 2) {
           html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No Record Found </h3></center>";
@@ -320,7 +320,7 @@ function addCustomColumnGroupChart() {
 
   $.get("/data/" + id + "/json", function(vdata, status) {
     var content = JSON.parse(vdata.content);
-    console.log(content[1])
+
     var years = [2012, 2013];
     var ultimateGroupColumn = [];
     for(i in content) {
@@ -330,7 +330,7 @@ function addCustomColumnGroupChart() {
         ultimateGroupColumn.push({x: cc[0], y: cc[1], group: cc[2], timestamp: 2013, tooltip: tooltip, color: "", highlight: true });        
       }
     }
-    console.log(ultimateGroupColumn, "sssssssssssss")
+
     var l = new PykCharts.multiD.columnChart({
         data: ultimateGroupColumn,
         selector: "#page_view_click_chart",

@@ -13,8 +13,8 @@ PykCharts.multiD.columnChart = function(options){
         }
         //d3.json(options.data, function(e, data){
             that.fulldata = options.data;
-            that.data = _.where(that.fulldata, {timestamp:_.last(options.years)}).groupBy("column");
-            that.compare_data = that.data.groupBy("column");
+            that.data = PykCharts.groupBy("column", _.where(that.fulldata, {timestamp:_.last(options.years)}));
+            that.compare_data = PykCharts.groupBy("column", that.data);
             $(that.selector+" #chart-loader").remove();
             that.render();
         //});
@@ -22,8 +22,8 @@ PykCharts.multiD.columnChart = function(options){
 
     this.refresh = function () {
         //d3.json(options.data, function (e, data) {
-            that.data = that.filtered_data.groupBy("column");
-            that.refresh_data = that.filtered_data.groupBy("column");
+            that.data = PykCharts.groupBy("column", that.filtered_data);
+            that.refresh_data = that.data;
             var compare = that.k.checkChangeInData(that.refresh_data,that.compare_data);
             that.compare_data = compare[0];
             var data_changed = compare[1];

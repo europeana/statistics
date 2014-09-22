@@ -1,6 +1,6 @@
 var PykCharts = {};
 
-Array.prototype.groupBy = function (chart) {
+PykCharts.groupBy = function (chart, qx) {
     var gd = []
     , i
     , obj
@@ -62,7 +62,7 @@ Array.prototype.groupBy = function (chart) {
     };
 
     var properties = dimensions[chart];
-    var arr = this;
+    var arr = qx;
     var groups = [];
     for(var i = 0, len = arr.length; i<len; i+=1){
         var obj = arr[i];
