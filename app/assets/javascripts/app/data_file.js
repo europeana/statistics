@@ -205,7 +205,8 @@ function GenereteChartInMarkdown() {
           new_data.push(tmp_arr);
         }
       }
-      var html_template = "<strong>Year</strong><select id='top-view-year'>";
+
+      var html_template = "<strong class='hidden_content'>Year</strong><select id='top-view-year' class='hidden_content'>";
       var tmp_arr = [];
       for(i in new_data) {
         var year = new_data[i].year;
@@ -224,7 +225,7 @@ function GenereteChartInMarkdown() {
       }
       //html_template += "</select>";
       /// Provider
-      html_template += "<strong style='padding-left:10px;'>Provider</strong><select id='top-view-provider'>";
+      html_template += "<strong style='padding-left:10px;' class='hidden_content'>Provider</strong><select id='top-view-provider' class='hidden_content'>";
       var tmp_arr = [];
       for(i in new_data) {
         var provider = new_data[i].provider;
@@ -235,7 +236,7 @@ function GenereteChartInMarkdown() {
         }
       }
       html_template += "</select>";
-      html_template += "&nbsp;<strong style='font-size:small;' id='top-view-digital-object'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";
+      html_template += "&nbsp;<strong style='font-size:small;' id='top-view-digital-object' class='hidden_content'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";
 
       function changeItemPerViewData(new_data) {
         // var provider = $("#top-view-provider").val();
@@ -290,6 +291,7 @@ function GenereteChartInMarkdown() {
         });
       });
       $("#top-view-year").trigger("change");
+      $(".hidden_content").hide();
     });
   }
 }
