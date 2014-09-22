@@ -35,7 +35,8 @@ PykCharts.maps.timelineMap = function (options) {
     this.execute = function () {
         that = PykCharts.maps.processInputs(that, options);
         //$(that.selector).css("height",that.height);
-        d3.json(options.data, function (data) {
+        //d3.json(options.data, function (data) {
+            var data = options.data;
             that.fulldata = data;
             that.timeline_data = _.where(data, {timestamp:_.last(options.years)});
             that.compare_data = that.data;
@@ -73,7 +74,7 @@ PykCharts.maps.timelineMap = function (options) {
 
             that.extent_size = d3.extent(that.data, function (d) { return parseInt(d.size, 10); });
             that.difference = that.extent_size[1] - that.extent_size[0];
-        });
+        //});
     };
 };
 

@@ -18,7 +18,7 @@ PykCharts.multiD.configuration = function (options){
             var key1 = Object.keys(compare_data[0]);
             var key2 = Object.keys(data[0]);
             var changed = false;
-            that.data = data.groupBy("oned");
+            that.data = PykCharts.groupBy("oned", data);
             if(key1.length === key2.length && compare_data.length === data.length) {
                 for(i=0;i<data.length;i++) {
                     for(j=0;j<key1.length;j++){

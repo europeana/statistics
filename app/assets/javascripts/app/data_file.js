@@ -148,9 +148,7 @@ function GenereteChartInMarkdown() {
     "Grouped Column Chart": "grouped-column",
     "Line Chart": "line"
   }
-  // if ($(that).attr("chart") == "custom-country-map") {
-  //   //addCountryMapChart(that);
-  // }
+
   if($("#page_view_click_chart").attr("chart") == "custom-column-group-chart") {
     addCustomColumnGroupChart();
   }
@@ -304,20 +302,10 @@ function GenereteChartInMarkdown() {
 
 function addCustomColumnGroupChart() {
   
-  var id = $("#page_view_click_chart").attr("data-slug-id");
+  var id  = $("#page_view_click_chart").attr("data-slug-id");
+  var id2 = $("#page_view_country_chart").attr("data-slug-id");
   
-  // var fpath1 = "src/js/";  
-  // var files = ["lib/topojson.js", "pyk.js", "maps.js", "oneLayer.js", "multiD.js", "columnChart.js", "common.js"]
   
-  // for(i in files) {
-  //   var file = files[i];
-  //   if (i > 0) file = fpath1 + file;
-  //   var jsElm = document.createElement("script");  
-  //   jsElm.type = "application/javascript";
-  //   jsElm.src = "/columnandmapchart/" + file;  
-  //   document.body.appendChild(jsElm);
-  // }
-
   $.get("/data/" + id + "/json", function(vdata, status) {
     var content = JSON.parse(vdata.content);
 
@@ -341,26 +329,28 @@ function addCustomColumnGroupChart() {
     PykCharts.filter(years,"",l);
   });
   
+  $.get("/data/" + id2 + "/json", function(vdata, status) {
+    var content = JSON.parse(vdata.content);
 
-      
-    // var years = [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014];
-    //     var k = new PykCharts.maps.oneLayer({
-    //         selector: "#map-container",
-    //         data: "data/world_data_timeline.json",
-    //         years: years
-    //     });
-    //     k.execute();
+    var years = [2012, 2013];
+    var ultimateGroupColumn = [];
+    for(i in content) {
+      if (i > 0) {
+        var cc =content[i];
+        var tooltip = "<table class='PykCharts'><tr><th>"+cc[2]+"</th></tr><tr><td>"+cc[1]+"</td></tr></table>";
+        ultimateGroupColumn.push({iso2: cc[0], size: cc[1], color: cc[2], tooltip: tooltip, color: "", timestamp: 2013 });        
+      }
+    }
 
-    //     var l = new PykCharts.multiD.columnChart({
-    //         data: "data/ultimateGroupColumn.json",
-    //         selector: "#groupColumn",
-    //         chart_width: 800,
-    //         years: years
-    //     });
-    //     l.execute();
-
-    //     PykCharts.filter(years,k,l);
-
+    //{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
+    var k = new PykCharts.maps.oneLayer({
+      selector: "#map-container",
+      data: ultimateGroupColumn,
+      years: years
+    });
+    k.execute();
+    PykCharts.filter(years,k,l);
+  });
 }
 function get_html_template(layout_type, style) {
   var algorithm = parseInt(layout_type.split("x")[1]);

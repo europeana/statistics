@@ -370,7 +370,7 @@ namespace :page_generator do
       html_template += "#{page_view_chart} </div></div>"    
 
       #Countries
-      page_country_chart = "<div class='pykih-viz' chart='custom-country-map' data-slug-id='#{page_country_data_name}' id='#{page_country_data_name}'></div>"
+      page_country_chart = "<div chart='custom-country-map' data-slug-id='#{page_country_data_name}' id='page_view_country_chart'></div>"
       html_template += "<div class='row'><div class='col-sm-12'><h4>Top 25 Countries</h4>"
       html_template += "This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu."
       html_template += "#{page_country_chart} </div></div>"
@@ -381,21 +381,21 @@ namespace :page_generator do
       html_template += "<div class='row'><div class='col-sm-12'><div id='top-viewed-items-europena' data-src='#{params[:top_ten_digital_objects]}'></div></div><div>"
 
       #Reach - Wikipedia
-      html_template += "<h2>Reach on Wikipedia</h2><P></P>"
-      html_template += "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted."
-      html_template += "<h4>Impressions</h4>"    
+      # html_template += "<h2>Reach on Wikipedia</h2><P></P>"
+      # html_template += "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted."
+      # html_template += "<h4>Impressions</h4>"    
 
       #Impression
-      html_template += "<div class='row'><div class='col-sm-12'>"
-      html_template += "<h1>Faf du plessis</h1> </div></div>"
+      # html_template += "<div class='row'><div class='col-sm-12'>"
+      # html_template += "<h1>Faf du plessis</h1> </div></div>"
 
       #Uploaded Images
-      html_template += "<div class='row'><div class='col-sm-6'><h4>Uploaded Images</h4>"
-      html_template += "<h1>David Miller</h1> </div>"
+      # html_template += "<div class='row'><div class='col-sm-6'><h4>Uploaded Images</h4>"
+      # html_template += "<h1>David Miller</h1> </div>"
 
       #Used Images
-      html_template += "<div class='col-sm-6'><h4>Used Images</h4>"
-      html_template += "<h1>JP Dumminy</h1> </div></div>"
+      # html_template += "<div class='col-sm-6'><h4>Used Images</h4>"
+      # html_template += "<h1>JP Dumminy</h1> </div></div>"
 
       article = Cms::Article.where(title: name).first
       if article.nil?
