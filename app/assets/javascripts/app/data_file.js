@@ -148,11 +148,9 @@ function GenereteChartInMarkdown() {
     "Grouped Column Chart": "grouped-column",
     "Line Chart": "line"
   }
-
   if($("#page_view_click_chart").attr("chart") == "custom-column-group-chart") {
     addCustomColumnGroupChart();
   }
-
   gon.mapped_output = {}
   gon.lineChartData = {}
   $(".pykih-viz").each(function(index) {
@@ -184,7 +182,7 @@ function GenereteChartInMarkdown() {
             datasource: dw.datasource.delimited({
               csv: vdata.chart_data
             })
-          })            
+          })
         }
       }
     });
@@ -194,9 +192,9 @@ function GenereteChartInMarkdown() {
     $.get("/data/" + data_source + "/json", function(data) {
       var new_data = [];
       var new_head = [];
-      data = JSON.parse(data.content);      
+      data = JSON.parse(data.content);
       for(i in data[0]) {
-        new_head.push(data[0][i].split(":")[0]);        
+        new_head.push(data[0][i].split(":")[0]);
       }
       for(i in data) {
         if(i > 0) {
@@ -221,10 +219,10 @@ function GenereteChartInMarkdown() {
       var selected = "selected";
       for(i in tmp_arr) {
         var year = tmp_arr[i];
-        html_template += "<option value='" + year + "' " + selected + ">" + year + "</option>";
+        //html_template += "<option value='"+year+"' "+selected+">"+year+"</option>";
         selected = "";
       }
-      html_template += "</select>";
+      //html_template += "</select>";
       /// Provider
       html_template += "<strong style='padding-left:10px;'>Provider</strong><select id='top-view-provider'>";
       var tmp_arr = [];
@@ -240,42 +238,38 @@ function GenereteChartInMarkdown() {
       html_template += "&nbsp;<strong style='font-size:small;' id='top-view-digital-object'>123,340 digital objects generating 113,098 views on Europeana</strong><div id='item-view-content' style='marin-top:20px;'></div>";
 
       function changeItemPerViewData(new_data) {
-        var provider = $("#top-view-provider").val();
-        var year = $("#top-view-year").val();
+        // var provider = $("#top-view-provider").val();
+        // var year = $("#top-view-year").val();        
         var data_provider_all_count = 0;
         var data_provider_year_count = 0;
         var html_template = "";
         var counter = 1;
         for(i in new_data) {
-          if(new_data[i].provider === provider) {
-            if(parseInt(new_data[i].total_views) > 0) {
-              //data_provider_all_count += parseInt(new_data[i].total_views);
-              data_provider_all_count = new_data[i].total_objects;
-            }
-          }
+          // if (new_data[i].provider === provider) {
+          //   if (parseInt(new_data[i].total_views) > 0) {
+          //     //data_provider_all_count += parseInt(new_data[i].total_views);
+          //     data_provider_all_count = new_data[i].total_objects;
+          //   }            
+          // }
           //if (new_data[i].year === year && new_data[i].provider === provider) {
-          if (1==1) {
-            if (parseInt(new_data[i].total_views) > 0) {
-              data_provider_year_count += parseInt(new_data[i].total_views);   
-            }
-            if(counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
-              html_template += "<div class='row' style='margin-top:15px;'>";
-            }
-            html_template += "<div class='col-sm-6'>";
-            html_template += '<div class="media"><a class="pull-left" href="'+new_data[i].title_url+'" style="padding-right:25px;" target="_blank"><img class="media-object" src="'+new_data[i].image_url+'" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">'+counter+'.</h4><a href="'+new_data[i].title_url+'" target="_blank" class="comment more" >'+new_data[i].title+'</a><p><strong>'+new_data[i].size+' views</strong></p></div></div>';
-            html_template += "</div>";
-            if(counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
-              html_template += "</div>";
-            }
-            counter++;
+          if(parseInt(new_data[i].total_views) > 0) {
+            data_provider_year_count += parseInt(new_data[i].total_views);
           }
+          if(counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
+            html_template += "<div class='row' style='margin-top:15px;'>";
+          }
+          html_template += "<div class='col-sm-6'>";
+          html_template += '<div class="media"><a class="pull-left" href="' + new_data[i].title_url + '" style="padding-right:25px;" target="_blank"><img class="media-object" src="' + new_data[i].image_url + '" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">' + counter + '.</h4><a href="' + new_data[i].title_url + '" target="_blank" class="comment more" >' + new_data[i].title + '</a><p><strong>' + new_data[i].size + ' views</strong></p></div></div>';
+          html_template += "</div>";
+          if(counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
+            html_template += "</div>";
+          }
+          counter++;
         }
-        
-        $("#top-view-digital-object").html(data_provider_all_count+" digital objects generating "+data_provider_year_count+" views on Europeana")
-
-        if (counter < 2) {
-          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No Record Found </h3></center>";
-        }else if (counter === 4) {          
+        $("#top-view-digital-object").html(data_provider_all_count + " digital objects generating " + data_provider_year_count + " views on Europeana")
+        if(counter < 2) {
+          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>Testing </h3></center>";
+        } else if(counter === 4) {
           $("<div style='clear:both'>&nbsp;</div>").appendTo("#top-viewed-items-europena")
         }
         return html_template;
@@ -301,57 +295,58 @@ function GenereteChartInMarkdown() {
 }
 
 function addCustomColumnGroupChart() {
-  
-  var id  = $("#page_view_click_chart").attr("data-slug-id");
+  var id = $("#page_view_click_chart").attr("data-slug-id");
   var id2 = $("#page_view_country_chart").attr("data-slug-id");
-  
-  
   $.get("/data/" + id + "/json", function(vdata, status) {
     var content = JSON.parse(vdata.content);
-
     var years = [2012, 2013];
     var ultimateGroupColumn = [];
     for(i in content) {
-      if (i > 0) {
-        var cc =content[i];
-        var tooltip = "<table class='PykCharts'><tr><th>"+cc[2]+"</th></tr><tr><td>"+cc[1]+"</td></tr></table>";
-        ultimateGroupColumn.push({x: cc[0], y: cc[1], group: cc[2], timestamp: 2013, tooltip: tooltip, color: "", highlight: true });        
+      if(i > 0) {
+        var cc = content[i];
+        var tooltip = "<table class='PykCharts'><tr><th>" + cc[2] + "</th></tr><tr><td>" + cc[1] + "</td></tr></table>";
+        ultimateGroupColumn.push({
+          x: cc[0],
+          y: cc[1],
+          group: cc[2],
+          timestamp: 2013,
+          tooltip: tooltip,
+          color: "",
+          highlight: true
+        });
       }
     }
-
-    var l = new PykCharts.multiD.columnChart({
-        data: ultimateGroupColumn,
-        selector: "#page_view_click_chart",
-        years: years
-    });
-    
     l.execute();
-    PykCharts.filter(years,"",l);
-  });
-  
-  $.get("/data/" + id2 + "/json", function(vdata, status) {
-    var content = JSON.parse(vdata.content);
 
-    var years = [2012, 2013];
-    var ultimateGroupColumn = [];
-    for(i in content) {
-      if (i > 0) {
-        var cc =content[i];
-        var tooltip = "<table class='PykCharts'><tr><th>"+cc[2]+"</th></tr><tr><td>"+cc[1]+"</td></tr></table>";
-        ultimateGroupColumn.push({iso2: cc[0], size: cc[1], color: cc[2], tooltip: tooltip, color: "", timestamp: 2013 });        
+    $.get("/data/" + id2 + "/json", function(vdata, status) {
+      var content = JSON.parse(vdata.content);
+      var ultimateGroupColumn = [];
+      for(i in content) {
+        if(i > 0) {
+          var cc = content[i];
+          var tooltip = "<table class='PykCharts'><tr><th>" + cc[2] + "</th></tr><tr><td>" + cc[1] + "</td></tr></table>";
+          ultimateGroupColumn.push({
+            iso2: cc[0],
+            size: cc[1],
+            color: cc[2],
+            tooltip: tooltip,
+            color: "",
+            timestamp: 2013
+          });
+        }
       }
-    }
-
-    //{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
-    var k = new PykCharts.maps.oneLayer({
-      selector: "#map-container",
-      data: ultimateGroupColumn,
-      years: years
+      //{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
+      var k = new PykCharts.maps.oneLayer({
+        selector: "#map-container",
+        data: ultimateGroupColumn,
+        years: years
+      });
+      k.execute();
+      PykCharts.filter(years, k, l);
     });
-    k.execute();
-    PykCharts.filter(years,k,l);
   });
 }
+
 function get_html_template(layout_type, style) {
   var algorithm = parseInt(layout_type.split("x")[1]);
   var html_tag = "<div class='row'>";
@@ -495,7 +490,9 @@ function GenerateCustomLineChart(selector, data, mapped_output) {
 
 function setDataByFilter(data, selector) {
   var compare_to_pos = $(selector + " .filter-compare-to-line").val();
-  var filtered_data = [getDataFromFilter(data[compare_to_pos], selector)];
+  var filtered_data = [
+    getDataFromFilter(data[compare_to_pos], selector)
+  ];
   var compare_with_pos = $(selector + " .filter-compare-with-line").val();
   var time_frame = $(selector + " .filter-time-frame-line").val();
   if(compare_with_pos > 0) {
@@ -537,9 +534,13 @@ function clubDataForBubbleChart(data) {
       var current_val = parseInt(data[i][1]);
       if(filtered_data[how_much]) {
         current_val += parseInt(filtered_data[how_much][1]);
-        filtered_data[how_much] = [prev_data0, current_val];
+        filtered_data[how_much] = [
+          prev_data0, current_val
+        ];
       } else {
-        filtered_data.push([prev_data0, current_val]);
+        filtered_data.push([
+          prev_data0, current_val
+        ]);
       }
     }
   };
@@ -716,8 +717,11 @@ function updateLineChartWithAxis(selector, data, mapped_output) {
   });
   var html_template = appendSelectCustomLineChart(selector, mapped_output);
   $(selector).html(html_template);
-  var x = d3.scale.ordinal().rangeRoundBands([0, w], .95);
-  var y = d3.scale.linear().range([h, 0]);
+  var x = d3.scale.ordinal().rangeRoundBands(
+    [0, w], .95);
+  var y = d3.scale.linear().range([h,
+    0
+  ]);
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
   var yAxis = d3.svg.axis().scale(y).orient("left");
   var graph = d3.select(selector).append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
@@ -867,10 +871,17 @@ function generateCrossFilterChart(options) {
   }
   future_date = new Date(future_year + "-" + future_month + "-01")
   var charts = [
-    barChart().dimension(month).group(distanceMonth).x(d3.scale.linear().domain([1, 13]).range([0, 200])),
-    barChart().dimension(day).group(distanceDay).x(d3.scale.linear().domain([0, 7]).rangeRound([0, 170])),
-    barChart().dimension(years).group(distanceYears).x(d3.time.scale().domain([d3.min(all_year), d3.max(all_year) + 1]).rangeRound([0, 150])),
-    barChart().dimension(dates).group(distanceDates).x(d3.time.scale().domain([x_dates[0], future_date]).rangeRound([0, 700]))
+    barChart().dimension(month).group(distanceMonth).x(d3.scale.linear().domain([1, 13]).range([0,
+      200
+    ])),
+    barChart().dimension(day).group(distanceDay).x(d3.scale.linear().domain([0, 7]).rangeRound([0,
+      170
+    ])),
+    barChart().dimension(years).group(distanceYears).x(d3.time.scale().domain([d3.min(all_year), d3.max(all_year) + 1]).rangeRound(
+      [0, 150])),
+    barChart().dimension(dates).group(distanceDates).x(d3.time.scale().domain([x_dates[0],
+      future_date
+    ]).rangeRound([0, 700]))
   ];
   // Given our array of charts, which we assume are in the same order as the
   // .chart elements in the DOM, bind the charts to the DOM and render them.
@@ -879,7 +890,9 @@ function generateCrossFilterChart(options) {
     chart.on("brush", renderAll).on("brushend", renderAll);
   });
   // Render the initial lists.
-  var list = d3.selectAll(options.selector + " .list").data([flightList]);
+  var list = d3.selectAll(options.selector + " .list").data([
+    flightList
+  ]);
   // Render the total.
   d3.selectAll(options.selector + " #total").text(formatNumber(flight.size()));
   renderAll();
@@ -961,7 +974,9 @@ function generateCrossFilterChart(options) {
         left: 15
       },
       x,
-      y = d3.scale.linear().range([100, 0]),
+      y = d3.scale.linear().range([
+        100, 0
+      ]),
       id = barChart.id++,
       axis = d3.svg.axis().orient("bottom"),
       brush = d3.svg.brush(),
@@ -1046,24 +1061,28 @@ function generateCrossFilterChart(options) {
       }
     });
     chart.margin = function(_) {
-      if(!arguments.length) return margin;
+      if(!arguments.length) return
+      margin;
       margin = _;
       return chart;
     };
     chart.x = function(_) {
-      if(!arguments.length) return x;
+      if(!arguments.length) return
+      x;
       x = _;
       axis.scale(x);
       brush.x(x);
       return chart;
     };
     chart.y = function(_) {
-      if(!arguments.length) return y;
+      if(!arguments.length) return
+      y;
       y = _;
       return chart;
     };
     chart.dimension = function(_) {
-      if(!arguments.length) return dimension;
+      if(!arguments.length) return
+      dimension;
       dimension = _;
       return chart;
     };
@@ -1079,12 +1098,14 @@ function generateCrossFilterChart(options) {
       return chart;
     };
     chart.group = function(_) {
-      if(!arguments.length) return group;
+      if(!arguments.length) return
+      group;
       group = _;
       return chart;
     };
     chart.round = function(_) {
-      if(!arguments.length) return round;
+      if(!arguments.length) return
+      round;
       round = _;
       return chart;
     };
