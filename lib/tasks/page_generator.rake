@@ -265,6 +265,64 @@ namespace :page_generator do
 
     params[:top_countries] = data_filz.slug
 
+    #Get Top Ten Digital Objects
+    start_date= "2005-01-01"
+    end_date= "2014-09-21"
+    ga_ids="ga:25899454"
+    ga_metrics="ga:pageviews"
+    ga_dimensions="ga:pagePath"
+    ga_filters="ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+    ga_sort= "-ga:pageviews"
+
+    base_url = "https://www.googleapis.com/analytics/v3/data/ga?"
+    url = base_url+"access_token=#{access_token}"
+    url = url + "&start-date=#{start_date}"
+    url = url + "&end-date=#{end_date}"
+    url = url + "&ids=#{ga_ids}"
+    url = url + "&metrics=#{ga_metrics}"
+    url = url + "&dimensions=#{ga_dimensions}"
+    url = url + "&filters=#{ga_filters}"
+    url = url + "&sort=#{ga_sort}"
+    g =  open(url).read
+
+    headers = JSON.parse(g)['columnHeaders']
+    data = JSON.parse(g)['rows']
+    header_data = ["title","image_url","size","title_url"]
+    europeana_url = "http://europeana.eu/api/v2/"
+    top_ten_digital_objects = []
+    top_ten_digital_objects << header_data
+    base_title_url = "http://www.europeana.eu/portal/record/"
+    count = 0
+    data.each do |data_element| 
+      tmp_array = []
+      if data_element[0] != ""
+        b = data_element[0].split("/")
+        record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+        euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
+        g = JSON.parse(open(euro_api_url).read)
+        if g["success"]
+          if g["object"]["title"]
+            tmp_array << g["object"]["title"][0]
+            tmp_array << g["object"]['europeanaAggregation']['edmPreview'] || "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+            tmp_array << data_element[1].to_i
+            tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+            count = count + 1;
+            top_ten_digital_objects << tmp_array
+          end
+        end
+      end
+      break if count >= 10
+    end
+
+    file_name = provider_name + " Top 10 Digital Objects"
+    data_filz = Data::Filz.where(file_file_name: file_name).first
+    if data_filz.nil?
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
+    else
+      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
+    end
+    params[:top_ten_digital_objects] = data_filz.slug
+      
     #adding to Article    
     Rake::Task['page_generator:article'].invoke(params)
 
@@ -320,6 +378,7 @@ namespace :page_generator do
       #Digital Objects
       html_template += "<h4>Top 10 Digital Objects</h4>"
       html_template += "This chart displays the top 10 digital objects from the collection that generated the most views on Europeana.eu."
+      html_template += "<div class='row'><div class='col-sm-12'><div id='top-viewed-items-europena' data-src='#{params[:top_ten_digital_objects]}'></div></div><div>"
 
       #Reach - Wikipedia
       html_template += "<h2>Reach on Wikipedia</h2><P></P>"

@@ -255,15 +255,16 @@ function GenereteChartInMarkdown() {
               data_provider_all_count = new_data[i].total_objects;
             }
           }
-          if(new_data[i].year === year && new_data[i].provider === provider) {
-            if(parseInt(new_data[i].total_views) > 0) {
-              data_provider_year_count += parseInt(new_data[i].total_views);
+          //if (new_data[i].year === year && new_data[i].provider === provider) {
+          if (1==1) {
+            if (parseInt(new_data[i].total_views) > 0) {
+              data_provider_year_count += parseInt(new_data[i].total_views);   
             }
             if(counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
               html_template += "<div class='row' style='margin-top:15px;'>";
             }
             html_template += "<div class='col-sm-6'>";
-            html_template += '<div class="media"><a class="pull-left" href="' + new_data[i].title_url + '" style="padding-right:25px;" target="_blank"><img class="media-object" src="' + new_data[i].img_url + '" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">' + counter + '.</h4><a href="' + new_data[i].title_url + '" target="_blank" class="comment more" >' + new_data[i].title + '</a><p><strong>' + new_data[i].total_views + ' views</strong></p></div></div>';
+            html_template += '<div class="media"><a class="pull-left" href="'+new_data[i].title_url+'" style="padding-right:25px;" target="_blank"><img class="media-object" src="'+new_data[i].image_url+'" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">'+counter+'.</h4><a href="'+new_data[i].title_url+'" target="_blank" class="comment more" >'+new_data[i].title+'</a><p><strong>'+new_data[i].size+' views</strong></p></div></div>';
             html_template += "</div>";
             if(counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
               html_template += "</div>";
@@ -271,10 +272,12 @@ function GenereteChartInMarkdown() {
             counter++;
           }
         }
-        $("#top-view-digital-object").html(data_provider_all_count + " digital objects generating " + data_provider_year_count + " views on Europeana")
-        if(counter < 2) {
+        
+        //$("#top-view-digital-object").html(data_provider_all_count+" digital objects generating "+data_provider_year_count+" views on Europeana")
+
+        if (counter < 2) {
           html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No Record Found </h3></center>";
-        } else if(counter === 4) {
+        }else if (counter === 4) {          
           $("<div style='clear:both'>&nbsp;</div>").appendTo("#top-viewed-items-europena")
         }
         return html_template;
