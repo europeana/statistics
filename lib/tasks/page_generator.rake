@@ -1,7 +1,8 @@
 namespace :page_generator do 
   
   desc "Create New Provider"  
-  task :add_provider, [:name, :id] => :environment do |t, args|    
+  task :add_provider, [:name, :id] => :environment do |t, args|   
+
     provider_name = args[:name]
     provider_id = args[:id]
     #Provider.create!(name: provider_name, provider_id: provider_id)
@@ -174,6 +175,39 @@ namespace :page_generator do
       end
       params[:media_types] = data_filz.slug
     end
+    #Get Reusable    
+    provider_name_slug = provider_name.gsub(" ","%20")
+    reusable = open("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY").read
+    if reusable["facets"].present?
+      all_types = JSON.parse(reusable)["facets"][0]["fields"]
+      reusable_data = {}
+      all_types.each do |type|
+        reusable_data[type["label"]] = type["count"].to_i
+      end
+      
+      values_data = reusable_data.to_a
+      values_data.unshift(['Type', 'Size'])
+      reusable_data_formatted =  values_data
+
+      # Now add or update to Reusable type table      
+      file_name = provider_name + "Reusable"
+      data_filz = Data::Filz.where(file_file_name: file_name).first
+      if data_filz.nil?
+        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: reusable_data_formatted.to_s )
+      else
+        Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
+      end
+
+      #adding to viz
+      viz_viz = Viz::Viz.where(title: file_name).first
+      viz_map = {:"Type" => "Dimension", :"Size" => "Size"}.to_json
+      if viz_viz.nil?
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json )
+      else
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json })
+      end
+      params[:reusable] = data_filz.slug
+    end
 
       
     #adding to Article    
@@ -202,12 +236,16 @@ namespace :page_generator do
       end
       html_template += "<div class='row'><div class='col-sm-6'><h4>Media Types</h4>"
       html_template += "This chart displays a breakdown of the composition of the collection that has been made availible via Europeana.eu.<p></p>"
-      html_template += "#{media_type_chart}</div>"
+      html_template += "#{media_type_chart}</div></div>"
 
       #Reusable
+      reusable_chart = "<h3>No Chart to Display</h3>"
+      if params[:reusable].present?
+        reusable_chart = "<div class='pykih-viz' data-slug-id='#{params[:reusable]}' id='#{params[:reusable]}'>"
+      end
       html_template += "<div class='col-sm-6'><h4>Reusable</h4>"
       html_template += "This chart displays what percentage of the collection is reusable based on the licenses that have been assigned to the digital objects in the collection. <p></p>"
-      html_template += "<h1>Dale Steyn</h1> </div></div>"
+      html_template += "#{reusable_chart} </div></div>"
 
       #View on Europeana
       page_view_chart = "<div class='pykih-viz' data-slug-id='#{page_view_data_name}' id='#{page_view_data_name}'></div>"
@@ -240,7 +278,7 @@ namespace :page_generator do
       html_template += "<h1>David Miller</h1> </div>"
 
       #Used Images
-      html_template += "<div class='col-sm-6'><h4>Uploaded Images</h4>"
+      html_template += "<div class='col-sm-6'><h4>Used Images</h4>"
       html_template += "<h1>JP Dumminy</h1> </div></div>"
 
       article = Cms::Article.where(title: name).first
@@ -254,7 +292,5 @@ namespace :page_generator do
   end
 end
 
-http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*"Rijksmuseum"&start=1&rows=24&profile=facets 
 
-Just query as above and include &facet=REUSABILITY
 
