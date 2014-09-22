@@ -4,7 +4,8 @@ PykCharts.maps.oneLayer = function (options) {
     this.execute = function () {
         that = PykCharts.maps.processInputs(that, options);
         //$(that.selector).css("height",that.height);
-        d3.json(options.data, function (data) {
+        //d3.json(options.data, function (data) {
+            var data = options.data;
             that.fulldata = data;
             that.data = _.where(data, {timestamp:_.last(options.years)});
             that.compare_data = that.data;
@@ -14,9 +15,9 @@ PykCharts.maps.oneLayer = function (options) {
                 .loading(that.loading)
                 .tooltip();
 
-            d3.json("data/" + that.mapCode + "-topo.json", function (data) {
+            d3.json("/columnandmapchart/data/" + that.mapCode + "-topo.json", function (data) {
                 that.map_data = data;
-                d3.json("data/colorPalette.json", function (data) {
+                d3.json("/columnandmapchart/data/colorPalette.json", function (data) {
                     that.color_palette_data = data;
                     $(that.selector).html("");
                     that.oneLayer = new PykCharts.maps.mapFunctions(options,that,"oneLayer");
@@ -25,7 +26,7 @@ PykCharts.maps.oneLayer = function (options) {
             });
             that.extent_size = d3.extent(that.data, function (d) { return parseInt(d.size, 10); });
             that.difference = that.extent_size[1] - that.extent_size[0];
-        })
+        //})
     };
 };
 
@@ -54,9 +55,9 @@ PykCharts.maps.timelineMap = function (options) {
                 .loading(that.loading)
                 .tooltip(that.tooltip_enable);
 
-            d3.json("data/" + that.mapCode + "-topo.json", function (data) {
+            d3.json("/columnandmapchart/data/" + that.mapCode + "-topo.json", function (data) {
                 that.map_data = data;
-                d3.json("data/colorPalette.json", function (data) {
+                d3.json("/columnandmapchart/data/colorPalette.json", function (data) {
                     that.color_palette_data = data;
 
 

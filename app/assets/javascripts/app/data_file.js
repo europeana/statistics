@@ -297,9 +297,9 @@ function GenereteChartInMarkdown() {
 function addCustomColumnGroupChart() {
   var id = $("#page_view_click_chart").attr("data-slug-id");
   var id2 = $("#page_view_country_chart").attr("data-slug-id");
+  var years = [2012, 2013];
   $.get("/data/" + id + "/json", function(vdata, status) {
-    var content = JSON.parse(vdata.content);
-    var years = [2012, 2013];
+    var content = JSON.parse(vdata.content);    
     var ultimateGroupColumn = [];
     for(i in content) {
       if(i > 0) {
@@ -316,29 +316,32 @@ function addCustomColumnGroupChart() {
         });
       }
     }
+    var l = new PykCharts.multiD.columnChart({
+        data: ultimateGroupColumn,
+        selector: "#page_view_click_chart",
+        years: years
+    });
     l.execute();
 
     $.get("/data/" + id2 + "/json", function(vdata, status) {
       var content = JSON.parse(vdata.content);
-      var ultimateGroupColumn = [];
-      for(i in content) {
+      var ultimateGroupColumn2 = [];
+      for(i in content) {        
         if(i > 0) {
-          var cc = content[i];
-          var tooltip = "<table class='PykCharts'><tr><th>" + cc[2] + "</th></tr><tr><td>" + cc[1] + "</td></tr></table>";
-          ultimateGroupColumn.push({
-            iso2: cc[0],
-            size: cc[1],
-            color: cc[2],
+          var cc = content[i];     
+          var tooltip = "<table class='PykCharts'><tr><th>" + cc[3] + "</th></tr><tr><td>" + cc[4] + "</td></tr></table>";
+          ultimateGroupColumn2.push({
+            iso2: cc[2],
+            size: parseInt(cc[4]),
             tooltip: tooltip,
-            color: "",
-            timestamp: 2013
+            timestamp: parseInt(cc[1])
           });
         }
       }
-      //{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
+
       var k = new PykCharts.maps.oneLayer({
-        selector: "#map-container",
-        data: ultimateGroupColumn,
+        selector: "#page_view_country_chart",
+        data: ultimateGroupColumn2 ,
         years: years
       });
       k.execute();

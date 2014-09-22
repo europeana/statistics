@@ -249,9 +249,17 @@ namespace :page_generator do
       page_country_data << final_value
     end
     #{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
-    page_country_data_arr = [["month", "year", "country", "size"]]
+    page_country_data_arr = [["month", "year", "iso2", "country", "size"]]
     page_country_data.each do |kvalue|
-      page_country_data_arr << [kvalue['month'], kvalue['year'], kvalue['country'], kvalue['pageviews']]
+      country = kvalue['country']
+      iso_code = IsoCode.where(country: country).first
+      if !iso_code.nil?        
+        iso_code = iso_code.code
+      else
+        iso_code = ""
+      end
+      puts iso_code
+      page_country_data_arr << [kvalue['month'], kvalue['year'], iso_code, country, kvalue['pageviews']]
     end
     
     # Now add or update to top 20 countries table      
