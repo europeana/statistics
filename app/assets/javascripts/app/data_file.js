@@ -318,10 +318,12 @@ function addCustomColumnGroupChart() {
         });
       }
     }
+    var width = $("#page_view_click_chart").width() - 50;
     var l = new PykCharts.multiD.columnChart({
         data: ultimateGroupColumn,
         selector: "#page_view_click_chart",
-        years: years
+        years: years,
+        chart_width: width
     });
     l.execute();
 
@@ -340,11 +342,13 @@ function addCustomColumnGroupChart() {
           });
         }
       }
-
+      var width = $("#page_view_country_chart").width() - 50;
       var k = new PykCharts.maps.oneLayer({
         selector: "#page_view_country_chart",
         data: ultimateGroupColumn2 ,
-        years: years
+        years: years, 
+        chart_width: width
+
       });
       k.execute();
       PykCharts.filter(years, k, l);
