@@ -606,9 +606,9 @@ PykCharts.multiD.columnChart = function(options){
         var data_tranform = [];
         that.barName = [];
         var data_length = that.data.length;
-        that.data.sort(function (a,b) {
-            return b.y - a.y;
-        });
+        // that.data.sort(function (a,b) {
+        //     return b.y - a.y;
+        // });
         for(var i=0; i < data_length; i++) {
             var group = {},
                 bar = {},
