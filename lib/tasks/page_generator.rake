@@ -40,12 +40,12 @@ namespace :page_generator do
     page_country_data = []
      
     #, max_results: 999999999
-    ga_start_date = '2013-01-01'
-    ga_end_date   = '2013-12-31'
-    ga_ids        = "25899454"
-    ga_dimension  = "ga:month,ga:year"
-    ga_metrics    = "ga:pageviews"
-    ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+    ga_start_date  = '2005-01-01'
+    ga_end_date    = Date.today.strftime("%Y-%m-%d")
+    ga_ids         = "25899454"
+    ga_dimension   = "ga:month,ga:year"
+    ga_metrics     = "ga:pageviews"
+    ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
         
     tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
     tmp_data = JSON.parse(tmp_data.to_json)["rows"]
@@ -110,6 +110,8 @@ namespace :page_generator do
          quarter = "Q4"           
        end
 
+       quarter = "#{data['year']}<__>#{quarter}"
+
        if !page_view_data_quarterly[quarter]
           page_view_data_quarterly[quarter] = {pageviews: data['pageviews'].to_i, events: data['events'].to_i, year: data["year"] }
        else
@@ -119,10 +121,12 @@ namespace :page_generator do
 
     end
     page_view_data_arr2 = []
-    page_view_data_arr2 = [["Quarter", "Size", "Label"]]
+    page_view_data_arr2 = [["Quarter", "Size", "Label", "Year"]]
     page_view_data_quarterly.each do |q_key, q_value|
-        page_view_data_arr2 << [q_key, q_value[:pageviews], "Pageviews"]
-        page_view_data_arr2 << [q_key, q_value[:events], "CTR"]
+      quarter_value = q_key.split("<__>")[1]
+      year = q_key.split("<__>")[0]
+      page_view_data_arr2 << [quarter_value, q_value[:pageviews], "Pageviews", year]
+      page_view_data_arr2 << [quarter_value, q_value[:events], "CTR", year]
     end
     # Adding to data_filz           
     file_name = provider_name + " Traffic"
@@ -248,7 +252,7 @@ namespace :page_generator do
       end
       page_country_data << final_value
     end
-    #{"iso2":"AF","size":54,"color":"blue","tooltip":"none","timestamp":2000}
+
     page_country_data_arr = [["month", "year", "iso2", "country", "size"]]
     page_country_data.each do |kvalue|
       country = kvalue['country']
@@ -257,8 +261,7 @@ namespace :page_generator do
         iso_code = iso_code.code
       else
         iso_code = ""
-      end
-      puts iso_code
+      end      
       page_country_data_arr << [kvalue['month'], kvalue['year'], iso_code, country, kvalue['pageviews']]
     end
     
@@ -275,7 +278,7 @@ namespace :page_generator do
 
     #Get Top Ten Digital Objects
     start_date= "2005-01-01"
-    end_date= "2014-09-21"
+    end_date= Date.today.strftime("%Y-%m-%d")
     ga_ids="ga:25899454"
     ga_metrics="ga:pageviews"
     ga_dimensions="ga:pagePath"

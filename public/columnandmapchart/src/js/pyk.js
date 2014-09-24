@@ -260,6 +260,8 @@ PykCharts.Configuration = function (options){
             return this;
         },
         checkChangeInData: function (data, compare_data) { // this function checks if the data in json has been changed
+            console.log(data,"@@@@@@@@@@@@@@@@@@@@@@@")
+            console.log(compare_data,"xxxxxxxxxxxxxxxxxxxxxxxxxx")
             var key1 = Object.keys(compare_data[0]);
             var key2 = Object.keys(data[0]);
             var changed = false;
@@ -1202,7 +1204,7 @@ configuration.Theme = function(){
         "colors_defaultColor" : "pink",
         "colors_total": 9,
         "colors_type": "saturation",
-        "colors_palette": "Blue",
+        "colors_palette": "Multi_Pink_Pink",
         "colors_backgroundColor": "white",
         "tooltip_enable" : "yes",
         "tooltip_mode": "moving",
