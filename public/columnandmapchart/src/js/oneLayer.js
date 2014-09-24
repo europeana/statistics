@@ -104,7 +104,6 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
         that.k
             .createFooter()
             .lastUpdatedAt()
-            .credits()
             .dataSource()
             .liveData(that);
 

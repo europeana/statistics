@@ -81,7 +81,6 @@ PykCharts.multiD.columnChart = function(options){
                 .tooltip()
                 .createFooter()
                 .lastUpdatedAt()
-                .credits()
                 .dataSource();
 
             that.mouseEvent = new PykCharts.Configuration.mouseEvent(that);
