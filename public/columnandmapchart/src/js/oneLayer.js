@@ -89,8 +89,10 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
         that.k.title()
             .subtitle();
 
+
         //    var that = this;
         that.current_palette = _.where(that.color_palette_data, {name:that.colors_palette, number:that.colors_total})[0];
+//console.log(that.current_palette,"current_palette",that.colors_palette,that.color_palette_data);
         that.optionalFeatures()
             .legendsContainer(that.legends_enable)
             .legends(that.legends_enable)
@@ -260,7 +262,14 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
                     .on("mouseover", function (d) {
                         if (PykCharts.boolean(that.tooltip_enable)) {
                             ttp.style("visibility", "visible");
-                            ttp.html((_.where(that.data, {iso2: d.properties.iso_a2})[0]).tooltip);
+                            if((_.where(that.data, {iso2: d.properties.iso_a2})[0])) {
+                                ttp.html((_.where(that.data, {iso2: d.properties.iso_a2})[0]).tooltip);
+                            } else {
+                                ttp.style("visibility", "hidden");
+//                                return false;
+                            }
+
+                            //console.log((_.where(that.data, {iso2: d.properties.iso_a2})[0]).tooltip,d.properties.iso_a2,"heloo");
                             if (that.tooltip_mode === "moving") {
                                 ttp.style("top", function () {
 
@@ -316,7 +325,9 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
         }
         var col_shade,
             obj = _.where(that.data, {iso2: d.properties.iso_a2});
-        if (obj.length > 0) {
+           // console.log(obj,obj[0],"obj");
+
+        if (obj.length > 0/* && obj.length*/) {
             if (that.colors_type === "colors") {
                 if (obj.length > 0 && obj[0].color !== "") {
                     return obj[0].color;
@@ -331,7 +342,11 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
                     if (that.colors_palette !== "") {
                         col_shade = obj[0].size;
                         for (i = 0; i < that.current_palette.colors.length; i++) {
-                            if (col_shade >= that.extent_size[0] + i * (that.difference / that.current_palette.colors.length) && col_shade <= that.extent_size[0] + (i + 1) * (that.difference / that.current_palette.colors.length)) {
+                            if(obj[0].size === 0) {
+                                return "white";
+                            }
+                            else if (col_shade >= that.extent_size[0] + i * (that.difference / that.current_palette.colors.length) && col_shade <= that.extent_size[0] + (i + 1) * (that.difference / that.current_palette.colors.length)) {
+                                console.log(that.current_palette.colors[i]);
                                 return that.current_palette.colors[i];
                             }
                         }
@@ -342,7 +357,7 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
             }
             return that.colors_defaultColor;
         }
-        return that.colors_defaultColor;
+        return "white";
     };
 
     that.renderOpacity = function (d) {
@@ -453,7 +468,7 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
                     .attr("y", rect_parameter4value)
                     .attr("width", rect_parameter1value)
                     .attr("height", rect_parameter2value)
-                    .attr("fill", function (d) { return d; });
+                    .attr("fill", function (d) {return d; });
 
                 legend.exit()
                     .remove();

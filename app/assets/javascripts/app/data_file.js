@@ -299,8 +299,9 @@ function GenereteChartInMarkdown() {
 function addCustomColumnGroupChart() {
   var id = $("#page_view_click_chart").attr("data-slug-id");
   var id2 = $("#page_view_country_chart").attr("data-slug-id");
-  var years = [2012, 2013];
+  
   $.get("/data/" + id + "/json", function(vdata, status) {
+    var years = [];
     var content = JSON.parse(vdata.content);    
     var ultimateGroupColumn = [];
     for(i in content) {
@@ -311,11 +312,12 @@ function addCustomColumnGroupChart() {
           x: cc[0],
           y: cc[1],
           group: cc[2],
-          timestamp: 2013,
+          timestamp: cc[3],
           tooltip: tooltip,
           color: "",
           highlight: true
         });
+        if (years.indexOf(cc[3]) < 0) years.push(cc[3]);
       }
     }
     var width = $("#page_view_click_chart").width() - 50;
@@ -328,18 +330,24 @@ function addCustomColumnGroupChart() {
     l.execute();
 
     $.get("/data/" + id2 + "/json", function(vdata, status) {
+      console.log(years,"3333333333333333333333333333")
+      var years = [];
       var content = JSON.parse(vdata.content);
       var ultimateGroupColumn2 = [];
       for(i in content) {        
         if(i > 0) {
           var cc = content[i];     
-          var tooltip = "<table class='PykCharts'><tr><th>" + cc[3] + "</th></tr><tr><td>" + cc[4] + "</td></tr></table>";
-          ultimateGroupColumn2.push({
-            iso2: cc[2],
-            size: parseInt(cc[4]),
-            tooltip: tooltip,
-            timestamp: parseInt(cc[1])
-          });
+
+          if (cc[2] !== "") {
+            var tooltip = "<table class='PykCharts'><tr><th>" + cc[3] + "</th></tr><tr><td>" + cc[4] + "</td></tr></table>";
+            ultimateGroupColumn2.push({
+              iso2: cc[2],
+              size: parseInt(cc[4]),
+              tooltip: tooltip,
+              timestamp: parseInt(cc[1])
+            });
+          }
+          if (years.indexOf(parseInt(cc[1])) < 0) years.push(parseInt(cc[1]));          
         }
       }
       var width = $("#page_view_country_chart").width() - 50;

@@ -14,15 +14,16 @@ PykCharts.multiD.columnChart = function(options){
         //d3.json(options.data, function(e, data){
             that.fulldata = options.data;
             that.data = PykCharts.groupBy("column", _.where(that.fulldata, {timestamp:_.last(options.years)}));
-            that.compare_data = PykCharts.groupBy("column", that.data);
+            that.compare_data = that.data;
             $(that.selector+" #chart-loader").remove();
             that.render();
         //});
     };
 
     this.refresh = function () {
-        //d3.json(options.data, function (e, data) {
+        //d3.json(options.data, function (e, data) {            
             that.data = PykCharts.groupBy("column", that.filtered_data);
+            console.log(that.filtered_data, that.data, "===============================")
             that.refresh_data = that.data;
             var compare = that.k.checkChangeInData(that.refresh_data,that.compare_data);
             that.compare_data = compare[0];
