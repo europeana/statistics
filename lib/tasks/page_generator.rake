@@ -240,10 +240,8 @@ namespace :page_generator do
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
 
       tmp_data.each do |d|
-        custom_regex = "#{provider_id}"
-        custom_regex += "<__>#{d[0]}"
-        custom_regex += "<__>#{d[1]}"
-        custom_regex += "<__>#{d[2]}"
+        #custom_regex = "#{provider_id}"
+        custom_regex = "#{d[0]}<__>#{d[1]}<__>#{d[2]}"
         if !page_country_aggr[custom_regex]
           page_country_aggr[custom_regex] = d[3].to_i
         else  
