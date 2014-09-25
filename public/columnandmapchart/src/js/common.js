@@ -8,7 +8,6 @@ PykCharts.filter = function (years,k,l) {
       // k.refresh();
 
       l.filtered_data = _.where(l.fulldata,{timestamp:val})
-      console.log(l)
       l.refresh();
 
     }
