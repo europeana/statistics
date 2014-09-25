@@ -345,7 +345,6 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
                                 return "white";
                             }
                             else if (col_shade >= that.extent_size[0] + i * (that.difference / that.current_palette.colors.length) && col_shade <= that.extent_size[0] + (i + 1) * (that.difference / that.current_palette.colors.length)) {
-                                console.log(that.current_palette.colors[i]);
                                 return that.current_palette.colors[i];
                             }
                         }

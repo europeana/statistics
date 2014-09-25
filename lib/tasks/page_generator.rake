@@ -5,22 +5,25 @@ namespace :page_generator do
 
     provider_name = args[:name]
     provider_id = args[:id]
-    #Provider.create!(name: provider_name, provider_id: provider_id)
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id)
+    provider_type = args[:provider_type]
+    #Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
   end
 
   desc "Fetch Data From GA"
-  task :ga_queries, [:name, :id]  do |t, args|
+  task :ga_queries, [:name, :id, :provider_type]  do |t, args|
     provider_name = args[:name]
-    provider_id = args[:id]
-    Rake::Task['page_generator:ga_traffic'].invoke(provider_name, provider_id)
+    provider_id = args[:id]    
+    provider_type = args[:provider_type]
+    Rake::Task['page_generator:ga_traffic'].invoke(provider_name, provider_id, provider_type)
   end
 
   desc "Fetch Data From GA Only Traffic"
-  task :ga_traffic, [:name, :id]  do |t, args|
+  task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
     provider_name = args[:name]
     provider_id = args[:id]
     provider_name_slug = provider_name.gsub(" ","%20")
+    provider_type = args[:provider_type]
 
     #GA Authentication
     ga_client_id = "79004200365-im8ha2tnhhq01j2qr0d4i7dodhctqaua.apps.googleusercontent.com"
@@ -149,7 +152,11 @@ namespace :page_generator do
     params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
 
     #Get Media type    
-    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
+    api_provider_type = "DATA_PROVIDER"
+    if provider_type == "DR"
+      api_provider_type = "PROVIDER"
+    end
+    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
       media_type_data = {}
@@ -296,7 +303,6 @@ namespace :page_generator do
     url = url + "&sort=#{ga_sort}"
     g =  open(url).read
 
-    headers = JSON.parse(g)['columnHeaders']
     data = JSON.parse(g)['rows']
     header_data = ["title","image_url","size","title_url"]
     europeana_url = "http://europeana.eu/api/v2/"
@@ -311,10 +317,18 @@ namespace :page_generator do
         record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
         euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
         g = JSON.parse(open(euro_api_url).read)
+        puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        puts euro_api_url
+        puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         if g["success"]
           if g["object"]["title"]
-            tmp_array << g["object"]["title"][0]
-            tmp_array << g["object"]['europeanaAggregation']['edmPreview'] || "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+            sssssssssss
+            tmp_array << g["object"]["title"][0] 
+            img_url_path = g["object"]['europeanaAggregation']['edmPreview']
+            if img_url_path.nil?
+              img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+            end
+            tmp_array << img_url_path
             tmp_array << data_element[1].to_i
             tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
             count = count + 1;
@@ -323,8 +337,10 @@ namespace :page_generator do
         end
       end
       break if count >= 10
-    end
+    end    
 
+    puts top_ten_digital_objects.to_s
+    sssssssssssssss
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
@@ -333,7 +349,7 @@ namespace :page_generator do
       Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
     end
     params[:top_ten_digital_objects] = data_filz.slug
-      
+
     #adding to Article    
     Rake::Task['page_generator:article'].invoke(params)
 
@@ -418,6 +434,3 @@ namespace :page_generator do
     end
   end
 end
-
-
-
