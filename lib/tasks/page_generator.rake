@@ -21,7 +21,7 @@ namespace :page_generator do
   desc "Fetch Data From GA Only Traffic"
   task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
     provider_name = args[:name]
-    provider_ids = args[:id]
+    provider_ids = args[:id].split(" ")
     provider_name_slug = provider_name.gsub(" ","%20")
     provider_type = args[:provider_type]
 
@@ -48,12 +48,11 @@ namespace :page_generator do
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
-    ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-        
-    tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
-    tmp_data = JSON.parse(tmp_data.to_json)["rows"]
 
     provider_ids.each do |provider_id|
+      ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"        
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
@@ -79,8 +78,7 @@ namespace :page_generator do
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
-        custom_regex = "<__>#{d[0]}"
-        custom_regex += "<__>#{d[1]}"
+        custom_regex = "#{d[0]}<__>#{d[1]}"
         if !page_event_aggr[custom_regex]
           page_event_aggr[custom_regex] = d[2].to_i
         else  
@@ -94,14 +92,14 @@ namespace :page_generator do
       x = px.split("<__>")
       final_value['pageviews'] = y
       #final_value['provider_id'] = x[0]
-      final_value['month'] = x[1]
-      final_value['year'] = x[2]
+      final_value['month'] = x[0]
+      final_value['year'] = x[1]
       if page_event_aggr[px]
         final_value['events'] = page_event_aggr[px]
       end
       page_view_data << final_value
     end
-    
+
     page_view_data_arr = [["month", "year", "pageviews", "events"]]
     page_view_data.each do |kvalue|
       page_view_data_arr << [kvalue['month'], kvalue['year'], kvalue['pageviews'], kvalue['events']]
@@ -154,11 +152,12 @@ namespace :page_generator do
       Viz::Viz.find(viz_viz.id).update_attributes({chart: "Grouped Column Chart", map: viz_map, mapped_output: page_view_data_arr2.to_json })
     end
 
-    params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
+    #params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
+    params = {name: provider_name, pageviews: data_filz.slug}
 
     #Get Media type    
     api_provider_type = "DATA_PROVIDER"
-    if provider_type == "DR"
+    if provider_type == "PR"
       api_provider_type = "PROVIDER"
     end
     media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
@@ -230,35 +229,37 @@ namespace :page_generator do
     ga_start_date = '2005-01-01'
     ga_end_date   = Date.today.strftime("%Y-%m-%d")
     ga_dimension  = "ga:month,ga:year,ga:country"
-    ga_metrics    = "ga:pageviews"
-    ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+    ga_metrics    = "ga:pageviews"    
     ga_sort       = '-ga:pageviews'
     ga_max_result = 25
 
 
-    tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
-    tmp_data = JSON.parse(tmp_data.to_json)["rows"]
+    provider_ids.each do |provider_id|
+      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
+      tmp_data = JSON.parse(tmp_data.to_json)["rows"]
 
-    tmp_data.each do |d|
-      custom_regex = "#{provider_id}"
-      custom_regex += "<__>#{d[0]}"
-      custom_regex += "<__>#{d[1]}"
-      custom_regex += "<__>#{d[2]}"
-      if !page_country_aggr[custom_regex]
-        page_country_aggr[custom_regex] = d[3].to_i
-      else  
-        page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
-      end      
+      tmp_data.each do |d|
+        custom_regex = "#{provider_id}"
+        custom_regex += "<__>#{d[0]}"
+        custom_regex += "<__>#{d[1]}"
+        custom_regex += "<__>#{d[2]}"
+        if !page_country_aggr[custom_regex]
+          page_country_aggr[custom_regex] = d[3].to_i
+        else  
+          page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
+        end      
+      end
     end
 
     page_country_aggr.each do |px, y|
       final_value = {}
       x = px.split("<__>")
       final_value['pageviews'] = y
-      final_value['provider_id'] = x[0]
-      final_value['month'] = x[1]
-      final_value['year'] = x[2]
-      final_value['country'] = x[3]
+      #final_value['provider_id'] = x[0]
+      final_value['month'] = x[0]
+      final_value['year'] = x[1]
+      final_value['country'] = x[2]
       if page_country_aggr[px]
         final_value['events'] = page_event_aggr[px]
       end
@@ -294,62 +295,67 @@ namespace :page_generator do
     ga_ids="ga:25899454"
     ga_metrics="ga:pageviews"
     ga_dimensions="ga:pagePath"
-    ga_filters="ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-    ga_sort= "-ga:pageviews"
 
-    base_url = "https://www.googleapis.com/analytics/v3/data/ga?"
-    url = base_url+"access_token=#{access_token}"
-    url = url + "&start-date=#{start_date}"
-    url = url + "&end-date=#{end_date}"
-    url = url + "&ids=#{ga_ids}"
-    url = url + "&metrics=#{ga_metrics}"
-    url = url + "&dimensions=#{ga_dimensions}"
-    url = url + "&filters=#{ga_filters}"
-    url = url + "&sort=#{ga_sort}"
-    g =  open(url).read
-
-    data = JSON.parse(g)['rows']
     header_data = ["title","image_url","size","title_url"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
     top_ten_digital_objects << header_data
     base_title_url = "http://www.europeana.eu/portal/record/"
-    count = 0
-    data.each do |data_element| 
-      tmp_array = []
-      if data_element[0] != ""
-        b = data_element[0].split("/")
-        record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
-        euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
-        g = JSON.parse(open(euro_api_url).read)
+    provider_ids.each do |provider_id|
+      ga_filters="ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+      ga_sort= "-ga:pageviews"
+      base_url = "https://www.googleapis.com/analytics/v3/data/ga?"
+      url = base_url+"access_token=#{access_token}"
+      url = url + "&start-date=#{start_date}"
+      url = url + "&end-date=#{end_date}"
+      url = url + "&ids=#{ga_ids}"
+      url = url + "&metrics=#{ga_metrics}"
+      url = url + "&dimensions=#{ga_dimensions}"
+      url = url + "&filters=#{ga_filters}"
+      url = url + "&sort=#{ga_sort}"
+      g =  open(url).read
 
-        if g["object"]["title"]
-          title = g["object"]["title"][0] 
-        elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-          title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-        elsif g["object"]['proxies'][0]['dcTitle']["def"]
-          title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-        elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-          title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-        elsif json["object"]['proxies'][0]['dcTitle']["de"]
-          title = g["object"]['proxies'][0]['dcTitle']["de"][0]
-        end
+      data = JSON.parse(g)['rows']
+      count = 0
+      data.each do |data_element| 
+        tmp_array = []
+        if data_element[0] != ""
+          b = data_element[0].split("/")
+          record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+          euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
+          g = JSON.parse(open(euro_api_url).read)
 
-        if g["success"]
-          tmp_array << title
-          img_url_path = g["object"]['europeanaAggregation']['edmPreview']
-          if img_url_path.nil?
-            img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+
+          if g["success"]
+            if g["object"]["title"]
+              title = g["object"]["title"][0] 
+            elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
+              title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["def"]
+              title = g["object"]['proxies'][0]['dcTitle']["def"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["fr"]
+              title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["de"]
+              title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+            else
+              title = "No Title Found"
+            end
+
+            tmp_array << title
+            img_url_path = g["object"]['europeanaAggregation']['edmPreview']
+            if img_url_path.nil?
+              img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+            end
+            tmp_array << img_url_path
+            tmp_array << data_element[1].to_i
+            tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+            count = count + 1;
+            top_ten_digital_objects << tmp_array
           end
-          tmp_array << img_url_path
-          tmp_array << data_element[1].to_i
-          tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
-          count = count + 1;
-          top_ten_digital_objects << tmp_array
         end
-      end
-      break if count >= 10
-    end    
+        break if count >= 10
+      end    
+    end
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -369,7 +375,7 @@ namespace :page_generator do
   task :article, :params  do |t, args|    
     params = args[:params]
     name = params[:name]    
-    id = params[:id]    
+    #id = params[:id]    
     page_view_data_name = params[:pageviews]
     page_country_data_name = params[:top_countries]
     article = Cms::Article.where(title: name).first    
