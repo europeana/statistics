@@ -21,7 +21,7 @@ namespace :page_generator do
   desc "Fetch Data From GA Only Traffic"
   task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
     provider_name = args[:name]
-    provider_id = args[:id]
+    provider_ids = args[:id]
     provider_name_slug = provider_name.gsub(" ","%20")
     provider_type = args[:provider_type]
 
@@ -53,15 +53,17 @@ namespace :page_generator do
     tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
     tmp_data = JSON.parse(tmp_data.to_json)["rows"]
 
-    tmp_data.each do |d|
-      custom_regex = "#{provider_id}"
-      custom_regex += "<__>#{d[0]}"
-      custom_regex += "<__>#{d[1]}"
-      if !page_view_aggr[custom_regex]
-        page_view_aggr[custom_regex] = d[2].to_i
-      else  
-        page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
-      end      
+    provider_ids.each do |provider_id|
+      tmp_data.each do |d|
+        #custom_regex = "#{provider_id}"
+        #custom_regex += "<__>#{d[0]}"
+        custom_regex = "#{d[0]}<__>#{d[1]}"
+        if !page_view_aggr[custom_regex]
+          page_view_aggr[custom_regex] = d[2].to_i
+        else  
+          page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
+        end      
+      end
     end
 
     ##################################################################  
@@ -69,18 +71,21 @@ namespace :page_generator do
     ##################################################################  
     ga_dimension  = "ga:month,ga:year"
     ga_metrics    = "ga:totalEvents"
-    ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id};ga:eventCategory=~Redirect"
 
-    tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
-    tmp_data = JSON.parse(tmp_data.to_json)["rows"]
-    tmp_data.each do |d|
-      custom_regex = "#{provider_id}"
-      custom_regex += "<__>#{d[0]}"
-      custom_regex += "<__>#{d[1]}"
-      if !page_event_aggr[custom_regex]
-        page_event_aggr[custom_regex] = d[2].to_i
-      else  
-        page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+    provider_ids.each do |provider_id|
+      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id};ga:eventCategory=~Redirect"
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      tmp_data = JSON.parse(tmp_data.to_json)["rows"]
+      tmp_data.each do |d|
+        #custom_regex = "#{provider_id}"
+        #custom_regex += "<__>#{d[0]}"
+        custom_regex = "<__>#{d[0]}"
+        custom_regex += "<__>#{d[1]}"
+        if !page_event_aggr[custom_regex]
+          page_event_aggr[custom_regex] = d[2].to_i
+        else  
+          page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+        end
       end
     end
 
@@ -88,7 +93,7 @@ namespace :page_generator do
       final_value = {}
       x = px.split("<__>")
       final_value['pageviews'] = y
-      final_value['provider_id'] = x[0]
+      #final_value['provider_id'] = x[0]
       final_value['month'] = x[1]
       final_value['year'] = x[2]
       if page_event_aggr[px]
@@ -317,30 +322,35 @@ namespace :page_generator do
         record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
         euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
         g = JSON.parse(open(euro_api_url).read)
-        puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-        puts euro_api_url
-        puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+
+        if g["object"]["title"]
+          title = g["object"]["title"][0] 
+        elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
+          title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
+        elsif g["object"]['proxies'][0]['dcTitle']["def"]
+          title = g["object"]['proxies'][0]['dcTitle']["def"][0]
+        elsif g["object"]['proxies'][0]['dcTitle']["fr"]
+          title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
+        elsif json["object"]['proxies'][0]['dcTitle']["de"]
+          title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+        end
+
         if g["success"]
-          if g["object"]["title"]
-            sssssssssss
-            tmp_array << g["object"]["title"][0] 
-            img_url_path = g["object"]['europeanaAggregation']['edmPreview']
-            if img_url_path.nil?
-              img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
-            end
-            tmp_array << img_url_path
-            tmp_array << data_element[1].to_i
-            tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
-            count = count + 1;
-            top_ten_digital_objects << tmp_array
+          tmp_array << title
+          img_url_path = g["object"]['europeanaAggregation']['edmPreview']
+          if img_url_path.nil?
+            img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
           end
+          tmp_array << img_url_path
+          tmp_array << data_element[1].to_i
+          tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+          count = count + 1;
+          top_ten_digital_objects << tmp_array
         end
       end
       break if count >= 10
     end    
 
-    puts top_ten_digital_objects.to_s
-    sssssssssssssss
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
