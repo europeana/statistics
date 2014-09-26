@@ -367,8 +367,6 @@
           count +=1
         else
           final_top_ten_digital_objects2[k[3]][2] = final_top_ten_digital_objects2[k[3]][2].to_i + k[2].to_i
-          puts k[0]
-          puts "=========="
         end        
       else
         break
