@@ -28,7 +28,6 @@
 :javascript
   $( window ).load(function() {
     var ptype = "#{@provider.provider_type}";
-    console.log(ptype,"sssssssssss")
     var api_provider_type = "DATA_PROVIDER";
     if (ptype == "PR") api_provider_type = "PROVIDER";
     $("#editor > #input").hide();
