@@ -25,9 +25,12 @@
     text-decoration: underline;
   }
 
+-ptype = ""
+-if !@provider.nil?
+  -ptype = @provider.provider_type
 :javascript
   $( window ).load(function() {
-    var ptype = "#{@provider.provider_type}";
+    var ptype = "#{ptype}";
     var api_provider_type = "DATA_PROVIDER";
     if (ptype == "PR") api_provider_type = "PROVIDER";
     $("#editor > #input").hide();
