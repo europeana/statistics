@@ -407,7 +407,7 @@
     if 1 == 1 #article.nil?
       #Collection    
       html_template  = "<h3>Collection in Europeana</h3><p></p>"
-      html_template += "<h2 id='collection-in-europeana-api' provider-id='#{name}'></h2> Digital objects in Europeana <p></p>"
+      html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"
 
       #media types
       media_type_chart = "<h3>No Chart to Display</h3>"
