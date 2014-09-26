@@ -1,4 +1,4 @@
-namespace :page_generator do 
+  namespace :page_generator do 
   
   desc "Create New Provider"  
   task :add_provider, [:name, :id] => :environment do |t, args|   
@@ -355,12 +355,26 @@ namespace :page_generator do
       end    
     end
 
+    top_ten_digital_objects_title =  top_ten_digital_objects.shift
+    top_ten_digital_objects = top_ten_digital_objects.sort_by{|k| -k[2]}
+    final_top_ten_digital_objects = []
+    count = 0
+    top_ten_digital_objects.each do |k|
+      if count < 10
+        final_top_ten_digital_objects << k
+        count +=1
+      else
+        break
+      end
+    end
+    final_top_ten_digital_objects.unshift(top_ten_digital_objects_title)
+
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: final_top_ten_digital_objects.to_s )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
+      Data::Filz.find(data_filz.id).update_attributes({content: final_top_ten_digital_objects.to_s})
     end
     params[:top_ten_digital_objects] = data_filz.slug
 
