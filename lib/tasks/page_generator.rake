@@ -6,7 +6,7 @@
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
-    #Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
+    Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
     Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
   end
 
@@ -358,15 +358,24 @@
     top_ten_digital_objects_title =  top_ten_digital_objects.shift
     top_ten_digital_objects = top_ten_digital_objects.sort_by{|k| -k[2]}
     final_top_ten_digital_objects = []
+    final_top_ten_digital_objects2 = {}
     count = 0
     top_ten_digital_objects.each do |k|        
       if count < 10
-        final_top_ten_digital_objects << k
-        count +=1
+        if !final_top_ten_digital_objects2[k[3]].present?
+          final_top_ten_digital_objects2[k[3]] = k
+          count +=1
+        else
+          final_top_ten_digital_objects2[k[3]] = final_top_ten_digital_objects2[k[3]][2].to_i + k[2].to_i
+        end        
       else
         break
       end
     end
+    final_top_ten_digital_objects2.each do |tkey, tvalue|
+      final_top_ten_digital_objects << tvalue  
+    end
+    final_top_ten_digital_objects = final_top_ten_digital_objects.sort_by{|k| -k[2]}
     final_top_ten_digital_objects.unshift(top_ten_digital_objects_title)
 
     file_name = provider_name + " Top 10 Digital Objects"

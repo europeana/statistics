@@ -27,7 +27,10 @@
 
 :javascript
   $( window ).load(function() {
-
+    var ptype = "#{@provider.provider_type}";
+    console.log(ptype,"sssssssssss")
+    var api_provider_type = "DATA_PROVIDER";
+    if (ptype == "PR") api_provider_type = "PROVIDER";
     $("#editor > #input").hide();
     new WMD("input", "toolbar", { preview: "preview" });
     setTimeout(function(){GenereteChartInMarkdown();},5000);
@@ -35,7 +38,7 @@
       if ($("#collection-in-europeana-api").length > 0){
         $("body h3").each(function(index) { });
         var provider_id = $("#collection-in-europeana-api").attr("provider-id");
-        var url = decodeURI("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22"+provider_id+"%22&rows=0")
+        var url = decodeURI("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query="+api_provider_type+"%3a%22"+provider_id+"%22&rows=0")
         $.get(url, function (vdata, status) {
           if (status == "success") $("#collection-in-europeana-api").html(vdata['totalResults']);
         });

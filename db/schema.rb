@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140922132621) do
+ActiveRecord::Schema.define(:version => 20140926131526) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -83,8 +83,9 @@ ActiveRecord::Schema.define(:version => 20140922132621) do
   create_table "providers", :force => true do |t|
     t.string   "provider_id"
     t.string   "name"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "provider_type"
   end
 
   create_table "settings", :force => true do |t|
