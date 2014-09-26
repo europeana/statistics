@@ -351,7 +351,7 @@
             top_ten_digital_objects << tmp_array
           end
         end
-        break if count >= 10
+        break if count >= 50
       end    
     end
 
