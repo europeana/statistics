@@ -22,7 +22,7 @@
   task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
     provider_name = args[:name]
     provider_ids = args[:id].split(" ")
-    provider_name_slug = provider_name.gsub(" ","%20")
+    provider_name_slug = URI.escape(provider_name)
     provider_type = args[:provider_type]
 
     #GA Authentication

@@ -21,7 +21,7 @@ PykCharts.multiD.columnChart = function(options){
     };
 
     this.refresh = function (fdata, cdata) {
-        //d3.json(options.data, function (e, data) {
+         //d3.json(options.data, function (e, data) {
         that.filtered_data = fdata;
         that.compare_data  = cdata;            
             that.data = PykCharts.groupBy("column", that.filtered_data);
