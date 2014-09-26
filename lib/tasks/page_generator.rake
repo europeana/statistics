@@ -1,7 +1,7 @@
   namespace :page_generator do 
   
   desc "Create New Provider"  
-  task :add_provider, [:name, :id] => :environment do |t, args|   
+  task :add_provider, [:name, :id, :provider_type] => :environment do |t, args|   
 
     provider_name = args[:name]
     provider_id = args[:id]
@@ -359,7 +359,7 @@
     top_ten_digital_objects = top_ten_digital_objects.sort_by{|k| -k[2]}
     final_top_ten_digital_objects = []
     count = 0
-    top_ten_digital_objects.each do |k|
+    top_ten_digital_objects.each do |k|        
       if count < 10
         final_top_ten_digital_objects << k
         count +=1
