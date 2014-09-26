@@ -113,7 +113,9 @@ PykCharts.maps.mapFunctions = function (options,chartObject,type) {
         }
     };
 
-    that.refresh = function () {
+    that.refresh = function (fdata, cdata) {
+        chartObject.filtered_data = fdata;
+        that.compare_data = cdata;
         if(type === "oneLayer") {
             that.data = chartObject.filtered_data;
             that.refresh_data = chartObject.filtered_data;

@@ -37,7 +37,6 @@
         var provider_id = $("#collection-in-europeana-api").attr("provider-id");
         var url = decodeURI("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=DATA_PROVIDER%3a%22"+provider_id+"%22&rows=0")
         $.get(url, function (vdata, status) {
-          console.log(vdata, provider_id, url)
           if (status == "success") $("#collection-in-europeana-api").html(vdata['totalResults']);
         });
       }

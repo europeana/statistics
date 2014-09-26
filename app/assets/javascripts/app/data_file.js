@@ -320,6 +320,8 @@ function addCustomColumnGroupChart() {
         if (years.indexOf(cc[3]) < 0) years.push(cc[3]);
       }
     }
+    years.sort(function(a, b){return a-b});
+
     var width = $("#page_view_click_chart").width() - 50;
     var l = new PykCharts.multiD.columnChart({
         data: ultimateGroupColumn,
@@ -330,7 +332,7 @@ function addCustomColumnGroupChart() {
     l.execute();
 
     $.get("/data/" + id2 + "/json", function(vdata, status) {
-      console.log(years,"3333333333333333333333333333")
+      
       var years = [];
       var content = JSON.parse(vdata.content);
       var ultimateGroupColumn2 = [];
@@ -350,6 +352,7 @@ function addCustomColumnGroupChart() {
           if (years.indexOf(parseInt(cc[1])) < 0) years.push(parseInt(cc[1]));          
         }
       }
+      years.sort(function(a, b){return a-b});
       var width = $("#page_view_country_chart").width() - 50;
       var k = new PykCharts.maps.oneLayer({
         selector: "#page_view_country_chart",
@@ -358,8 +361,9 @@ function addCustomColumnGroupChart() {
         chart_width: width
 
       });
-      k.execute();
+      k.execute();         
       PykCharts.filter(years, k, l);
+      $(".menu:last").addClass("active");
     });
   });
 }

@@ -20,11 +20,13 @@ PykCharts.multiD.columnChart = function(options){
         //});
     };
 
-    this.refresh = function () {
-        //d3.json(options.data, function (e, data) {            
+    this.refresh = function (fdata, cdata) {
+        //d3.json(options.data, function (e, data) {
+        that.filtered_data = fdata;
+        that.compare_data  = cdata;            
             that.data = PykCharts.groupBy("column", that.filtered_data);
-            console.log(that.filtered_data, that.data, "===============================")
             that.refresh_data = that.data;
+
             var compare = that.k.checkChangeInData(that.refresh_data,that.compare_data);
             that.compare_data = compare[0];
             var data_changed = compare[1];

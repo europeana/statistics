@@ -102,7 +102,7 @@
 
     page_view_data_arr = [["month", "year", "pageviews", "events"]]
     page_view_data.each do |kvalue|
-      page_view_data_arr << [kvalue['month'], kvalue['year'], kvalue['pageviews'], kvalue['events']]
+      page_view_data_arr << [kvalue['month'], kvalue['year'].to_i, kvalue['pageviews'], kvalue['events']]
     end
 
     page_view_data_quarterly = {}
@@ -130,7 +130,7 @@
     page_view_data_arr2 = [["Quarter", "Size", "Label", "Year"]]
     page_view_data_quarterly.each do |q_key, q_value|
       quarter_value = q_key.split("<__>")[1]
-      year = q_key.split("<__>")[0]
+      year = q_key.split("<__>")[0].to_i
       page_view_data_arr2 << [quarter_value, q_value[:pageviews], "Pageviews", year]
       page_view_data_arr2 << [quarter_value, q_value[:events], "CTR", year]
     end
@@ -256,7 +256,7 @@
       final_value['pageviews'] = y
       #final_value['provider_id'] = x[0]
       final_value['month'] = x[0]
-      final_value['year'] = x[1]
+      final_value['year'] = x[1].to_i
       final_value['country'] = x[2]
       if page_country_aggr[px]
         final_value['events'] = page_event_aggr[px]
@@ -273,7 +273,7 @@
       else
         iso_code = ""
       end      
-      page_country_data_arr << [kvalue['month'], kvalue['year'], iso_code, country, kvalue['pageviews']]
+      page_country_data_arr << [kvalue['month'], kvalue['year'].to_i, iso_code, country, kvalue['pageviews']]
     end
     
     # Now add or update to top 20 countries table      
