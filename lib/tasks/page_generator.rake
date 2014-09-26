@@ -6,7 +6,10 @@
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
-    Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
+    provider = Provider.where(name: provider_name).first
+    if provider.nil?
+      Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
+    end
     Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
   end
 
