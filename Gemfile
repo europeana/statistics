@@ -16,7 +16,7 @@ gem 'unf' #brother of fog
 gem 'gon'
 gem 'acts_as_list'
 gem 'jquery-ui-rails'
-gem 'gattica', :git => 'git://github.com/chrisle/gattica.git'
+gem 'delayed_job_active_record'
 
 # User Interface
 group :assets do

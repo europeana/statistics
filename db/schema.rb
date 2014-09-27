@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140926131526) do
+ActiveRecord::Schema.define(:version => 20140927095151) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -73,6 +73,22 @@ ActiveRecord::Schema.define(:version => 20140926131526) do
 
   add_index "data_filzs", ["slug"], :name => "index_data_filzs_on_slug"
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0, :null => false
+    t.integer  "attempts",   :default => 0, :null => false
+    t.text     "handler",                   :null => false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "iso_codes", :force => true do |t|
     t.string   "code"
     t.string   "country"
@@ -83,9 +99,9 @@ ActiveRecord::Schema.define(:version => 20140926131526) do
   create_table "providers", :force => true do |t|
     t.string   "provider_id"
     t.string   "name"
+    t.string   "provider_type"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.string   "provider_type"
   end
 
   create_table "settings", :force => true do |t|

@@ -7,7 +7,6 @@ require 'rubygems'
 require "net/https"
 require 'json'
 require 'g_ruby'
-require 'gattica'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line

@@ -40,11 +40,11 @@ class ProvidersController < ApplicationController
     @provider = Provider.new(params[:provider])
     page_builder = params[:update_data]
     if @provider.save
-      if page_builder == "yes"
-       %x[rake "page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}]"]
-      end
+      #if page_builder == "yes"
+       @provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
+      #end
       @cms_article = Cms::Article.where(title: @provider.name).last
-      redirect_to cms_article_path(@cms_article.slug)
+      redirect_to providers_path, notice: "Page is started generating, take several seconds"      
     else
       format.html { render action: "new" }
     end
@@ -56,9 +56,9 @@ class ProvidersController < ApplicationController
     @provider = Provider.find(params[:id])
     page_builder = params[:update_data]
     if @provider.update_attributes(params[:provider])
-      if page_builder == "yes"
-        %x[rake "page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}]"]
-      end
+      #if page_builder == "yes"
+        @provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
+      #end
       @cms_article = Cms::Article.where(title: @provider.name).last
       redirect_to cms_article_path(@cms_article.slug)
     else
