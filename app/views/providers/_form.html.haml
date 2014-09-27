@@ -8,39 +8,61 @@
     margin-bottom:10px;
   }
   .field{
-    margin: 5px
+    margin: 5px;
+    margin-top:20px;
   }
   #save{
-    margin:5px;
     background: none;
+    height: 50px;
+    color: black;
+    border-width:1px;
+    margin-bottom:10px;
+    border-radius:0;
+    border:5px solid grey;
   }
 
 = form_for @provider do |f|
   %input{value: "", id: "update_data", name: "update_data", type: "hidden"}
   
   .row
-    .col-sm-4
-    .col-sm-4
+    .col-sm-12
       - if @provider.errors.any?
         #error_explanation
           %h2= "#{pluralize(@provider.errors.count, "error")} prohibited this provider from being saved:"
           %ul
             - @provider.errors.full_messages.each do |msg|
               %li= msg
-
       .field
-        = f.label :provider_id
-        = f.text_field :provider_id
+        .col-sm-3
+        .col-sm-2
+          = f.label :provider_id
+        .col-sm-4
+          = f.text_field :provider_id
+      .clearfix
       .field
-        = f.label :name
-        = f.text_field :name
+        .col-sm-3
+        .col-sm-2
+          = f.label :name
+        .col-sm-4
+          = f.text_field :name
+      .clearfix
       .field
-        = f.label :provider_type
-        = f.select :provider_type,[["Data Provider","DR"],["Provider","PR"]],{},{class: "btn cstm-btn"}
-      .actions
-        %input{type: "checkbox",id: "run_builder"} Do you want to run the Page Builder for this provider?
-        %br
+        .col-sm-3
+        .col-sm-2
+          = f.label :provider_type
+        .col-sm-4
+          = f.select :provider_type,[["Data Provider","DR"],["Provider","PR"]],{},{class: "btn cstm-btn"}
+      .clearfix
+      .actions.field
+        .col-sm-3
+        .col-sm-6
+          %input{type: "checkbox",id: "run_builder"} Do you want to run the Page Builder for this provider?
+          %br
+      .clearfix
+      .col-sm-5
+      .col-sm-2.field  
         = f.submit 'Save',id: "save",class: ""
+
       %br
       %br
 :javascript
