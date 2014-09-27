@@ -1,5 +1,8 @@
 Pykhub::Application.routes.draw do
 
+  resources :providers
+
+
   #resource
   resource :settings, only: [:show, :edit, :update]
 
