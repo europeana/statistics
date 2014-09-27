@@ -1,23 +1,28 @@
-%h1 Listing providers
 
-%table
-  %tr
-    %th Provider
-    %th Name
-    %th Provider type
-    %th
-    %th
-    %th
+%hr
 
-  - @providers.each do |provider|
-    %tr
-      %td= provider.provider_id
-      %td= provider.name
-      %td= provider.provider_type
-      %td= link_to 'Show', provider
-      %td= link_to 'Edit', edit_provider_path(provider)
-      %td= link_to 'Destroy', provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+.container
+  .row
+    %h1 Listing providers
+    %br
+    %table
+      %tr
+        %th Provider
+        %th Name
+        %th Provider type
+        %th
+        %th
+      - @providers.each do |provider|
+        %tr
+          %td= provider.provider_id
+          %td= link_to "#{provider.name}", provider
+          -if provider.provider_type == "PR"
+            - provider_provider_type = "Provider"
+          -else
+            - provider_provider_type = "Data Provider"
+          %td= provider_provider_type
+          %td= link_to 'Edit', edit_provider_path(provider)
+          %td= link_to 'Destroy', provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%br
-
-= link_to 'New Provider', new_provider_path
+    = link_to 'New Provider', new_provider_path
+    %br

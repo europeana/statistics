@@ -15,7 +15,7 @@ class ProvidersController < ApplicationController
   def show
     @provider = Provider.find(params[:id])
     @cms_article = Cms::Article.where(title: @provider.name).last
-    redirect_to edit_cms_article(@cms_article.slug)
+    redirect_to cms_article_path(@cms_article.slug)
   end
 
   # GET /providers/new
