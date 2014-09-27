@@ -1,3 +1,20 @@
+:css
+  .cstm-btn{
+    height: 30px;
+    color: black;
+    font-size:0.9em;
+    padding: 0;
+    border-width:1px;
+    margin-bottom:10px;
+  }
+  .field{
+    margin: 5px
+  }
+  #save{
+    margin:5px;
+    background: none;
+  }
+
 = form_for @provider do |f|
   %input{value: "", id: "update_data", name: "update_data", type: "hidden"}
   
@@ -19,16 +36,15 @@
         = f.text_field :name
       .field
         = f.label :provider_type
-        = f.text_field :provider_type
+        = f.select :provider_type,[["Data Provider","DR"],["Provider","PR"]],{},{class: "btn cstm-btn"}
       .actions
         %input{type: "checkbox",id: "run_builder"} Do you want to run the Page Builder for this provider?
         %br
-        = f.submit 'Save',id: "save"
-        %br
-        %br
+        = f.submit 'Save',id: "save",class: ""
+      %br
+      %br
 :javascript
   $("#save").click(function(){
-    run_page_builder = ($("#run_builder").prop("checked"))? "yes" : "no"
-
+    var run_page_builder = ($("#run_builder").attr("checked"))? "yes" : "no";
     $("#update_data").val(run_page_builder);
   });
