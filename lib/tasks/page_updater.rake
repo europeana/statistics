@@ -10,7 +10,7 @@
     if provider.nil?
       Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
     end
-    Rake::Task["page_updater: "].invoke(provider_name, provider_id,provider_type,params[:start_date],params[:end_date])
+    Rake::Task["page_updater:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:start_date],args[:end_date])
   end
 
   desc "Fetch Data From GA"
@@ -18,7 +18,7 @@
     provider_name = args[:name]
     provider_id = args[:id]    
     provider_type = args[:provider_type]
-    Rake::Task['page_updater:ga_traffic'].invoke(provider_name, provider_id, provider_type,params[:start_date],params[:end_date])
+    Rake::Task['page_updater:ga_traffic'].invoke(provider_name, provider_id, provider_type,args[:start_date],args[:end_date])
   end
 
   desc "Fetch Data From GA Only Traffic"
@@ -46,14 +46,15 @@
     page_country_data = []
      
     #, max_results: 999999999
-    ga_start_date  = params[:start_date]
-    ga_end_date    = params[:end_date]
+    ga_start_date  = args[:start_date]
+    ga_end_date    = args[:end_date]
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
 
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"        
+      puts "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
@@ -184,7 +185,7 @@
     if viz_viz.nil?
       viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Grouped Column Chart", map: viz_map, mapped_output: page_view_data_arr2.to_json )
     else
-      # viz = Viz::Viz.find(viz_viz.id)
+      viz = Viz::Viz.find(viz_viz.id)
       # page_view_data_arr2.shift
       # old_content = JSON.parse(viz.mapped_output)
       # final_page_view_data_arr2 = []
@@ -334,8 +335,8 @@
     end
 
     # For top 25 countries
-    ga_start_date = params[:start_date]
-    ga_end_date   = params[:end_date]
+    ga_start_date = args[:start_date]
+    ga_end_date   = args[:end_date]
     ga_dimension  = "ga:month,ga:year,ga:country"
     ga_metrics    = "ga:pageviews"    
     ga_sort       = '-ga:pageviews'
@@ -391,6 +392,7 @@
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr.to_s )
     else
       data_filz = Data::Filz.find(data_filz.id)
+      
       page_country_data_arr.shift
       old_content_top_25_countries = JSON.parse(data_filz.content)
       final_page_country_data_arr = []
@@ -421,8 +423,8 @@
     params[:top_countries] = data_filz.slug
 
     #Get Top Ten Digital Objects
-    start_date= params[:start_date]
-    end_date= params[:end_date]
+    start_date= args[:start_date]
+    end_date= args[:end_date]
     ga_ids="ga:25899454"
     ga_metrics="ga:pageviews"
     ga_dimensions="ga:pagePath"
@@ -455,7 +457,6 @@
           record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
-
 
           if g["success"]
             if g["object"]["title"]
@@ -525,11 +526,14 @@
       old_top_ten.each do |old|
         tmp["#{old[0]}+#{old[1]}+#{old[3]}"] = old[2].to_i
       end
+
       final_top_ten_digital_objects.each do |data|
-        if !tmp["#{data[0]}+#{data[1]+data[3]}"].present?
-          tmp["#{data[0]}+#{data[1]+data[3]}"] = data[2].to_i
-        else
-          tmp["#{data[0]}+#{data[1]+data[3]}"] = tmp["#{data[0]}+#{data[1]+data[3]}"].to_i + data[2].to_i
+        if !data[0].nil? and !data[1].nil? and !data[2].nil? and !data[3].nil?
+          if !tmp["#{data[0]}+#{data[1]+data[3]}"].present?
+            tmp["#{data[0]}+#{data[1]+data[3]}"] = data[2].to_i
+          else
+            tmp["#{data[0]}+#{data[1]+data[3]}"] = tmp["#{data[0]}+#{data[1]+data[3]}"].to_i + data[2].to_i
+          end
         end
       end
       tmp.each do |key,value|
@@ -537,7 +541,7 @@
         tmp_array[0] = key.split("+")[0]
         tmp_array[1] = key.split("+")[1]
         tmp_array[2] = value
-        tmp_array[3] = key.split("+")[2]
+        tmp_array[3] = key.split("+")[2] || ""
         final_top_ten << tmp_array
       end
       final_top_ten = final_top_ten.sort_by{|k| -k[2]} 
