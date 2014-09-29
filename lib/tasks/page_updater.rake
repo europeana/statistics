@@ -10,19 +10,19 @@
     if provider.nil?
       Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
     end
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
+    Rake::Task["page_updater: "].invoke(provider_name, provider_id,provider_type,params[:start_date],params[:end_date])
   end
 
   desc "Fetch Data From GA"
-  task :ga_queries, [:name, :id, :provider_type]  do |t, args|
+  task :ga_queries, [:name, :id, :provider_type,:start_date,:end_date]  do |t, args|
     provider_name = args[:name]
     provider_id = args[:id]    
     provider_type = args[:provider_type]
-    Rake::Task['page_generator:ga_traffic'].invoke(provider_name, provider_id, provider_type)
+    Rake::Task['page_updater:ga_traffic'].invoke(provider_name, provider_id, provider_type,params[:start_date],params[:end_date])
   end
 
   desc "Fetch Data From GA Only Traffic"
-  task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
+  task :ga_traffic, [:name, :id, :provider_type,:start_date,:end_date]  do |t, args|
     provider_name = args[:name]
     provider_ids = args[:id].split(" ")
     provider_name_slug = URI.escape(provider_name)
@@ -546,7 +546,6 @@
       count = 0
       final_top_ten.each do |top_ten|
         final_top_ten_digital_objects << top_ten
-
         count += 1
         break if count > 10
       end
@@ -555,7 +554,7 @@
     params[:top_ten_digital_objects] = data_filz.slug
 
     #adding to Article    
-    Rake::Task['page_generator:article'].invoke(params)
+    Rake::Task['page_updater:article'].invoke(params)
 
   end
 
