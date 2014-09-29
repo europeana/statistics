@@ -1,16 +1,12 @@
   namespace :page_updater do 
   
   desc "Create New Provider"  
-  task :add_provider, [:name, :id, :provider_type,:start_date,:end_date] => :environment do |t, args|   
-
-    provider_name = args[:name]
-    provider_id = args[:id]
-    provider_type = args[:provider_type]
-    provider = Provider.where(name: provider_name).first
-    if provider.nil?
-      Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
-    end
-    Rake::Task["page_updater:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:start_date],args[:end_date])
+  task :add_provider => :environment do |t, args|   
+    start_date = Date.today.at_beginning_of_month.prev_month.strftime("%Y-%m-%d")
+    end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
+    Provider.all.each do |provider|
+      Rake::Task["page_updater:ga_queries"].invoke(provider.name, provider.provider_id, provider.provider_type, start_date, end_date)
+    end      
   end
 
   desc "Fetch Data From GA"

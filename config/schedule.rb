@@ -8,8 +8,9 @@
 # set :output, "/path/to/my/cron_log.log"
 #
 every "0 0 01 * *" do
-  rake "some:great:rake:task"
+  rake "page_updater:add_provider"  
 end
+
 #
 # every 4.days doevery '0 2 20 * *' do
 
@@ -17,3 +18,5 @@ end
 # end
 
 # Learn more: http://github.com/javan/whenever
+''
+
