@@ -145,9 +145,35 @@
     else
       old_data_filz = Data::Filz.find(data_filz.id)
       old_content = old_data_filz.content
-      old_content_title =  old_content.shift;
-      old_content
-      old_data_filz.update_attributes({content: page_view_data_arr2})
+      final_page_view_data_arr2 = []
+      final_page_view_data_arr2 <<  old_content.shift;
+      tmp = {}
+      old_content.each do |k|
+        if !tmp["#{k[0]}+#{k[2]}+#{k[3]}"].present? 
+          tmp["#{k[0]}+#{k[2]}+#{k[3]}"]= k[1]
+        else 
+          tmp["#{k[0]}+#{k[2]}+#{k[3]}"] = tmp["#{k[0]}+#{k[2]}+#{k[3]}"].to_i + k[1].to_i
+        end 
+      end 
+
+      page_view_data_arr2.each do |k|
+        if !tmp["#{k[0]}+#{k[2]}+#{k[3]}"].present? 
+          tmp["#{k[0]}+#{k[2]}+#{k[3]}"]= k[1]
+        else 
+          tmp["#{k[0]}+#{k[2]}+#{k[3]}"] = tmp["#{k[0]}+#{k[2]}+#{k[3]}"].to_i + k[1].to_i
+        end 
+      end 
+
+      tmp.each do |key, value|
+        key = key.split("+")  
+        tmp_array = []
+        tmp_array[0] = key[0]
+        tmp_array[1] = value
+        tmp_array[2] = key[1]
+        tmp_array[3] = key[2]
+        final_page_view_data_arr2 << tmp_array
+      end
+      old_data_filz.update_attributes({content: final_page_view_data_arr2})
       old_data_filz.save!
     end
 
