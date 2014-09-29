@@ -10,7 +10,7 @@
     if provider.nil?
       Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
     end
-    Rake::Task["page_updater: "].invoke(provider_name, provider_id,provider_type,params[:start_date],params[:end_date])
+    Rake::Task["page_updater: "].invoke(provider_name, provider_id,provider_type,args[:start_date],args[:end_date])
   end
 
   desc "Fetch Data From GA"
@@ -18,7 +18,7 @@
     provider_name = args[:name]
     provider_id = args[:id]    
     provider_type = args[:provider_type]
-    Rake::Task['page_updater:ga_traffic'].invoke(provider_name, provider_id, provider_type,params[:start_date],params[:end_date])
+    Rake::Task['page_updater:ga_traffic'].invoke(provider_name, provider_id, provider_type,args[:start_date],args[:end_date])
   end
 
   desc "Fetch Data From GA Only Traffic"
@@ -46,8 +46,8 @@
     page_country_data = []
      
     #, max_results: 999999999
-    ga_start_date  = params[:start_date]
-    ga_end_date    = params[:end_date]
+    ga_start_date  = args[:start_date]
+    ga_end_date    = args[:end_date]
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
@@ -184,7 +184,7 @@
     if viz_viz.nil?
       viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Grouped Column Chart", map: viz_map, mapped_output: page_view_data_arr2.to_json )
     else
-      # viz = Viz::Viz.find(viz_viz.id)
+      viz = Viz::Viz.find(viz_viz.id)
       # page_view_data_arr2.shift
       # old_content = JSON.parse(viz.mapped_output)
       # final_page_view_data_arr2 = []
@@ -543,7 +543,7 @@
       final_top_ten = final_top_ten.sort_by{|k| -k[2]} 
       final_top_ten_digital_objects = []
       final_top_ten_digital_objects << top_ten_title
-      count = 0
+      count = 1
       final_top_ten.each do |top_ten|
         final_top_ten_digital_objects << top_ten
         count += 1
