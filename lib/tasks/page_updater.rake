@@ -143,8 +143,9 @@
     if data_filz.nil?
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_view_data_arr2 )
     else
+      page_view_data_arr2.shift
       old_data_filz = Data::Filz.find(data_filz.id)
-      old_content = old_data_filz.content
+      old_content = JSON.parse(old_data_filz.content)
       final_page_view_data_arr2 = []
       final_page_view_data_arr2 <<  old_content.shift;
       tmp = {}
@@ -173,7 +174,7 @@
         tmp_array[3] = key[2]
         final_page_view_data_arr2 << tmp_array
       end
-      old_data_filz.update_attributes({content: final_page_view_data_arr2})
+      old_data_filz.update_attributes({content: final_page_view_data_arr2.to_s})
       old_data_filz.save!
     end
 
@@ -183,7 +184,34 @@
     if viz_viz.nil?
       viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Grouped Column Chart", map: viz_map, mapped_output: page_view_data_arr2.to_json )
     else
-      Viz::Viz.find(viz_viz.id).update_attributes({chart: "Grouped Column Chart", map: viz_map, mapped_output: page_view_data_arr2.to_json })
+      # viz = Viz::Viz.find(viz_viz.id)
+      # page_view_data_arr2.shift
+      # old_content = JSON.parse(viz.mapped_output)
+      # final_page_view_data_arr2 = []
+      # final_page_view_data_arr2 << old_content.shift
+      # tmp = {}
+      # old_content.each do |data|
+      #   if !tmp["#{data[0]}+#{data[2]}"].present?
+      #     tmp["#{data[0]}+#{data[2]}"] = data[1].to_i
+      #   else
+      #     tmp["#{data[0]}+#{data[2]}"] = tmp["#{data[0]}+#{data[2]}"].to_i + data[1].to_i
+      #   end
+      # end
+      # page_view_data_arr2.each do |data|
+      #   if !tmp["#{data[0]}+#{data[2]}"].present?
+      #     tmp["#{data[0]}+#{data[2]}"] = data[1].to_i
+      #   else
+      #     tmp["#{data[0]}+#{data[2]}"] = tmp["#{data[0]}+#{data[2]}"].to_i + data[1].to_i
+      #   end
+      # end
+      # tmp.each do |key,value|
+      #   tmp_array = []
+      #   tmp_array[0] = key.split("+")[0]
+      #   tmp_array[1] = value
+      #   tmp_array[2] = key.split("+")[1]
+      #   final_page_view_data_arr2 << tmp_array
+      # end
+      viz.update_attributes({chart: "Grouped Column Chart", map: viz_map, mapped_output: final_page_view_data_arr2.to_json })
     end
 
     #params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
@@ -212,7 +240,30 @@
       if data_filz.nil?
         data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: media_type_data_formatted.to_s )
       else
-        Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_s})
+        data_filz = Data::Filz.find(data_filz.id)
+        media_type_data_formatted.shift
+        final_media_type_data_formatted = []
+        old_data_filz_content = JSON.parse(data_filz.content)
+        final_media_type_data_formatted << old_data_filz_content.shift
+        tmp = {}
+        old_data_filz_content.each do |old|
+          tmp[old[0]] = old[1]
+        end
+        media_type_data_formatted.each do |data|
+          if !tmp[data[0]].present?
+            tmp[data[0]] = data[1].to_i
+          else
+            tmp[data[0]] = tmp[data[0]].to_i + data[1].to_i
+          end
+        end
+        tmp.each do |key,value|
+          tmp_array = []
+          tmp_array[0] = key
+          tmp_array[1] = value.to_i
+          final_media_type_data_formatted << tmp_array
+        end
+
+        data_filz.update_attributes({content: final_media_type_data_formatted.to_s})
       end
 
       #adding to viz
@@ -221,7 +272,7 @@
       if viz_viz.nil?
         viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json )
       else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json })
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", map: viz_map, mapped_output: final_media_type_data_formatted.to_json })
       end
       params[:media_types] = data_filz.slug
     end
@@ -245,7 +296,30 @@
       if data_filz.nil?
         data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: reusable_data_formatted.to_s )
       else
-        Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
+        data_filz = Data::Filz.find(data_filz.id)
+        reusable_data_formatted.shift
+        old_data_reusable = JSON.parse(data_filz.content)
+        final_reusable_data_formatted = []
+        final_reusable_data_formatted << old_data_reusable.shift
+        tmp = {}
+        old_data_reusable.each do |old|
+          tmp["#{old[0]}"] = old[1]
+        end
+        reusable_data_formatted.each do |data|
+          if !tmp["#{data[0]}"].present?
+            tmp["#{data[0]}"] = data[1].to_i
+          else
+            tmp["#{data[0]}"] = tmp["#{data[0]}"].to_i + data[1].to_i
+          end
+
+        end
+        tmp.each do |key,value|
+          tmp_array = []
+          tmp_array[0] = key
+          tmp_array[1] = value
+          final_reusable_data_formatted << tmp_array
+        end
+        data_filz.update_attributes({content: final_reusable_data_formatted.to_s})
       end
 
       #adding to viz
@@ -254,7 +328,7 @@
       if viz_viz.nil?
         viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json )
       else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json })
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", map: viz_map, mapped_output: final_reusable_data_formatted.to_json })
       end
       params[:reusable] = data_filz.slug
     end
@@ -316,7 +390,32 @@
     if data_filz.nil?
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr.to_s )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr.to_s})
+      data_filz = Data::Filz.find(data_filz.id)
+      page_country_data_arr.shift
+      old_content_top_25_countries = JSON.parse(data_filz.content)
+      final_page_country_data_arr = []
+      final_page_country_data_arr << old_content_top_25_countries.shift 
+      tmp = {}
+      old_content_top_25_countries.each do |old|
+        tmp["#{old[0]}+#{old[1]}+#{old[2]}+#{old[3]}"] = old[4].to_i
+      end
+      page_country_data_arr.each do |data|
+        if !tmp["#{data[0]}+#{data[1]}+#{data[2]}+#{data[3]}"].present?
+          tmp["#{data[0]}+#{data[1]}+#{data[2]}+#{data[3]}"] = data[4].to_i
+        else
+          tmp["#{data[0]}+#{data[1]}+#{data[2]}+#{data[3]}"] = tmp["#{data[0]}+#{data[1]}+#{data[2]}+#{data[3]}"].to_i + data[4].to_i
+        end
+      end
+      tmp.each do |key,value|
+        tmp_array = []
+        tmp_array[0] = key.split("+")[0]
+        tmp_array[1] = key.split("+")[1]
+        tmp_array[2] = key.split("+")[2]
+        tmp_array[3] = key.split("+")[3]
+        tmp_array[4] = value
+        final_page_country_data_arr << tmp_array
+      end
+      data_filz.update_attributes({content: final_page_country_data_arr.to_s})
     end
 
     params[:top_countries] = data_filz.slug
@@ -416,8 +515,42 @@
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: final_top_ten_digital_objects.to_s )
-    else
-      Data::Filz.find(data_filz.id).update_attributes({content: final_top_ten_digital_objects.to_s})
+    else  
+      data_filz = Data::Filz.find(data_filz.id) 
+      final_top_ten_digital_objects.shift
+      old_top_ten = JSON.parse(data_filz.content)
+      final_top_ten = []
+      top_ten_title = old_top_ten.shift
+      tmp = {}
+      old_top_ten.each do |old|
+        tmp["#{old[0]}+#{old[1]}+#{old[3]}"] = old[2].to_i
+      end
+      final_top_ten_digital_objects.each do |data|
+        if !tmp["#{data[0]}+#{data[1]+data[3]}"].present?
+          tmp["#{data[0]}+#{data[1]+data[3]}"] = data[2].to_i
+        else
+          tmp["#{data[0]}+#{data[1]+data[3]}"] = tmp["#{data[0]}+#{data[1]+data[3]}"].to_i + data[2].to_i
+        end
+      end
+      tmp.each do |key,value|
+        tmp_array = []
+        tmp_array[0] = key.split("+")[0]
+        tmp_array[1] = key.split("+")[1]
+        tmp_array[2] = value
+        tmp_array[3] = key.split("+")[2]
+        final_top_ten << tmp_array
+      end
+      final_top_ten = final_top_ten.sort_by{|k| -k[2]} 
+      final_top_ten_digital_objects = []
+      final_top_ten_digital_objects << top_ten_title
+      count = 0
+      final_top_ten.each do |top_ten|
+        final_top_ten_digital_objects << top_ten
+
+        count += 1
+        break if count > 10
+      end
+      data_filz.update_attributes({content: final_top_ten_digital_objects.to_s})
     end
     params[:top_ten_digital_objects] = data_filz.slug
 
@@ -503,5 +636,10 @@
       end
 
     end
+  end
+
+  def update_data(old_data,new_data)
+
+    return final_data
   end
 end
