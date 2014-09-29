@@ -17,7 +17,7 @@ gem 'gon'
 gem 'acts_as_list'
 gem 'jquery-ui-rails'
 gem 'delayed_job_active_record'
-
+gem "whenever"
 # User Interface
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
