@@ -10,11 +10,7 @@
     if provider.nil?
       Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
     end
-<<<<<<< HEAD
-    Rake::Task["page_updater: "].invoke(provider_name, provider_id,provider_type,args[:start_date],args[:end_date])
-=======
     Rake::Task["page_updater:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:start_date],args[:end_date])
->>>>>>> 06af6c52f76f2da97c8acc732ca5e5ef601aae2a
   end
 
   desc "Fetch Data From GA"
@@ -532,12 +528,10 @@
       end
 
       final_top_ten_digital_objects.each do |data|
-        if !data[0].nil? and !data[1].nil? and !data[2].nil? and !data[3].nil?
-          if !tmp["#{data[0]}+#{data[1]+data[3]}"].present?
-            tmp["#{data[0]}+#{data[1]+data[3]}"] = data[2].to_i
-          else
-            tmp["#{data[0]}+#{data[1]+data[3]}"] = tmp["#{data[0]}+#{data[1]+data[3]}"].to_i + data[2].to_i
-          end
+        if !tmp["#{data[0]}+#{data[1]+data[3]}"].present?
+          tmp["#{data[0]}+#{data[1]+data[3]}"] = data[2].to_i
+        else
+          tmp["#{data[0]}+#{data[1]+data[3]}"] = tmp["#{data[0]}+#{data[1]+data[3]}"].to_i + data[2].to_i
         end
       end
       tmp.each do |key,value|
