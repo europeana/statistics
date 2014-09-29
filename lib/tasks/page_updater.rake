@@ -524,7 +524,11 @@
       top_ten_title = old_top_ten.shift
       tmp = {}
       old_top_ten.each do |old|
-        tmp["#{old[0]}+#{old[1]}+#{old[3]}"] = old[2].to_i
+        if !tmp["#{old[0]}+#{old[1]}+#{old[3]}"].present?
+          tmp["#{old[0]}+#{old[1]}+#{old[3]}"] = old[2].to_i
+        else
+          tmp["#{old[0]}+#{old[1]}+#{old[3]}"] = tmp["#{old[0]}+#{old[1]}+#{old[3]}"].to_i + old[2].to_i
+        end
       end
 
       final_top_ten_digital_objects.each do |data|
