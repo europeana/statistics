@@ -61,7 +61,12 @@ class ProvidersController < ApplicationController
         @provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
       #end
       @cms_article = Cms::Article.where(title: @provider.name).last
-      redirect_to cms_article_path(@cms_article.slug)
+      if !@cms_article.nil?
+        redirect_to cms_article_path(@cms_article.slug)
+      else
+        redirect_to :back
+      end
+
     else
       format.html { render action: "edit" }
     end
