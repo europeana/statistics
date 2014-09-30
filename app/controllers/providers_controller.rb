@@ -1,6 +1,7 @@
 class ProvidersController < ApplicationController
   # GET /providers
   # GET /providers.json
+  before_filter :authenticate_user!
   def index
     @providers = Provider.all
 

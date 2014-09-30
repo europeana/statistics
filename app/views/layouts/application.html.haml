@@ -33,6 +33,7 @@
                   %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
                   %li= link_to "All Articles", "/all-articles", class: (controller_name == "cms_articles" and (action_name == "allArticles" )) ? "current" : nil
                   %li= link_to "Settings", edit_settings_path, class: (controller_name == "settings") ? "current" : nil
+                  %li= link_to "Providers", providers_path, class: (controller_name == "providers") ? "current" : nil
                   %li= link_to "Logout", "/logout"
 
         - if params[:file_id] or params[:tag] == "other" and !current_user.present?
