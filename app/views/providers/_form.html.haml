@@ -21,9 +21,7 @@
     border:5px solid grey;
   }
 
-= form_for @provider do |f|
-  %input{value: "", id: "update_data", name: "update_data", type: "hidden"}
-  
+= form_for @provider do |f| 
   .row
     .col-sm-12
       - if @provider.errors.any?
@@ -56,7 +54,7 @@
       .actions.field
         .col-sm-3
         .col-sm-6
-          %input{type: "checkbox",id: "run_builder"} Do you want to run the Page Builder for this provider?
+          %input{type: "checkbox",id: "run_builder", name: "run_builder"} Do you want to run the Page Builder for this provider?
           %br
       .clearfix
       .col-sm-5
@@ -65,8 +63,3 @@
 
       %br
       %br
-:javascript
-  $("#save").click(function(){
-    var run_page_builder = ($("#run_builder").attr("checked"))? "yes" : "no";
-    $("#update_data").val(run_page_builder);
-  });

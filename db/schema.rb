@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140927095151) do
+ActiveRecord::Schema.define(:version => 20140930105322) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -102,6 +102,9 @@ ActiveRecord::Schema.define(:version => 20140927095151) do
     t.string   "provider_type"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.datetime "requested_at"
+    t.datetime "request_end"
+    t.boolean  "is_processed"
   end
 
   create_table "settings", :force => true do |t|

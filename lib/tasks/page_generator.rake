@@ -2,15 +2,23 @@
   
   desc "Create New Provider"  
   task :add_provider, [:name, :id, :provider_type] => :environment do |t, args|   
-
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
     provider = Provider.where(name: provider_name).first
     if provider.nil?
-      Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type)
+      provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false)
+    else
+      provider = Provider.find(provider.id)
+      provider.requested_at = Time.now
+      provider.is_processed = false
+      provider.request_end = nil
+      provider.save!      
     end
     Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
+    provider.request_end = Time.now
+    provider.is_processed = true
+    provider.save!
   end
 
   desc "Fetch Data From GA"

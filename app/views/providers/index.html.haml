@@ -20,7 +20,16 @@
         - @providers.each do |provider|
           %tr
             %td= provider.provider_id
-            %td= link_to "#{provider.name}", provider
+            %td
+              -if provider.is_processed
+                = link_to "#{provider.name}", provider
+              -elsif provider.is_processed == nil
+                = provider.name
+                .tag Need to be Processed...
+              -else
+                = provider.name
+                .tag Processing...
+
             -if provider.provider_type == "PR"
               - provider_provider_type = "Provider"
             -else

@@ -1,7 +1,7 @@
 require 'rake'
 
 class Provider < ActiveRecord::Base
-  attr_accessible :provider_type, :provider_id, :name
+  attr_accessible :provider_type, :provider_id, :name, :requested_at, :request_end, :is_processed
 
   def generate_page(name,id,type)
     load File.join(Rails.root, 'lib', 'tasks', 'page_generator.rake')
