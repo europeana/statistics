@@ -42,8 +42,8 @@ class ProvidersController < ApplicationController
     page_builder = params[:update_data]
     if @provider.save
       #if page_builder == "yes"
-      system "bundle exec rake page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}] &"
-      #@provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
+      #system "bundle exec rake page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}] &"
+      @provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
       #end
       @cms_article = Cms::Article.where(title: @provider.name).last
       redirect_to providers_path, notice: "Page is started generating, take several seconds"      
@@ -59,8 +59,8 @@ class ProvidersController < ApplicationController
     page_builder = params[:update_data]
     if @provider.update_attributes(params[:provider])
       #if page_builder == "yes"
-        system "bundle exec rake page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}] &"
-        #@provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
+        #system "bundle exec rake page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}] &"
+        @provider.delay().generate_page(@provider.name, @provider.provider_id, @provider.provider_type)
       #end
       @cms_article = Cms::Article.where(title: @provider.name).last
       if !@cms_article.nil?
