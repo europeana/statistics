@@ -438,7 +438,7 @@
       #View on Europeana
       page_view_chart = "<div data-slug-id='#{page_view_data_name}' id='page_view_click_chart' chart='custom-column-group-chart'></div>"
       html_template += "<h2>Views on Europeana</h2><p></p>"
-      html_template += "<div class='row'><div class='col-sm-12'><div id='menu'></div></div></div><p></p>"
+      # html_template += "<div class='row'><div class='col-sm-12'><div id='menu'></div></div></div><p></p>"
       html_template += "For the selected time period the data and charts in the category are based on the number of views of the Wellcome Library collection on Europeana.eu. The number of views for a collection are dependant on a number of factors such as the size of the collection, the quality of the meta-data that accompanies each digital object and the re-usability of the collection."
       html_template += "<div class='row'><div class='col-sm-12'><h4>Views & Click-Throughs</h4>"
       html_template += "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted."

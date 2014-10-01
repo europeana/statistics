@@ -315,7 +315,7 @@ function addCustomColumnGroupChart() {
           timestamp: cc[3],
           tooltip: tooltip,
           color: "",
-          highlight: true
+          highlight: false
         });
         if (years.indexOf(cc[3]) < 0) years.push(cc[3]);
       }

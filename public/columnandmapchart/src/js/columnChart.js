@@ -137,8 +137,12 @@ PykCharts.multiD.columnChart = function(options){
             legendsContainer: function (i) {
                 if(PykCharts.boolean(that.legends_enable)) {
                     that.legendsContainer = d3.select(options.selector + " #tooltip-svg-container-" + i)
+                        .append("div")
+                        .attr("id","custom-legendsContainer")
+                        .append("div")
+                        .attr("class","col-sm-6 pull-right")
                         .append("svg:svg")
-                        .attr("width",that.width)
+                        .attr("width","100%")
                         .attr("height",50)
                         .attr("class","legendscontainer")
                         .attr("id","legendscontainer");
@@ -398,11 +402,11 @@ PykCharts.multiD.columnChart = function(options){
                         rect_parameter2 = "height";
                         rect_parameter3 = "x";
                         rect_parameter4 = "y";
-                        var text_parameter1value = function (d,i) { j--;return that.width - (j*100 + 75); };
+                        var text_parameter1value = function (d,i) { j--;return $("#legendscontainer").width() - (j*100 + 75); };
                         text_parameter2value = 30;
                         rect_parameter1value = 13;
                         rect_parameter2value = 13;
-                        var rect_parameter3value = function (d,i) { k--;return that.width - (k*100 + 100); };
+                        var rect_parameter3value = function (d,i) { k--;return $("#legendscontainer").width() - (k*100 + 100); };
                         rect_parameter4value = 18;
                     }
 

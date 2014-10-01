@@ -21,7 +21,12 @@ PykCharts.filter = function (years,k,l) {
 
     menu += "</ul>";
 
-    $("#menu").html(menu);
+    d3.select("#custom-legendsContainer")
+      .append("div")
+      .attr("id","menu")
+      .attr("class","col-sm-6 pull-left")
+      .html(menu); 
+    // $("#menu").html(menu);
 
     $(".menu").click(filter);
 }
