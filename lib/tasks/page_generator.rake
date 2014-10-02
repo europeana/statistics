@@ -6,6 +6,7 @@
     provider_id = args[:id]
     provider_type = args[:provider_type]
     provider = Provider.where(name: provider_name).first
+
     if provider.nil?
       provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false)
     else
@@ -15,10 +16,21 @@
       provider.request_end = nil
       provider.save!      
     end
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
-    provider.request_end = Time.now
-    provider.is_processed = true
-    provider.save!
+
+    begin
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
+      provider.request_end = Time.now
+      provider.is_processed = true
+      provider.error_message = nil
+      provider.save!      
+    rescue Exception => e
+      provider.error_message = e.to_s
+      provider.request_end = Time.now
+      provider.is_processed = false
+      provider.save!            
+    end
+
+
   end
 
   desc "Fetch Data From GA"
