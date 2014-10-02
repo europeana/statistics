@@ -33,6 +33,13 @@
       .field
         .col-sm-3
         .col-sm-2
+          = f.label :name
+        .col-sm-4
+          = f.text_field :name
+      .clearfix
+      .field
+        .col-sm-3
+        .col-sm-2
           = f.label :provider_id
         .col-sm-4
           = f.text_field :provider_id
@@ -40,9 +47,9 @@
       .field
         .col-sm-3
         .col-sm-2
-          = f.label :name
+          = f.label :provider_wiki_name
         .col-sm-4
-          = f.text_field :name
+          = f.text_field :provider_wiki_name    
       .clearfix
       .field
         .col-sm-3

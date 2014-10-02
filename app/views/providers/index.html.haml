@@ -10,6 +10,7 @@
         %tr
           %th Provider
           %th Name
+          %th Wiki Name
           %th Provider type
           %th
           %th
@@ -26,7 +27,7 @@
               -else
                 = provider.name
                 .tag Processing...
-
+            %td= provider.provider_wiki_name
             -if provider.provider_type == "PR"
               - provider_provider_type = "Provider"
             -else
