@@ -5,20 +5,26 @@
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
+
+    provider_wiki_name = = ""
+    if args[:wiki_name].present?
+      provider_wiki_name = args[:wiki_name]
+    end    
     provider = Provider.where(name: provider_name).first
 
     if provider.nil?
-      provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false)
+      provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false, wiki_name: provider_wiki_name)
     else
       provider = Provider.find(provider.id)
       provider.requested_at = Time.now
       provider.is_processed = false
       provider.request_end = nil
+      provider.wiki_name = provider_wiki_name
       provider.save!      
     end
 
     begin
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:wiki_name])
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -26,10 +32,9 @@
     rescue Exception => e
       provider.error_message = e.to_s
       provider.request_end = Time.now
-      provider.is_processed = false
+      provider.is_processed = nil
       provider.save!            
     end
-
 
   end
 
@@ -425,13 +430,15 @@
     page_country_data_name = params[:top_countries]
     article = Cms::Article.where(title: name).first
     wiki_name = params[:wiki_name]
-    wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
-    wiki_json = JSON.parse(open(wiki_url).read)
-    wiki_context = wiki_json["query"]["pages"].values.shift["extract"]   
-
+    html_template = ""
     if 1 == 1 #article.nil?
       #Collection    
-      html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name' wiki-url='http://en.wikipedia.org/wiki/#{wiki_name}'>#{wiki_context}</div></div></div>"
+      unless wiki_name.blank?
+        wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
+        wiki_json = JSON.parse(open(wiki_url).read)
+        wiki_context = wiki_json["query"]["pages"].values.shift["extract"]         
+        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name' wiki-url='http://en.wikipedia.org/wiki/#{wiki_name}'>#{wiki_context}</div></div></div>"
+      end      
       html_template  += "<h3>Collection in Europeana</h3><p></p>"
       html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"
 
