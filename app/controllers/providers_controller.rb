@@ -4,7 +4,6 @@ class ProvidersController < ApplicationController
   before_filter :authenticate_user!
   def index
     @providers = Provider.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @providers }
@@ -25,7 +24,6 @@ class ProvidersController < ApplicationController
   # GET /providers/new.json
   def new
     @provider = Provider.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @provider }
@@ -41,10 +39,9 @@ class ProvidersController < ApplicationController
   # POST /providers.json
   def create
     @provider = Provider.new(params[:provider])
-    page_builder = params[:update_data]    
     if @provider.save
       if params[:run_builder].present?
-        system "bundle exec rake 'page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}]' &"
+        @provider.start_page_builder_process
       end
       redirect_to providers_path, notice: "Page is started generating, take several seconds"
     else
@@ -58,7 +55,7 @@ class ProvidersController < ApplicationController
     @provider = Provider.find(params[:id])      
     if @provider.update_attributes(params[:provider])
       if params[:run_builder].present?
-        system "bundle exec rake 'page_generator:add_provider[#{@provider.name},#{@provider.provider_id},#{@provider.provider_type}]' &"
+        @provider.start_page_builder_process                
       end
       redirect_to providers_path, notice: "Page is started generating, take several seconds"
     else
@@ -71,7 +68,6 @@ class ProvidersController < ApplicationController
   def destroy
     @provider = Provider.find(params[:id])
     @provider.destroy
-
     respond_to do |format|
       format.html { redirect_to providers_url }
       format.json { head :no_content }
