@@ -6,7 +6,7 @@
     provider_id = args[:id]
     provider_type = args[:provider_type]
 
-    provider_wiki_name = = ""
+    provider_wiki_name = ""
     if args[:wiki_name].present?
       provider_wiki_name = args[:wiki_name]
     end    
@@ -20,6 +20,7 @@
       provider.is_processed = false
       provider.request_end = nil
       provider.wiki_name = provider_wiki_name
+      provider.error_message = nil
       provider.save!      
     end
 
@@ -437,8 +438,8 @@
       unless wiki_name.blank?
         wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
         wiki_json = JSON.parse(open(wiki_url).read)
-        wiki_context = wiki_json["query"]["pages"].values.shift["extract"]         
-        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name' wiki-url='http://en.wikipedia.org/wiki/#{wiki_name}'>#{wiki_context}</div></div></div>"
+        wiki_context = wiki_json["query"]["pages"].values.shift["extract"][0..300]
+        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'><p>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a><p></div></div></div>"
       end      
       html_template  += "<h3>Collection in Europeana</h3><p></p>"
       html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"

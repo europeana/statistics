@@ -11,6 +11,7 @@ class Provider < ActiveRecord::Base
     self.requested_at = Time.now
     self.is_processed = false
     self.request_end = nil
+    self.error_message = nil
     self.save!      
     system "bundle exec rake 'page_generator:add_provider[#{self.name},#{self.provider_id},#{self.provider_type},#{self.wiki_name}]' &"
   end
