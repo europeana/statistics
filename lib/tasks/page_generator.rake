@@ -1,7 +1,7 @@
   namespace :page_generator do 
   
   desc "Create New Provider"  
-  task :add_provider, [:name, :id, :provider_type] => :environment do |t, args|   
+  task :add_provider, [:name, :id, :provider_type,:wiki_name] => :environment do |t, args|   
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
@@ -18,7 +18,7 @@
     end
 
     begin
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type)
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:wiki_name])
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -34,15 +34,15 @@
   end
 
   desc "Fetch Data From GA"
-  task :ga_queries, [:name, :id, :provider_type]  do |t, args|
+  task :ga_queries, [:name, :id, :provider_type,:wiki_name]  do |t, args|
     provider_name = args[:name]
     provider_id = args[:id]    
     provider_type = args[:provider_type]
-    Rake::Task['page_generator:ga_traffic'].invoke(provider_name, provider_id, provider_type)
+    Rake::Task['page_generator:ga_traffic'].invoke(provider_name, provider_id, provider_type,args[:wiki_name])
   end
 
   desc "Fetch Data From GA Only Traffic"
-  task :ga_traffic, [:name, :id, :provider_type]  do |t, args|
+  task :ga_traffic, [:name, :id, :provider_type,:wiki_name]  do |t, args|
     provider_name = args[:name]
     provider_ids = args[:id].split(" ")
     provider_name_slug = URI.escape(provider_name)
@@ -409,6 +409,7 @@
       Data::Filz.find(data_filz.id).update_attributes({content: final_top_ten_digital_objects.to_s})
     end
     params[:top_ten_digital_objects] = data_filz.slug
+    params[:wiki_name] = args[:wiki_name]
 
     #adding to Article    
     Rake::Task['page_generator:article'].invoke(params)
@@ -419,14 +420,19 @@
   task :article, :params  do |t, args|    
     params = args[:params]
     name = params[:name]    
-    #id = params[:id]    
+    id = params[:id]    
     page_view_data_name = params[:pageviews]
     page_country_data_name = params[:top_countries]
-    article = Cms::Article.where(title: name).first    
+    article = Cms::Article.where(title: name).first
+    wiki_name = params[:wiki_name]
+    wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
+    wiki_json = JSON.parse(open(wiki_url).read)
+    wiki_context = wiki_json["query"]["pages"].values.shift["extract"]   
 
     if 1 == 1 #article.nil?
       #Collection    
-      html_template  = "<h3>Collection in Europeana</h3><p></p>"
+      html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name' wiki-url='http://en.wikipedia.org/wiki/#{wiki_name}'>#{wiki_context}</div></div></div>"
+      html_template  += "<h3>Collection in Europeana</h3><p></p>"
       html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"
 
       #media types
@@ -445,7 +451,7 @@
       end
       html_template += "<div class='col-sm-6'><h4>Reusable</h4>"
       html_template += "This chart displays what percentage of the collection is reusable based on the licenses that have been assigned to the digital objects in the collection. <p></p>"
-      html_template += "#{reusable_chart} </div></div>"
+      html_template += "#{reusable_chart}</div><a href='/articles/#{params[:reusable]}/csv' class='pull-right' id='donwload_csv'>Download CSV</a></div>"
 
       #View on Europeana
       page_view_chart = "<div data-slug-id='#{page_view_data_name}' id='page_view_click_chart' chart='custom-column-group-chart'></div>"
@@ -454,7 +460,7 @@
       html_template += "For the selected time period the data and charts in the category are based on the number of views of the Wellcome Library collection on Europeana.eu. The number of views for a collection are dependant on a number of factors such as the size of the collection, the quality of the meta-data that accompanies each digital object and the re-usability of the collection."
       html_template += "<div class='row'><div class='col-sm-12'><h4>Views & Click-Throughs</h4>"
       html_template += "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted."
-      html_template += "#{page_view_chart} </div></div>"    
+      html_template += "#{page_view_chart}</div></div>"    
 
       #Countries
       page_country_chart = "<div chart='custom-country-map' data-slug-id='#{page_country_data_name}' id='page_view_country_chart'></div>"

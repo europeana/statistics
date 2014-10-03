@@ -11,6 +11,8 @@
           %th Provider
           %th Name
           %th Wiki Name
+          %th Text at Top
+          %th Text at Bottom
           %th Provider type
           %th
           %th
@@ -30,7 +32,9 @@
                 -if !provider.error_message.nil? || !provider.error_message.blank?
                   %p= "<b>Error:</b>(#{provider.error_message})".html_safe
 
-            %td= provider.provider_wiki_name
+            %td= provider.wiki_name
+            %td= provider.text_at_top
+            %td= provider.text_at_bottom
             -if provider.provider_type == "PR"
               - provider_provider_type = "Provider"
             -else

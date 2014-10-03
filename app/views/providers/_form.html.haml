@@ -47,10 +47,25 @@
       .field
         .col-sm-3
         .col-sm-2
-          = f.label :provider_wiki_name
+          = f.label :wiki_name
         .col-sm-4
-          = f.text_field :provider_wiki_name    
+          = f.text_field :wiki_name    
       .clearfix
+      .field
+        .col-sm-3
+        .col-sm-2
+          = f.label :text_at_top
+        .col-sm-4
+          = f.text_field :text_at_top
+      .clearfix
+      .row
+        .field
+          .col-sm-3
+          .col-sm-2
+            = f.label :text_at_bottom
+          .col-sm-4 
+            = f.text_field :text_at_bottom
+        .clearfix
       .field
         .col-sm-3
         .col-sm-2
