@@ -427,34 +427,34 @@
     wiki_name = params[:wiki_name]
     wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
     wiki_json = JSON.parse(open(wiki_url).read)
-    wiki_context = wiki_json["query"]["pages"].values.shift["extract"]   
-
+    wiki_context = ActionView::Base.full_sanitizer.sanitize(wiki_json["query"]["pages"].values.shift["extract"])
+    wiki_context = wiki_context[0..300]   
     if 1 == 1 #article.nil?
       #Collection    
-      html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name' wiki-url='http://en.wikipedia.org/wiki/#{wiki_name}'>#{wiki_context}</div></div></div>"
+      html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'><p>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank'><b>Read more on Wikipedia</b></a><p></div></div></div>"
       html_template  += "<h3>Collection in Europeana</h3><p></p>"
       html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"
 
       #media types
       media_type_chart = "<h3>No Chart to Display</h3>"
       if params[:media_types].present?
-        media_type_chart = "<div class='pykih-viz' data-slug-id='#{params[:media_types]}' id='#{params[:media_types]}'>"
+        media_type_chart = "<div class='pykih-viz' data-slug-id='#{params[:media_types]}' id='#{params[:media_types]}'></div><a href='/articles/#{params[:media_types]}/csv' class='pull-left' >Download CSV</a>"
       end
       html_template += "<div class='row'><div class='col-sm-6'><h4>Media Types</h4>"
       html_template += "This chart displays a breakdown of the composition of the collection that has been made availible via Europeana.eu.<p></p>"
-      html_template += "#{media_type_chart}</div></div>"
+      html_template += "#{media_type_chart}</div>"
 
       #Reusable
       reusable_chart = "<h3>No Chart to Display</h3>"
       if params[:reusable].present?
-        reusable_chart = "<div class='pykih-viz' data-slug-id='#{params[:reusable]}' id='#{params[:reusable]}'>"
+        reusable_chart = "<div class='pykih-viz' data-slug-id='#{params[:reusable]}' id='#{params[:reusable]}'></div><a href='/articles/#{params[:reusable]}/csv' class='pull-right' >Download CSV</a>"
       end
       html_template += "<div class='col-sm-6'><h4>Reusable</h4>"
       html_template += "This chart displays what percentage of the collection is reusable based on the licenses that have been assigned to the digital objects in the collection. <p></p>"
-      html_template += "#{reusable_chart}</div><a href='/articles/#{params[:reusable]}/csv' class='pull-right' id='donwload_csv'>Download CSV</a></div>"
+      html_template += "#{reusable_chart}</div>"
 
       #View on Europeana
-      page_view_chart = "<div data-slug-id='#{page_view_data_name}' id='page_view_click_chart' chart='custom-column-group-chart'></div>"
+      page_view_chart = "<div data-slug-id='#{page_view_data_name}' id='page_view_click_chart' chart='custom-column-group-chart'></div><a href='/articles/#{page_view_data_name}/csv' class='pull-right' >Download CSV</a>"
       html_template += "<h2>Views on Europeana</h2><p></p>"
       # html_template += "<div class='row'><div class='col-sm-12'><div id='menu'></div></div></div><p></p>"
       html_template += "For the selected time period the data and charts in the category are based on the number of views of the Wellcome Library collection on Europeana.eu. The number of views for a collection are dependant on a number of factors such as the size of the collection, the quality of the meta-data that accompanies each digital object and the re-usability of the collection."
@@ -466,12 +466,12 @@
       page_country_chart = "<div chart='custom-country-map' data-slug-id='#{page_country_data_name}' id='page_view_country_chart'></div>"
       html_template += "<div class='row'><div class='col-sm-12'><h4>Top 25 Countries</h4>"
       html_template += "This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu."
-      html_template += "#{page_country_chart} </div></div>"
+      html_template += "#{page_country_chart}</div><a href='/articles/#{page_country_data_name}/csv' class='pull-right'>Download CSV</a></div>"
 
       #Digital Objects
       html_template += "<h4>Top 10 Digital Objects</h4>"
       html_template += "This chart displays the top 10 digital objects from the collection that generated the most views on Europeana.eu."
-      html_template += "<div class='row'><div class='col-sm-12'><div id='top-viewed-items-europena' data-src='#{params[:top_ten_digital_objects]}'></div></div><div>"
+      html_template += "<div class='row'><div class='col-sm-12'><div id='top-viewed-items-europena' data-src='#{params[:top_ten_digital_objects]}'></div></div><a href='/articles/#{params[:top_ten_digital_objects]}/csv' class='pull-right'>Download CSV</a><div>"
 
       #Reach - Wikipedia
       # html_template += "<h2>Reach on Wikipedia</h2><P></P>"
