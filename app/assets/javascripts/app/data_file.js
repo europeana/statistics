@@ -149,10 +149,9 @@ function GenereteChartInMarkdown() {
     "Line Chart": "line"
   }
   if($("#page_view_click_chart").attr("chart") == "custom-column-group-chart") {
-    var slug_id = $("#page_view_click_chart").attr("data-slug-id");
-    console.log("/generate/chart/" + slug_id + "?gcol-chart","sssssssssssssssss")
-    $.get("/generate/chart/" + slug_id, function(vdata, status) {
-      console.log(vdata,status,"xxxxxxxxxxxxxxxxxxx")
+    var slug_id = $("#page_view_click_chart").attr("data-slug-id");    
+    $.get("/generate/chart/" + slug_id +"?gcolchart=0", function(vdata, status) {
+      addCustomColumnGroupChart("#page_view_click_chart", vdata);      
     });  
     //addCustomColumnGroupChart("#page_view_click_chart");
   }
@@ -302,6 +301,7 @@ function GenereteChartInMarkdown() {
 }
 
 function addCustomColumnGroupChart(selector, data) {
+  console.log(data,selector)
   dw.visualize({
     type: 'grouped-column-chart', 
     theme: 'default', 

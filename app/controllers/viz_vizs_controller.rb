@@ -1,6 +1,6 @@
 class VizVizsController < ApplicationController
   
-  before_filter :authenticate_user!, except: [:generate_chart]
+  #before_filter :authenticate_user!, except: [:generate_chart]
   before_filter :find_objects
   
   def index
@@ -90,27 +90,29 @@ class VizVizsController < ApplicationController
     redirect_to viz_vizs_path, notice: "Record deleted."
   end
 
-  def generate_chart
+  def generate_chart    
     if @viz_viz
       mapped_output = JSON.parse(@viz_viz.mapped_output)
       mapped_output2 = mapped_output
-      if params["gcol-chart"].present?
-        if params["gcol-chart"].blank? || params["gcol-chart"].nil?
-          params["gcol-chart"] = Date.today.year
-        end
-        @mapped_output = Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params["gcol-chart"])
+      if params[:gcolchart].present?
+        if params[:gcolchart].blank? || params[:gcolchart].nil? || params[:gcolchart] == "0"
+          params[:gcolchart] = Date.today.year
+        end        
+        mapped_output = Core::Services.twod_to_csv(Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:gcolchart]))
       else
         mapped_output = Core::Services.twod_to_csv(mapped_output)
-      end
-      
-      json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2, c: params }
+      end            
+      json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2}
     else
       json_data = {}      
     end
-    respond_to do |format|
-      format.json { render :json => json_data.to_json, head: "ok"  }
-    end    
-    
+    if params[:gcolchart].present?
+      render text: mapped_output
+    else
+      respond_to do |format|
+        format.json { render :json => json_data.to_json, head: "ok"  }
+      end    
+    end
   end
   
   private  

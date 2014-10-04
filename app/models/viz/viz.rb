@@ -220,9 +220,13 @@ class Viz::Viz < ActiveRecord::Base
     headers = data.shift()
     keys    = []
     new_data = []
-    data.each {|d| new_data << d if d[5] == filter_on}
+    data.each do |d|
+      c = d.pop
+      new_data << d if c == filter_on.to_i
+    end
     headers.each  {|d| keys << d.split(":")[0]}
-    keys[-1] = "Year"    
+    keys.pop
+    keys.pop
     new_data.unshift(keys)
     new_data
   end
