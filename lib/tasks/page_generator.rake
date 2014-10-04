@@ -5,20 +5,27 @@
     provider_name = args[:name]
     provider_id = args[:id]
     provider_type = args[:provider_type]
+
+    provider_wiki_name = ""
+    if args[:wiki_name].present?
+      provider_wiki_name = args[:wiki_name]
+    end    
     provider = Provider.where(name: provider_name).first
 
     if provider.nil?
-      provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false)
+      provider = Provider.create!(name: provider_name, provider_id: provider_id, provider_type: provider_type, requested_at: Time.now, request_end: nil, is_processed: false, wiki_name: provider_wiki_name)
     else
       provider = Provider.find(provider.id)
       provider.requested_at = Time.now
       provider.is_processed = false
       provider.request_end = nil
+      provider.wiki_name = provider_wiki_name
+      provider.error_message = nil
       provider.save!      
     end
 
     begin
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,args[:wiki_name])
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -26,10 +33,9 @@
     rescue Exception => e
       provider.error_message = e.to_s
       provider.request_end = Time.now
-      provider.is_processed = false
+      provider.is_processed = nil
       provider.save!            
     end
-
 
   end
 
@@ -116,7 +122,7 @@
       final_value['pageviews'] = y
       #final_value['provider_id'] = x[0]
       final_value['month'] = x[0]
-      final_value['year'] = x[1]
+      final_value['year'] = x[1].to_i
       if page_event_aggr[px]
         final_value['events'] = page_event_aggr[px]
       end
@@ -127,6 +133,7 @@
     page_view_data.each do |kvalue|
       page_view_data_arr << [kvalue['month'], kvalue['year'].to_i, kvalue['pageviews'], kvalue['events']]
     end
+    sss
 
     page_view_data_quarterly = {}
     page_view_data.each do |data|
@@ -315,9 +322,9 @@
     end_date= Date.today.strftime("%Y-%m-%d")
     ga_ids="ga:25899454"
     ga_metrics="ga:pageviews"
-    ga_dimensions="ga:pagePath"
+    ga_dimensions="ga:pagePath,ga:month,ga:year"
 
-    header_data = ["title","image_url","size","title_url"]
+    header_data = ["title","image_url","size","title_url","year","month"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
     top_ten_digital_objects << header_data
@@ -345,7 +352,6 @@
           record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
-
 
           if g["success"]
             if g["object"]["title"]
@@ -425,13 +431,16 @@
     page_country_data_name = params[:top_countries]
     article = Cms::Article.where(title: name).first
     wiki_name = params[:wiki_name]
-    wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
-    wiki_json = JSON.parse(open(wiki_url).read)
-    wiki_context = ActionView::Base.full_sanitizer.sanitize(wiki_json["query"]["pages"].values.shift["extract"])
-    wiki_context = wiki_context[0..300]   
+
+    html_template = ""
     if 1 == 1 #article.nil?
       #Collection    
-      html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'><p>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a><p></div></div></div>"
+      unless wiki_name.blank?
+        wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
+        wiki_json = JSON.parse(open(wiki_url).read)
+        wiki_context = wiki_json["query"]["pages"].values.shift["extract"][0..300]
+        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'><p>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a><p></div></div></div>"
+      end      
       html_template  += "<h3>Collection in Europeana</h3><p></p>"
       html_template += "<h2 id='collection-in-europeana-api' provider-id=\"#{name}\"></h2> Digital objects in Europeana <p></p>"
 
@@ -500,4 +509,3 @@
     end
   end
 end
-

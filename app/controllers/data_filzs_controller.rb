@@ -4,7 +4,7 @@ class DataFilzsController < ApplicationController
   before_filter :find_objects
 
   def index
-    @data_filzs = Data::Filz.where(genre: nil).order("updated_at desc")
+    @data_filzs = Data::Filz.order("updated_at desc")
   end
     
   def csv
