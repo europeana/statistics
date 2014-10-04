@@ -29,13 +29,12 @@ class VizVizsController < ApplicationController
       redirect_to map_viz_viz_path(file_id: @viz_viz.slug)
     end
     if @viz_viz.chart == "Grouped Column Chart - Filter"
-      @mapped_output = Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content))
-      gon.csv_data = @mapped_output
+      @mapped_output = Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), Date.today.year)
     else
       @mapped_output = JSON.parse(@viz_viz.mapped_output)
-      gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
     end
-        
+    
+    gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
     gon.chart_type = @viz_viz.chart
     gon.mapped_output = {}
     gon.mapped_output["#pie-chart"] = @mapped_output
@@ -91,12 +90,20 @@ class VizVizsController < ApplicationController
     redirect_to viz_vizs_path, notice: "Record deleted."
   end
 
-  def generate_chart        
+  def generate_chart
     if @viz_viz
       mapped_output = JSON.parse(@viz_viz.mapped_output)
       mapped_output2 = mapped_output
-      mapped_output = Core::Services.twod_to_csv(mapped_output)
-      json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2 }
+      if params["gcol-chart"].present?
+        if params["gcol-chart"].blank? || params["gcol-chart"].nil?
+          params["gcol-chart"] = Date.today.year
+        end
+        @mapped_output = Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params["gcol-chart"])
+      else
+        mapped_output = Core::Services.twod_to_csv(mapped_output)
+      end
+      
+      json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2, c: params }
     else
       json_data = {}      
     end
