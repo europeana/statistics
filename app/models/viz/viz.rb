@@ -215,6 +215,15 @@ class Viz::Viz < ActiveRecord::Base
     end  
     transformed_data[0].to_json
   end
+
+  def self.formatInColumnGroupChart(data)
+    headers = data.shift()
+    keys    = []    
+    headers.each  {|d| keys << d.split(":")[0]}
+    keys[-1] = "Year"    
+    data.unshift(keys)
+    data
+  end
   
   #UPSERT
   #JOBS

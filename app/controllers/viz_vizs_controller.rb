@@ -29,12 +29,13 @@ class VizVizsController < ApplicationController
       redirect_to map_viz_viz_path(file_id: @viz_viz.slug)
     end
     if @viz_viz.chart == "Grouped Column Chart - Filter"
-      @mapped_output = JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content)
+      @mapped_output = Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content))
+      gon.csv_data = @mapped_output
     else
       @mapped_output = JSON.parse(@viz_viz.mapped_output)
+      gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
     end
-    
-    gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
+        
     gon.chart_type = @viz_viz.chart
     gon.mapped_output = {}
     gon.mapped_output["#pie-chart"] = @mapped_output
