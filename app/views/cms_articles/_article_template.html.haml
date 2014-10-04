@@ -1,6 +1,12 @@
-.row
-  .col-sm-12
-    =@cms_article.description.html_safe
+-if !@cms_article.description.nil?
+  .row
+    .col-sm-12
+      =@cms_article.description.html_safe
+-if !@provider.text_at_top.nil? 
+  .row
+    .col-sm-12
+      %strong
+        %p=@provider.text_at_top
 .row
   .col-sm-12
     %h3= @template["collection_in_europeana_title"]
@@ -44,5 +50,10 @@
     =@template["top_10_digital_objects_description"]
     %br
     %img{src: "images/top_10_digital_objects.png"}
+-if !@provider.text_at_bottom.nil?
+  .row
+    .col-sm-12
+      %strong
+        %p= @provider.text_at_bottom
 
   
