@@ -1,1 +1,84 @@
-te
+.container
+  .row
+    .col-sm-2
+      %h3 Template Menu
+    .col-sm-10{"ng-app" => "app", "ng-controller" => "Ctrl"} 
+      %h3 Title of the Article
+      %hr
+      .row
+        %h3
+          %a{"editable-text" => "template.collection_in_europeana_title", :href => "#"} {{ template.collection_in_europeana_title || 'empty' }}
+        %h2 
+          123456
+        %p
+          %a{"editable-text" => "template.collection_in_europeana_description", :href => "#"} {{ template.collection_in_europeana_description || 'empty' }}
+      .row
+        .col-sm-6
+          %h4
+            %a{"editable-text" => "template.media_types_title", :href => "#"} {{ template.media_types_title || 'empty' }}
+          %a{"editable-text" => "template.media_types_description", :href => "#"} {{ template.media_types_description || 'empty' }}
+          %img{src: "images/media_types.png"}
+        .col-sm-6
+          %h4
+            %a{"editable-text" => "template.reusable_title", :href => "#"} {{ template.reusable_title || 'empty' }}
+          %a{"editable-text" => "template.reusable_description", :href => "#"} {{ template.reusable_description || 'empty' }}
+          %img{src: "images/reusable.png"}
+      .row
+        %br
+        %h2 
+          %a{"editable-text" => "template.views_on_europeana_title", :href => "#"} {{ template.views_on_europeana_title || 'empty' }}
+        %a{"editable-text" => "template.views_on_europeana_description", :href => "#"} {{ template.views_on_europeana_description || 'empty' }}
+        %br
+        %br
+      .row
+        %h4
+          %a{"editable-text" => "template.views_and_clickthroughs_title", :href => "#"} {{ template.views_and_clickthroughs_title || 'empty' }}
+        %a{"editable-text" => "template.views_and_clickthroughs_description", :href => "#"} {{ template.views_and_clickthroughs_description || 'empty' }}
+        %img{src: "images/views_and_clickthroughs.png"}
+        %br
+      .row
+        %h4
+          %a{"editable-text" => "template.top_25_countries_title", :href => "#"} {{ template.top_25_countries_title || 'empty' }}
+        %a{"editable-text" => "template.top_25_countries_description", :href => "#"} {{ template.top_25_countries_description || 'empty' }}
+        %img{src: "images/top_25_countries.png"}
+      .row
+        %h4
+          %a{"editable-text" => "template.top_10_digital_objects_title", :href => "#"} {{ template.top_10_digital_objects_title || 'empty' }}
+        %a{"editable-text" => "template.top_10_digital_objects_description", :href => "#"} {{ template.top_10_digital_objects_description || 'empty' }}
+        %br
+        %img{src: "images/top_10_digital_objects.png"}
+
+      .row
+        %br
+        #json_data{style: "display:none"} {{template | json }}
+
+      .row
+        %br
+        =link_to "Save","/save_template",class: "btn",style: "margin:10px"
+        %br
+
+:javascript
+  var app = angular.module("app", ["xeditable"]);
+
+  app.run(function(editableOptions) {
+    editableOptions.theme = 'bs3';
+  });
+  json_data = {
+      collection_in_europeana_title: 'Collection In Europeana',
+      collection_in_europeana_description: "Digital objects in Europeana",
+      media_types_title: "Media Types",
+      media_types_description: "This chart displays a breakdown of the composition of the collection that has been made availible via Europeana.eu.",
+      reusable_title: "Resuable",
+      reusable_description:"This chart displays what percentage of the collection is reusable based on the licenses that have been assigned to the digital objects in the collection.",
+      views_on_europeana_title: "Views on Europeana",
+      views_on_europeana_description: "For the selected time period the data and charts in the category are based on the number of views of the Wellcome Library collection on Europeana.eu. The number of views for a collection are dependant on a number of factors such as the size of the collection, the quality of the meta-data that accompanies each digital object and the re-usability of the collection.",
+      views_and_clickthroughs_title: "Views & Click-Throughs",
+      views_and_clickthroughs_description: "This charts displays the total views of the collection on Europeana.eu and the number of times a user clicked through to the providers website. Repeated views and click-throughs of the same digital objects are counted.",
+      top_25_countries_title: "Top 25 Countries",
+      top_25_countries_description: "This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu.",
+      top_10_digital_objects_title: "Top 10 Digital Objects",
+      top_10_digital_objects_description: "This chart displays the top 10 digital objects from the collection that generated the most views on Europeana.eu."
+    }
+  app.controller('Ctrl', function($scope) {
+    $scope.template = json_data
+  });

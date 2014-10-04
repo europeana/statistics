@@ -109,6 +109,8 @@ class CmsArticlesController < ApplicationController
     end
     render nothing: true
   end  
+  def template
+  end
   
   private
   
