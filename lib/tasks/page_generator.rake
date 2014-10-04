@@ -509,9 +509,3 @@
     end
   end
 end
-
-
-# Call Wikipedia Api for description and store it  in variable
-#   url = URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{provider_wiki_name}")
-#   a = JSON.parse(open(url).read)
-#   context = a["query"]["pages"].values.shift["extract"]
