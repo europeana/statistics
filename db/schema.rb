@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141003045249) do
+ActiveRecord::Schema.define(:version => 20141004074329) do
 
   create_table "cms_articles", :force => true do |t|
     t.string   "title"
@@ -113,10 +113,11 @@ ActiveRecord::Schema.define(:version => 20141003045249) do
 
   create_table "settings", :force => true do |t|
     t.boolean  "masonry"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "image"
     t.string   "header_name"
+    t.text     "page_builder_config"
   end
 
   create_table "users", :force => true do |t|

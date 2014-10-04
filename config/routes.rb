@@ -4,7 +4,10 @@ Pykhub::Application.routes.draw do
 
 
   #resource
-  resource :settings, only: [:show, :edit, :update]
+  resource :settings
+  #Settings
+  get "/template", to: "settings#template", as: "template_settings"
+  post "/template/save", to: "settings#update_template", as: "update_template"
 
   post '/login', to: "users#login", as: "login"  
   get '/login', to: "users#login", as: "login"
@@ -12,7 +15,6 @@ Pykhub::Application.routes.draw do
   
   #articles
   get "/new", to: "cms_articles#new", as: "new_cms_articles"
-  get "/template", to: "cms_articles#template", as: "template_cms_articles"
   post "/create", to: "cms_articles#create", as: "create_cms_articles"
   get "/:file_id/edit", to: "cms_articles#edit", as: "edit_cms_article"
   put "/:file_id/update", to: "cms_articles#update", as: "update_cms_article"
@@ -51,6 +53,7 @@ Pykhub::Application.routes.draw do
   
   get "/:file_id", to: "cms_articles#show", as: "cms_article"
 
+  
   #Embed
   get "/embed/:file_id", to: "viz_vizs#embed", as: "embed_viz"
   
