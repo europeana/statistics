@@ -1,0 +1,48 @@
+.row
+  .col-sm-12
+    =@cms_article.description.html_safe
+.row
+  .col-sm-12
+    %h3= @template["collection_in_europeana_title"]
+    %h2{id: "collection-in-europeana-api",:"provider-id" => "#{@cms_article.title}"}
+    %p=@template["collection_in_europeana_description"]
+.row
+  .col-sm-12
+    .col-sm-6
+      %h4= @template["media_types_title"]
+      %br
+      = @template["media_types_description"]
+      %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type"}
+      =link_to "Download CSV", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
+
+    .col-sm-6
+      %h4= @template["reusable_title"]
+      =@template["reusable_description"]
+      %div{class: "pykih-viz pie-chart",:"data-slug-id" => "#{@selected_article}-reusable",id: "#{@selected_article}-reusable"}
+      =link_to "Download CSV", "/articles/#{@selected_article}-reusable/csv", class: 'pull-right' 
+  %br
+.clearfix
+.row
+  .col-sm-12
+    %h2= @template["views_on_europeana_title"]
+    =@template["views_on_europeana_description"]
+  %br
+.row
+  .col-sm-12
+    %h4= @template["views_and_clickthroughs_title"]
+    =@template["views_and_clickthroughs_description"]
+    %img{src: "images/views_and_clickthroughs.png"}
+    %br
+.row
+  .col-sm-12
+    %h4= @template["top_25_countries_title"]
+    =@template["top_25_countries_description"]
+    %img{src: "images/top_25_countries.png"}
+.row
+  .col-sm-12
+    %h4= @template["top_10_digital_objects_title"]
+    =@template["top_10_digital_objects_description"]
+    %br
+    %img{src: "images/top_10_digital_objects.png"}
+
+  
