@@ -321,9 +321,9 @@
     end_date= Date.today.strftime("%Y-%m-%d")
     ga_ids="ga:25899454"
     ga_metrics="ga:pageviews"
-    ga_dimensions="ga:pagePath"
+    ga_dimensions="ga:pagePath,ga:month,ga:year"
 
-    header_data = ["title","image_url","size","title_url"]
+    header_data = ["title","image_url","size","title_url","year","month"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
     top_ten_digital_objects << header_data
@@ -351,7 +351,6 @@
           record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
-
 
           if g["success"]
             if g["object"]["title"]
