@@ -57,4 +57,10 @@
       %strong
         %p= @provider.text_at_bottom
 
+
+// Click filter to change chart as per year
+// add class name filter-data-chart
+/ $.get("/generate/chart/" + slug_id +"?gcolchart=2014", function(vdata, status) {
+/   addCustomColumnGroupChart("#page_view_click_chart", vdata);      
+/ });  
   
