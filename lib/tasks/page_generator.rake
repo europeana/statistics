@@ -122,7 +122,7 @@
       final_value['pageviews'] = y
       #final_value['provider_id'] = x[0]
       final_value['month'] = x[0]
-      final_value['year'] = x[1]
+      final_value['year'] = x[1].to_i
       if page_event_aggr[px]
         final_value['events'] = page_event_aggr[px]
       end
@@ -133,6 +133,7 @@
     page_view_data.each do |kvalue|
       page_view_data_arr << [kvalue['month'], kvalue['year'].to_i, kvalue['pageviews'], kvalue['events']]
     end
+    sss
 
     page_view_data_quarterly = {}
     page_view_data.each do |data|

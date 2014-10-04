@@ -50,11 +50,11 @@
     
   });
 
--fpath1 = "src/js/"
--files = ["lib/topojson.js", "pyk.js", "maps.js", "oneLayer.js", "multiD.js", "columnChart.js", "common.js"]
+/ -fpath1 = "src/js/"
+/ -files = ["lib/topojson.js", "pyk.js", "maps.js", "oneLayer.js", "multiD.js", "columnChart.js", "common.js"]
 
-- files.each_with_index do |file, index|
-  - src = file
-  - src = fpath1 + src if index > 0
-  %script{src: "/columnandmapchart/#{src}"}  
+/ - files.each_with_index do |file, index|
+/   - src = file
+/   - src = fpath1 + src if index > 0
+/   %script{src: "/columnandmapchart/#{src}"}  
 

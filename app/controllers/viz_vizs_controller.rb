@@ -28,7 +28,11 @@ class VizVizsController < ApplicationController
     if @viz_viz.map.blank?
       redirect_to map_viz_viz_path(file_id: @viz_viz.slug)
     end
-    @mapped_output = JSON.parse(@viz_viz.mapped_output)
+    if @viz_viz.chart == "Grouped Column Chart - Filter"
+      @mapped_output = JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content)
+    else
+      @mapped_output = JSON.parse(@viz_viz.mapped_output)
+    end
     
     gon.csv_data = Core::Services.twod_to_csv(@mapped_output)
     gon.chart_type = @viz_viz.chart
