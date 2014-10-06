@@ -1,3 +1,14 @@
+:css
+  .filter-data-chart{
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 5px;
+    font-style: italic;
+  }
+  .selected{
+    text-decoration: underline;
+    font-weight: bold
+  }
 -if !@cms_article.description.nil?
   .row
     .col-sm-12
@@ -36,8 +47,17 @@
 .row
   .col-sm-12
     %h4= @template["views_and_clickthroughs_title"]
-    =@template["views_and_clickthroughs_description"].html_safe
+    =@template["views_and_clickthroughs_description"]
+    .br
+    .br
+    -@all_years.each do |year|
+      %span
+        -if @all_years.index(year) != @all_years.length-1 
+          %a.filter-data-chart{target: "blank",id: "#{year}"}=year
+        -else 
+          %a.filter-data-chart.selected{target: "blank",id: "#{year}"}=year
     #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
+    =link_to "Download CSV", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
     / %img{src: "images/views_and_clickthroughs.png"}
     %br
 .row
@@ -63,4 +83,15 @@
 / $.get("/generate/chart/" + slug_id +"?gcolchart=2014", function(vdata, status) {
 /   addCustomColumnGroupChart("#page_view_click_chart", vdata);      
 / });  
-  
+
+:javascript
+  $(document).ready(function(){
+    $(".filter-data-chart").click(function(){
+      $("#page_view_click_chart").html("");
+      $(".filter-data-chart").removeClass("selected")
+      $(this).addClass("selected")
+      $.get("/generate/chart/#{@selected_article}-traffic?gcolchart="+this.id, function(vdata, status) {
+        addCustomColumnGroupChart("#page_view_click_chart", vdata);      
+     });
+    })
+  }) 
