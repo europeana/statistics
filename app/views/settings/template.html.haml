@@ -66,6 +66,6 @@
   });
 
   $("#save_template").click(function() {
-    var tt = JSON.stringify(JSON.parse($("#json_div").html()));
+    var tt = JSON.stringify(JSON.parse($("#json_div").text()));
     $("#json_data").val(tt);
   });
