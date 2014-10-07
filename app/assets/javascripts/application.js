@@ -25,12 +25,16 @@
 //Datawrapper js files
 //= require vendor/datawrapper/underscore-min
 //= require vendor/datawrapper/globalize.min
+//= require vendor/datawrapper/kartograph.min
+//= require vendor/datawrapper/jquery.qtip.min
 //= require vendor/datawrapper/raphael-min
 //= require vendor/datawrapper/d3-light.min
 //= require vendor/datawrapper/chroma.min
 //= require vendor/datawrapper/dw
 //= require vendor/datawrapper/dw.standalone
 //= require vendor/datawrapper/default
+//= require //dw-europeana.s3-website-us-west-2.amazonaws.com/lib/vis/maps-eea6af3a78d2569be971204854217913.min
+//= require //dw-europeana.s3-website-us-west-2.amazonaws.com/lib/chart-206e22793fae102dcb0bb68278f61581.min
 
 //Datawrapper Visualization js files
 //= require vendor/datawrapper/vis/raphael-chart
