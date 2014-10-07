@@ -240,7 +240,7 @@ class Provider < ActiveRecord::Base
       params[:reusable] = data_filz.slug
     end
 
-=end # comment end
+#=end # comment end
 
     # For top 25 countries
     ga_dimension  = "ga:month,ga:year,ga:country"
@@ -323,14 +323,13 @@ class Provider < ActiveRecord::Base
     end
     params[:top_countries] = data_filz.slug
 #end # comment end
-
-    sssssssssssssssssssssssssss
+=end
     #Get Top Ten Digital Objects
 
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath"    
     ga_sort= "-ga:pageviews"
-    ga_max_result = 10
+    ga_max_result = 50
     quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
     header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
@@ -415,22 +414,24 @@ class Provider < ActiveRecord::Base
     end
     final_top_ten_digital_objects = final_top_ten_digital_objects.sort_by{|k| -k[2]}
     top_ten_digital_objects_quarterly = []
-    2010..Date.today.year.each do |year|
-      1..4.each do |quarter|
-        final_top_ten_digital_objects.select{|k| k[4] == "#{year}".to_i and k[5] == "q#{quarter}"}.collect{|k| k}[0..9].each {|p| top_ten_digital_objects_quarterly << p}
+    for year in 2010..Date.today.year
+      for quarter in 1..4
+        final_top_ten_digital_objects.select{|k| k[4] == "#{year}".to_i and k[5] == "q#{quarter}"}[0..9].each {|p| top_ten_digital_objects_quarterly << p}
+      end
+      puts top_ten_digital_objects_quarterly.count
     end
     top_ten_digital_objects_quarterly.unshift(top_ten_digital_objects_title)
+    top_ten_digital_objects_quarterly.count
 
-    # file_name = provider_name + " Top 10 Digital Objects"
-    # data_filz = Data::Filz.where(file_file_name: file_name).first
-    # if data_filz.nil?
-    #   data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: final_top_ten_digital_objects.to_s )
-    # else
-    #   Data::Filz.find(data_filz.id).update_attributes({content: final_top_ten_digital_objects.to_s})
-    # end
-    #params[:top_ten_digital_objects] = data_filz.slug
-    #params[:wiki_name] = args[:wiki_name]
-    
+    file_name = provider_name + " Top 10 Digital Objects"
+    data_filz = Data::Filz.where(file_file_name: file_name).first
+    if data_filz.nil?
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects_quarterly.to_s )
+    else
+      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects_quarterly.to_s})
+    end
+    # params[:top_ten_digital_objects] = data_filz.slug
+    # params[:wiki_name] = args[:wiki_name]
   end
 
 end
