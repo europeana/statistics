@@ -308,10 +308,9 @@ function GenereteChartInMarkdown() {
 }
 
 function addCustomDataWrapperMap(selector, data) {
-  console.log(selector)
   dw.visualize({
     type: 'maps', 
-    
+    theme: 'default', 
     container: $(selector),
     datasource:   dw.datasource.delimited({csv: data})
   });

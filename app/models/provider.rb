@@ -240,7 +240,7 @@ class Provider < ActiveRecord::Base
       params[:reusable] = data_filz.slug
     end
 
-#=end # comment end
+=end # comment end
 
     # For top 25 countries
     ga_dimension  = "ga:month,ga:year,ga:country"
@@ -322,13 +322,15 @@ class Provider < ActiveRecord::Base
       Viz::Viz.find(viz_viz.id).update_attributes({chart: "Maps", data_filz_id: data_filz.id})
     end
     params[:top_countries] = data_filz.slug
-=end # comment end
+#end # comment end
+
+    sssssssssssssssssssssssssss
     #Get Top Ten Digital Objects
 
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath"    
     ga_sort= "-ga:pageviews"
-    ga_max_result = 2
+    ga_max_result = 10
     quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
     header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
