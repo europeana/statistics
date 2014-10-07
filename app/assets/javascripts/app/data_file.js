@@ -148,12 +148,19 @@ function GenereteChartInMarkdown() {
     "Grouped Column Chart": "grouped-column",
     "Line Chart": "line"
   }
+  
   if($("#page_view_click_chart").attr("chart") == "custom-column-group-chart") {
     var slug_id = $("#page_view_click_chart").attr("data-slug-id");    
     $.get("/generate/chart/" + slug_id +"?gcolchart=0", function(vdata, status) {
       addCustomColumnGroupChart("#page_view_click_chart", vdata);      
     });  
     //addCustomColumnGroupChart("#page_view_click_chart");
+  }
+  if($("#top-25-countries-map").attr("chart") == "custom-maps-chart") {
+    var slug_id = $("#top-25-countries-map").attr("data-slug-id");
+    $.get("/generate/chart/" + slug_id +"?mapschart=2013&mapschartquarter=q1", function(vdata, status) {
+      addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
+    });  
   }
   gon.mapped_output = {}
   gon.lineChartData = {}
@@ -300,8 +307,17 @@ function GenereteChartInMarkdown() {
   }
 }
 
+function addCustomDataWrapperMap(selector, data) {
+  console.log(selector)
+  dw.visualize({
+    type: 'maps', 
+    
+    container: $(selector),
+    datasource:   dw.datasource.delimited({csv: data})
+  });
+
+}
 function addCustomColumnGroupChart(selector, data) {
-  console.log(data,selector)
   dw.visualize({
     type: 'grouped-column-chart', 
     theme: 'default', 

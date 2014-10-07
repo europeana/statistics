@@ -92,14 +92,24 @@ class VizVizsController < ApplicationController
 
   def generate_chart    
     if @viz_viz
-      mapped_output = JSON.parse(@viz_viz.mapped_output)
-      mapped_output2 = mapped_output
       if params[:gcolchart].present?
         if params[:gcolchart].blank? || params[:gcolchart].nil? || params[:gcolchart] == "0"
           params[:gcolchart] = Date.today.year
         end        
         mapped_output = Core::Services.twod_to_csv(Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:gcolchart]))
+        mapped_output2 = mapped_output        
+      elsif params[:mapschart].present?        
+        if params[:mapschart].blank? || params[:mapschart].nil? || params[:mapschart] == "0"
+          params[:mapschart] = Date.today.year
+        end
+        if params[:mapschartquarter].blank? || params[:mapschartquarter].nil? || params[:mapschartquarter] == "0"
+          params[:mapschartquarter] = "q#{((((Date.today.at_beginning_of_month).month - 1) / 3) + 1)}"
+        end
+        mapped_output = Core::Services.twod_to_csv(Viz::Viz.formatInMapsChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:mapschart], params[:mapschartquarter]))        
+        mapped_output2 = mapped_output        
       else
+        mapped_output = JSON.parse(@viz_viz.mapped_output)
+        mapped_output2 = mapped_output        
         mapped_output = Core::Services.twod_to_csv(mapped_output)
       end            
       json_data = { "chart_type" => @viz_viz.chart, "chart_data" => mapped_output , "mapped_output" => mapped_output2}

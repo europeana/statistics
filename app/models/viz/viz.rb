@@ -230,7 +230,20 @@ class Viz::Viz < ActiveRecord::Base
     new_data.unshift(keys)
     new_data
   end
-  
+
+  def self.formatInMapsChart(data, year, quarter)
+    year = 2013
+    quarter = "q1"
+    headers = data.shift()
+    keys    = []
+    new_data = []
+    data.each  {|d| new_data << [d[2], d[4], d[5]]  if quarter == d[0] and year == d[1]}
+    headers = [headers[2], headers[4], headers[5]]
+    headers.map  {|d| keys << d.split(":")[0] }
+    new_data.unshift(keys)
+    new_data
+  end
+
   #UPSERT
   #JOBS
   #PRIVATE

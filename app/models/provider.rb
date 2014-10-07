@@ -32,6 +32,7 @@ class Provider < ActiveRecord::Base
     ga_client_secret = "rBi6Aqu1x9o4gBj7ByydxeK7"
     ga_scope = "https://www.googleapis.com/auth/analytics"
     ga_refresh_token = "1/R96LIdJ7mepE1WVdhi9WtPxZI9JTh2FmIzYcrTaGRnQ"
+    ga_ids         = "25899454"
 
     get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
     access_token = JSON.parse(get_access_token.to_json)['access_token']    
@@ -43,7 +44,11 @@ class Provider < ActiveRecord::Base
     page_event_data = []
     page_country_aggr = {}
     page_country_data = []
-     
+    
+        
+=begin
+      
+
     #, max_results: 999999999
     ga_start_date  = '2005-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
@@ -235,57 +240,71 @@ class Provider < ActiveRecord::Base
       params[:reusable] = data_filz.slug
     end
 
+=end # comment end
+
     # For top 25 countries
-    ga_start_date = '2005-01-01'
-    ga_end_date   = Date.today.strftime("%Y-%m-%d")
     ga_dimension  = "ga:month,ga:year,ga:country"
     ga_metrics    = "ga:pageviews"    
     ga_sort       = '-ga:pageviews'
     ga_max_result = 25
-
-
-    provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
-      tmp_data = JSON.parse(tmp_data.to_json)["rows"]
-
-      tmp_data.each do |d|
-        #custom_regex = "#{provider_id}"
-        custom_regex = "#{d[0]}<__>#{d[1]}<__>#{d[2]}"
-        if !page_country_aggr[custom_regex]
-          page_country_aggr[custom_regex] = d[3].to_i
-        else  
-          page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
-        end      
+    quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
+    for l_year in 2010..Date.today.year
+      to_quarter = 4
+      if l_year == Date.today.year
+        to_quarter  = ((((Date.today.at_beginning_of_month - 1).month - 1) / 3) + 1)
       end
-    end
 
-    page_country_aggr.each do |px, y|
-      final_value = {}
-      x = px.split("<__>")
-      final_value['pageviews'] = y
-      #final_value['provider_id'] = x[0]
-      final_value['month'] = x[0]
-      final_value['year'] = x[1].to_i
-      final_value['country'] = x[2]
-      if page_country_aggr[px]
-        final_value['events'] = page_event_aggr[px]
-      end
-      page_country_data << final_value
-    end
+      for l_quarter in 1..to_quarter
+        qq_s = quarter_hash["q#{l_quarter}"][0]
+        qq_e = quarter_hash["q#{l_quarter}"][1]
+        ga_start_date = "#{l_year}-#{qq_s}"
+        ga_end_date   = "#{l_year}-#{qq_e}"
 
-    page_country_data_arr = [["month", "year", "iso2", "country", "size"]]
+        counter = 1
+        provider_ids.each do |provider_id|
+          ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+          tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
+          tmp_data = JSON.parse(tmp_data.to_json)["rows"]
+          next if tmp_data.nil?
+          page_country_aggr = {}
+          tmp_data.each do |d|
+            #custom_regex = "#{provider_id}"
+            custom_regex = "q#{l_quarter}<__>#{d[1]}<__>#{d[2]}"
+            if !page_country_aggr[custom_regex]
+              page_country_aggr[custom_regex] = d[3].to_i
+              counter += 1
+            else  
+              page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
+            end                  
+            break if counter > 25
+          end # End of GA          
+          page_country_aggr.each do |px, y|
+            final_value = {}
+            x = px.split("<__>")
+            final_value['count'] = y            
+            final_value['quarter'] = x[0]
+            final_value['year'] = x[1].to_i
+            final_value['country'] = x[2]
+            page_country_data << final_value
+          end
+        end # End of provider
+      end # End of Quarter
+    end # End of Year
+
+    page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
     page_country_data.each do |kvalue|
       country = kvalue['country']
       iso_code = IsoCode.where(country: country).first
       if !iso_code.nil?        
-        iso_code = iso_code.code
+        code = iso_code.code
+        continent = iso_code.continent
       else
-        iso_code = ""
+        code = ""
+        continent = ""
       end      
-      page_country_data_arr << [kvalue['month'], kvalue['year'].to_i, iso_code, country, kvalue['pageviews']]
+      page_country_data_arr << [kvalue['quarter'], kvalue['year'].to_i, code, country, continent, kvalue['count']]
     end
-    
+
     # Now add or update to top 20 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -295,7 +314,17 @@ class Provider < ActiveRecord::Base
       Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr.to_s})
     end
 
+    # Now adding to viz
+    viz_viz = Viz::Viz.where(title: file_name).first
+    if viz_viz.nil?
+      viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
+    else
+      Viz::Viz.find(viz_viz.id).update_attributes({chart: "Maps", data_filz_id: data_filz.id})
+    end
+    false  
+    sssss
     params[:top_countries] = data_filz.slug
+    sss
 
     #Get Top Ten Digital Objects
     start_date= "2005-01-01"
