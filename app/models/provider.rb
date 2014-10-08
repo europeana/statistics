@@ -327,16 +327,126 @@ class Provider < ActiveRecord::Base
     #Get Top Ten Digital Objects
 
     ga_metrics="ga:pageviews"
-    ga_dimension="ga:pagePath"    
+    ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
-    ga_max_result = 50
-    quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
-    header_data = ["title","image_url","size","title_url","year","quarter"]
+    ga_max_result = 10000
+    ga_start_date = "2005-01-01"
+    ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
+    header_data = ["title","image_url","size","title_url","year","month"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
     top_ten_digital_objects << header_data
     base_title_url = "http://www.europeana.eu/portal/record/"
+    uniq_objects = {}
+    provider_ids.each do |provider_id|
+      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+      g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
+      data = g['rows']
+      data.each do |data_element|
+        views   = data_element[3].to_i
+        year    = data_element[2].to_i
+        month   = data_element[1].to_i
+        pg_path = data_element[0]
+        quarter = "q1"
+        quarter = "q2" if month.between?(4,6)
+        quarter = "q3" if month.between?(7,9)
+        quarter = "q4" if month.between?(10,12)
+        obj_key = "#{quarter}<__>#{year}<__>#{pg_path}"
 
+        if !uniq_objects[obj_key]          
+          uniq_objects[obj_key] = {"count" => 1, "views" => views}
+        else 
+          counter = uniq_objects[obj_key]["count"] 
+          if counter < 25
+            uniq_objects[obj_key]["count"] = counter + 1
+            uniq_objects[obj_key]["views"] = uniq_objects[obj_key]["views"] + views
+          end          
+        end
+      end
+      ten_records_arr = {}
+      for t_year in 2005..Date.today.year
+        for t_quarter in 1..4
+          counter = 1
+          uniq_objects.each do |key, value|
+            b = key.split("/") 
+            record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+            euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
+            g = JSON.parse(open(euro_api_url).read)
+            if g["success"]                
+              if g["object"]["title"]
+                title = g["object"]["title"][0] 
+              elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
+                title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
+              elsif g["object"]['proxies'][0]['dcTitle']["def"]
+                title = g["object"]['proxies'][0]['dcTitle']["def"][0]
+              elsif g["object"]['proxies'][0]['dcTitle']["fr"]
+                title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
+              elsif g["object"]['proxies'][0]['dcTitle']["de"]
+                title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+              else
+                title = "No Title Found"
+              end
+
+              if !ten_records_arr[title]
+                tmp_array = []
+                tmp_array << title
+                img_url_path = g["object"]['europeanaAggregation']['edmPreview']
+                if img_url_path.nil?
+                  img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+                end
+                tmp_array << img_url_path
+                tmp_array << value["views"]
+                tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+                tmp_array << t_quarter
+                tmp_array << t_year
+                ten_records_arr[title] = tmp_array
+                counter += 1                
+              end
+            end            
+            break if counter > 10
+          end
+        end
+      end
+      sssssss
+      data.each do |data_element|             
+        tmp_array = []
+        if data_element[0] != ""
+          b = data_element[0].split("/")
+          record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+          euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
+          g = JSON.parse(open(euro_api_url).read)
+          if g["success"]                
+            if g["object"]["title"]
+              title = g["object"]["title"][0] 
+            elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
+              title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["def"]
+              title = g["object"]['proxies'][0]['dcTitle']["def"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["fr"]
+              title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']["de"]
+              title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+            else
+              title = "No Title Found"
+            end
+
+            tmp_array << title
+            img_url_path = g["object"]['europeanaAggregation']['edmPreview']
+            if img_url_path.nil?
+              img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+            end
+            tmp_array << img_url_path
+            tmp_array << data_element[3].to_i
+            tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+            tmp_array << data_element[2].to_i
+            tmp_array << data_element[1].to_i
+            top_ten_digital_objects << tmp_array
+          end
+        end
+      end    
+    end
+
+    ssssss
     for l_year in 2010..Date.today.year
       to_quarter = 4
       if l_year == Date.today.year
@@ -351,53 +461,16 @@ class Provider < ActiveRecord::Base
         provider_ids.each do |provider_id|
           ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
           g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
+          
           data = g['rows']
           next if data.nil?                 
-          data.each do |data_element|             
-            tmp_array = []
-            if data_element[0] != ""
-              b = data_element[0].split("/")
-              record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
-              euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
-              g = JSON.parse(open(euro_api_url).read)
-              if g["success"]                
-                if g["object"]["title"]
-                  title = g["object"]["title"][0] 
-                elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-                  title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-                elsif g["object"]['proxies'][0]['dcTitle']["def"]
-                  title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-                elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-                  title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-                elsif g["object"]['proxies'][0]['dcTitle']["de"]
-                  title = g["object"]['proxies'][0]['dcTitle']["de"][0]
-                else
-                  title = "No Title Found"
-                end
-
-                tmp_array << title
-                img_url_path = g["object"]['europeanaAggregation']['edmPreview']
-                if img_url_path.nil?
-                  img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
-                end
-                tmp_array << img_url_path
-                tmp_array << data_element[1].to_i
-                tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
-                tmp_array << l_year
-                tmp_array << "q#{l_quarter}"                
-                top_ten_digital_objects << tmp_array
-                puts "working"
-              end
-              puts "==============="
-            end
-            puts "xxxxxxxxxxxxxxxxx"
-          end    
           puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
         end
         puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
       end
       puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     end
+
     top_ten_digital_objects_title =  top_ten_digital_objects.shift
     top_ten_digital_objects = top_ten_digital_objects.sort_by{|k| -k[2]}
     final_top_ten_digital_objects = []
