@@ -7,8 +7,7 @@ class Cms::Article < ActiveRecord::Base
   friendly_id :title, use: [:slugged]
   
   #ACCESSORS
-  attr_accessible :description, :is_published, :published_at, :title, :tag, :home_page, :position, :archieved, :is_deleted
-  
+  attr_accessible :description, :is_published, :published_at, :title, :tag, :home_page, :position, :archieved, :is_deleted, :has_nested_pages, :nested_pages
   #ASSOCIATIONS
   #VALIDATIONS
   validates :title, uniqueness: true, length: {minimum: 2}, presence: true

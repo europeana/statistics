@@ -25,6 +25,9 @@
               = image_tag "cursor_drag_arrow.png", class: "custom-glyphicon", size: "15x15"
               &nbsp;
           = cms_article.tag
+        -if cms_article.has_nested_pages && cms_article.nested_pages
+          - JSON.parse(cms_article.nested_pages).each do |page|
+            %p=link_to page["name"], nested_article_path(cms_article.slug,page['name'],page['page'])
     %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Archive", root_url(tag: "other")
 
 :javascript
