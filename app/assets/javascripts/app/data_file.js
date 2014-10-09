@@ -198,6 +198,7 @@ function GenereteChartInMarkdown() {
       }
     });
   });
+  
   if($("#top-viewed-items-europena")) {
     var data_source = $("#top-viewed-items-europena").attr("data-src");
     $.get("/data/" + data_source + "/json", function(data) {
@@ -252,35 +253,41 @@ function GenereteChartInMarkdown() {
       function changeItemPerViewData(new_data) {
         // var provider = $("#top-view-provider").val();
         // var year = $("#top-view-year").val();        
+        var qyear = parseInt($(".filter-data-chart.selected").text());
+        var qquarter = $(".filter-quarter-data.selected").attr("href");        
         var data_provider_all_count = 0;
         var data_provider_year_count = 0;
         var html_template = "";
         var counter = 1;
+
         for(i in new_data) {
-          // if (new_data[i].provider === provider) {
-          //   if (parseInt(new_data[i].total_views) > 0) {
-          //     //data_provider_all_count += parseInt(new_data[i].total_views);
-          //     data_provider_all_count = new_data[i].total_objects;
-          //   }            
-          // }
-          //if (new_data[i].year === year && new_data[i].provider === provider) {
-          if(parseInt(new_data[i].total_views) > 0) {
-            data_provider_year_count += parseInt(new_data[i].total_views);
-          }
-          if(counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
-            html_template += "<div class='row' style='margin-top:15px;'>";
-          }
-          html_template += "<div class='col-sm-6'>";
-          html_template += '<div class="media"><a class="pull-left" href="' + new_data[i].title_url + '" style="padding-right:25px;" target="_blank"><img class="media-object" src="' + new_data[i].image_url + '" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">' + counter + '.</h4><a href="' + new_data[i].title_url + '" target="_blank" class="comment more" >' + new_data[i].title + '</a><p><strong>' + new_data[i].size + ' views</strong></p></div></div>';
-          html_template += "</div>";
-          if(counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
+
+          if (parseInt(new_data[i].year) == qyear && new_data[i].quarter == qquarter) {
+            // if (new_data[i].provider === provider) {
+            //   if (parseInt(new_data[i].total_views) > 0) {
+            //     //data_provider_all_count += parseInt(new_data[i].total_views);
+            //     data_provider_all_count = new_data[i].total_objects;
+            //   }            
+            // }
+            //if (new_data[i].year === year && new_data[i].provider === provider) {
+            if(parseInt(new_data[i].total_views) > 0) {
+              data_provider_year_count += parseInt(new_data[i].total_views);
+            }
+            if(counter === 1 || counter === 3 || counter === 5 || counter === 7 || counter === 9) {
+              html_template += "<div class='row' style='margin-top:15px;'>";
+            }
+            html_template += "<div class='col-sm-6'>";
+            html_template += '<div class="media"><a class="pull-left" href="' + new_data[i].title_url + '" style="padding-right:25px;" target="_blank"><img class="media-object" src="' + new_data[i].image_url + '" style="width: 90px; height: 90px;" ></a><div class="media-body" style="margin-left:10px;"><h4 class="media-heading">' + counter + '.</h4><a href="' + new_data[i].title_url + '" target="_blank" class="comment more" >' + new_data[i].title + '</a><p><strong>' + new_data[i].size + ' views</strong></p></div></div>';
             html_template += "</div>";
+            if(counter === 2 || counter === 4 || counter === 6 || counter === 8 || counter === 10) {
+              html_template += "</div>";
+            }
+            counter++;
           }
-          counter++;
         }
         $("#top-view-digital-object").html(data_provider_all_count + " digital objects generating " + data_provider_year_count + " views on Europeana")
         if(counter < 2) {
-          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>Testing </h3></center>";
+          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No record found </h3></center>";
         } else if(counter === 4) {
           $("<div style='clear:both'>&nbsp;</div>").appendTo("#top-viewed-items-europena")
         }
@@ -294,7 +301,14 @@ function GenereteChartInMarkdown() {
           "moreText": ""
         });
       });
-      $("#top-view-provider").change(function() {
+      $(".filter-data-chart").click(function() {
+        $("#item-view-content").html(changeItemPerViewData(new_data));
+        $(".comment").shorten({
+          "showChars": 20,
+          "moreText": ""
+        });
+      });
+      $(".filter-quarter-data").click(function() {
         $("#item-view-content").html(changeItemPerViewData(new_data));
         $(".comment").shorten({
           "showChars": 20,

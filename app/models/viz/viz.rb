@@ -232,14 +232,14 @@ class Viz::Viz < ActiveRecord::Base
   end
 
   def self.formatInMapsChart(data, year, quarter)
-    year = 2013
-    quarter = "q1"
+    year = year.to_i
+    # quarter = "q1"
     headers = data.shift()
     keys    = []
     new_data = []
-    data.each  {|d| new_data << [d[2], d[4], d[5]]  if quarter == d[0] and year == d[1]}
-    headers = [headers[2], headers[4], headers[5]]
-    headers.map  {|d| keys << d.split(":")[0] }
+    data.each  {|d| new_data << [d[2], d[3], d[5]]  if quarter == d[0] and year == d[1] and !d[2].blank?}
+    headers = [headers[2], headers[3], headers[5]]
+    headers.map  {|d| keys << d.split(":")[0] if !d.nil? }
     new_data.unshift(keys)
     new_data
   end

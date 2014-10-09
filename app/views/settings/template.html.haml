@@ -40,7 +40,7 @@
         %h4
           %a{"editable-text" => "template.top_25_countries_title", :href => "#",buttons:"no"} {{ template.top_25_countries_title || 'empty' }}
         %a{"editable-textarea" => "template.top_25_countries_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.top_25_countries_description || 'empty' }}
-        %img{src: "images/top_25_countries.png"}
+        %img{src: "images/top_25_countries.png"}        
       .row
         %h4
           %a{"editable-text" => "template.top_10_digital_objects_title", :href => "#",buttons:"no"} {{ template.top_10_digital_objects_title || 'empty' }}
@@ -69,3 +69,5 @@
     var tt = JSON.stringify(JSON.parse($("#json_div").text()));
     $("#json_data").val(tt);
   });
+
+  
