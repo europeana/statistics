@@ -287,7 +287,7 @@ function GenereteChartInMarkdown() {
         }
         $("#top-view-digital-object").html(data_provider_all_count + " digital objects generating " + data_provider_year_count + " views on Europeana")
         if(counter < 2) {
-          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>Testing </h3></center>";
+          html_template = "<center><h3 style='margin-top:30px;padding-bottom:20px;'>No record found </h3></center>";
         } else if(counter === 4) {
           $("<div style='clear:both'>&nbsp;</div>").appendTo("#top-viewed-items-europena")
         }
