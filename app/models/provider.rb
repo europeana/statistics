@@ -22,8 +22,8 @@ class Provider < ActiveRecord::Base
     # provider_name_slug = URI.escape(provider_name)
     # provider_type = args[:provider_type]
 
-    provider_name = "The Wellcome Library"
-    provider_ids = "9200105".split(" ")
+    provider_name = "Rijksmuseum"
+    provider_ids = "90402".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
 
@@ -330,92 +330,51 @@ class Provider < ActiveRecord::Base
     ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
     ga_max_result = 10000
-    ga_start_date = "2005-01-01"
+    ga_start_date = "2014-01-01"
     ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
-    header_data = ["title","image_url","size","title_url","year","month"]
+    header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
     top_ten_digital_objects << header_data
     base_title_url = "http://www.europeana.eu/portal/record/"
     uniq_objects = {}
+    provider_arr = {}
+    skip_value = {}
+    ten_records_arr = {}
+    min_year = Date.today.year
     provider_ids.each do |provider_id|
       ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
       g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
       data = g['rows']
+      
+      total_records = data.count
+      qx_counter = 0
       data.each do |data_element|
+        qx_counter += 1
+        puts "#{total_records} of #{qx_counter} ...."
         views   = data_element[3].to_i
         year    = data_element[2].to_i
         month   = data_element[1].to_i
+        if min_year > year
+          min_year = year
+        end
         pg_path = data_element[0]
         quarter = "q1"
         quarter = "q2" if month.between?(4,6)
         quarter = "q3" if month.between?(7,9)
         quarter = "q4" if month.between?(10,12)
-        obj_key = "#{quarter}<__>#{year}<__>#{pg_path}"
+        
+        skip_val = "#{quarter}<__>#{year}<__>#{provider_id}"
+        skip_value[skip_val] = 0 if !skip_value[skip_val]
 
-        if !uniq_objects[obj_key]          
-          uniq_objects[obj_key] = {"count" => 1, "views" => views}
-        else 
-          counter = uniq_objects[obj_key]["count"] 
-          if counter < 25
-            uniq_objects[obj_key]["count"] = counter + 1
-            uniq_objects[obj_key]["views"] = uniq_objects[obj_key]["views"] + views
-          end          
-        end
-      end
-      ten_records_arr = {}
-      for t_year in 2005..Date.today.year
-        for t_quarter in 1..4
-          counter = 1
-          uniq_objects.each do |key, value|
-            b = key.split("/") 
-            record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
-            euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
-            g = JSON.parse(open(euro_api_url).read)
-            if g["success"]                
-              if g["object"]["title"]
-                title = g["object"]["title"][0] 
-              elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-                title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-              elsif g["object"]['proxies'][0]['dcTitle']["def"]
-                title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-              elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-                title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-              elsif g["object"]['proxies'][0]['dcTitle']["de"]
-                title = g["object"]['proxies'][0]['dcTitle']["de"][0]
-              else
-                title = "No Title Found"
-              end
-
-              if !ten_records_arr[title]
-                tmp_array = []
-                tmp_array << title
-                img_url_path = g["object"]['europeanaAggregation']['edmPreview']
-                if img_url_path.nil?
-                  img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
-                end
-                tmp_array << img_url_path
-                tmp_array << value["views"]
-                tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
-                tmp_array << t_quarter
-                tmp_array << t_year
-                ten_records_arr[title] = tmp_array
-                counter += 1                
-              end
-            end            
-            break if counter > 10
-          end
-        end
-      end
-      sssssss
-      data.each do |data_element|             
-        tmp_array = []
-        if data_element[0] != ""
-          b = data_element[0].split("/")
+        if skip_value[skip_val] < 10
+          puts skip_value
+          puts "============================="          
+          b = pg_path.split("/") 
           record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
-          if g["success"]                
+          if g["success"]
             if g["object"]["title"]
               title = g["object"]["title"][0] 
             elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
@@ -429,80 +388,45 @@ class Provider < ActiveRecord::Base
             else
               title = "No Title Found"
             end
-
-            tmp_array << title
             img_url_path = g["object"]['europeanaAggregation']['edmPreview']
             if img_url_path.nil?
               img_url_path = "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
-            end
-            tmp_array << img_url_path
-            tmp_array << data_element[3].to_i
-            tmp_array << "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
-            tmp_array << data_element[2].to_i
-            tmp_array << data_element[1].to_i
-            top_ten_digital_objects << tmp_array
+            end            
+            p_path = "#{base_title_url}#{g["object"]['europeanaAggregation']['about'].split("/")[3]}/#{g["object"]['europeanaAggregation']['about'].split("/")[4]}.html"
+            obj_key = "#{quarter}<__>#{year}<__>#{title}<__>#{provider_id}"
+            if !ten_records_arr[obj_key]
+              ten_records_arr[obj_key] = {"title" => title, "img_url_path" => img_url_path, "views" => views, "page_path" => p_path, "quarter" => quarter, "year" =>  year, "counter" => 1, "provider_id" => provider_id}
+              skip_value[skip_val] = skip_value[skip_val] + 1
+            else
+              ctr = ten_records_arr[obj_key]["counter"]
+              if ctr < 10
+                ten_records_arr[obj_key]["views"] = ten_records_arr[obj_key]["views"] + views
+              end            
+            end          
           end
-        end
-      end    
-    end
-
-    ssssss
-    for l_year in 2010..Date.today.year
-      to_quarter = 4
-      if l_year == Date.today.year
-        to_quarter  = ((((Date.today.at_beginning_of_month - 1).month - 1) / 3) + 1)
+        end        
       end
-
-      for l_quarter in 1..to_quarter
-        qq_s = quarter_hash["q#{l_quarter}"][0]
-        qq_e = quarter_hash["q#{l_quarter}"][1]
-        ga_start_date = "#{l_year}-#{qq_s}"
-        ga_end_date   = "#{l_year}-#{qq_e}"
-        provider_ids.each do |provider_id|
-          ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-          g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
-          
-          data = g['rows']
-          next if data.nil?                 
-          puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-        end
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+      
+      ten_records_arr.each do |key, value|
+        values  = key.split("<__>")
+        quarter = values[0]
+        year    = values[1]
+        title   = value["title"] || ""
+        img_url = value["img_url_path"] || ""
+        size    = value["views"] || 0
+        title_url = value["page_path"] || ""                        
+        top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
-      puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     end
-
-    top_ten_digital_objects_title =  top_ten_digital_objects.shift
-    top_ten_digital_objects = top_ten_digital_objects.sort_by{|k| -k[2]}
-    final_top_ten_digital_objects = []
-    final_top_ten_digital_objects2 = {}
-    top_ten_digital_objects.each do |k|        
-      if !final_top_ten_digital_objects2[k[3]].present?
-        final_top_ten_digital_objects2[k[3]] = k
-      else
-        final_top_ten_digital_objects2[k[3]][2] = final_top_ten_digital_objects2[k[3]][2].to_i + k[2].to_i
-      end        
-    end
-    final_top_ten_digital_objects2.each do |tkey, tvalue|
-      final_top_ten_digital_objects << tvalue  
-    end
-    final_top_ten_digital_objects = final_top_ten_digital_objects.sort_by{|k| -k[2]}
-    top_ten_digital_objects_quarterly = []
-    for year in 2010..Date.today.year
-      for quarter in 1..4
-        final_top_ten_digital_objects.select{|k| k[4] == "#{year}".to_i and k[5] == "q#{quarter}"}[0..9].each {|p| top_ten_digital_objects_quarterly << p}
-      end
-      puts top_ten_digital_objects_quarterly.count
-    end
-    top_ten_digital_objects_quarterly.unshift(top_ten_digital_objects_title)
-    top_ten_digital_objects_quarterly.count
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects_quarterly.to_s )
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects_quarterly.to_s})
+      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
     end
+    
     # params[:top_ten_digital_objects] = data_filz.slug
     # params[:wiki_name] = args[:wiki_name]
   end
