@@ -63,7 +63,9 @@
 .row
   .col-sm-12
     %h4= @template["top_25_countries_title"]
-    =@template["top_25_countries_description"]
+    =@template["top_25_countries_description"]    
+    %p
+      #quarter-filter    
     #top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "width: 100%; height: 400px;"}    
     /%img{src: "images/top_25_countries.png"}
 .row
@@ -71,13 +73,18 @@
     %h4= @template["top_10_digital_objects_title"]
     =@template["top_10_digital_objects_description"]
     %br
-    %img{src: "images/top_10_digital_objects.png"}
+    #top-viewed-items-europena{:"data-src" =>"#{@selected_article}-top-10-digital-objects" }
+    /%img{src: "images/top_10_digital_objects.png"}    
 -if !@provider.text_at_bottom.nil?
   .row
     .col-sm-12
       %strong
         %p= @provider.text_at_bottom
 
+-quarter = "q1"
+-quarter = "q2" if Date.today.month.between?(4,6)
+-quarter = "q3" if Date.today.month.between?(7,9)
+-quarter = "q4" if Date.today.month.between?(10,12)
 
 // Click filter to change chart as per year
 // add class name filter-data-chart
@@ -86,6 +93,7 @@
 / });  
 
 :javascript
+  
   $(document).ready(function(){
     $(".filter-data-chart").click(function(){
       $("#page_view_click_chart").html("");
@@ -95,4 +103,22 @@
         addCustomColumnGroupChart("#page_view_click_chart", vdata);      
      });
     })
+
+    var quarter = "#{quarter}";
+    var html_template = "";
+    for(var i = 1; i <=4; i++) {
+      var iclass = "";
+      var cc = "q"+i;
+      if (cc == quarter) iclass ="selected";
+
+      html_template += "<a href='q"+i+"' class='filter-quarter-data "+iclass+"' >Q"+i+"</a>";
+    }
+    $("#quarter-filter").html(html_template);
+
+    $(".filter-quarter-data").click(function(e) {
+      $(".filter-quarter-data").removeClass("selected");
+      $(this).addClass("selected");
+      e.preventDefault();
+    });
+
   }) 
