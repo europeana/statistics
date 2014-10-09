@@ -22,11 +22,11 @@ class Provider < ActiveRecord::Base
     # provider_name_slug = URI.escape(provider_name)
     # provider_type = args[:provider_type]
 
-    provider_name = "Rijksmuseum"
-    provider_ids = "90402".split(" ")
+    provider_name = "Netherlands Institute for Sound and Vision"
+    provider_ids = "09209 2021601 2022102 2021610".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
-
+    
     #GA Authentication
     ga_client_id = "79004200365-im8ha2tnhhq01j2qr0d4i7dodhctqaua.apps.googleusercontent.com"
     ga_client_secret = "rBi6Aqu1x9o4gBj7ByydxeK7"
@@ -417,7 +417,7 @@ class Provider < ActiveRecord::Base
         title_url = value["page_path"] || ""                        
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
-    end
+    end    
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first

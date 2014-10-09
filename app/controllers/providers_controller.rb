@@ -3,8 +3,8 @@ class ProvidersController < ApplicationController
   # GET /providers.json
   before_filter :authenticate_user!
   def index
-    # Provider.testing
-    # sssss
+    Provider.testing
+    sssss
     @providers = Provider.all
     respond_to do |format|
       format.html # index.html.erb

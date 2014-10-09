@@ -119,7 +119,6 @@
       end
     end
 
-
     page_view_aggr.each do |px, y|
       final_value = {}
       x = px.split("<__>")
