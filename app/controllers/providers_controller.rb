@@ -5,13 +5,13 @@ class ProvidersController < ApplicationController
   def index
     # Provider.testing
     # sss
-    render json: Provider.testcsv
+    #render json: Provider.testcsv
     # sssss
-    # @providers = Provider.all
-    # respond_to do |format|
-    #   format.html # index.html.erb
-    #   format.json { render json: @providers }
-    # end
+    @providers = Provider.all
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @providers }
+    end
   end
 
   # GET /providers/1
