@@ -3,14 +3,15 @@ class ProvidersController < ApplicationController
   # GET /providers.json
   before_filter :authenticate_user!
   def index
-    #Provider.testing
-    #Provider.testcsv
-    #sssss
-    @providers = Provider.all
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @providers }
-    end
+    # Provider.testing
+    # sss
+    render json: Provider.testcsv
+    # sssss
+    # @providers = Provider.all
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.json { render json: @providers }
+    # end
   end
 
   # GET /providers/1

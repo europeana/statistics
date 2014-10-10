@@ -133,11 +133,11 @@
     page_view_data_quarterly = {}
     page_view_data.each do |data|
       quarter = "Q1"
-      if data['month'].to_i > 3 and data['month'].to_i < 7
+      if data['month'].to_i >= 3 and data['month'].to_i <= 7
         quarter = "Q2"
-      elsif data['month'].to_i > 6 and data['month'].to_i < 10
+      elsif data['month'].to_i >= 6 and data['month'].to_i <= 10
        quarter = "Q3"           
-      elsif data['month'].to_i > 9 and data['month'].to_i < 13
+      elsif data['month'].to_i >= 9 and data['month'].to_i <= 12
        quarter = "Q4"           
       end
 
@@ -404,7 +404,8 @@
         title   = value["title"] || ""
         img_url = value["img_url_path"] || ""
         size    = value["views"] || 0
-        title_url = value["page_path"] || ""                        
+        title_url = value["page_path"] || ""
+        title   = title.gsub(","," ")
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
     end

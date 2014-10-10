@@ -16,7 +16,7 @@ class Data::Filz < ActiveRecord::Base
 
   #VALIDATIONS
   validate :file_file_name, presence: true, uniqueness: true, length: {minimum: 2}
-  validates :content, length: {minimum: 5, message: "is too short (minimum is 5 rows)"}, allow_blank: true
+  #validates :content, length: {minimum: 5, message: "is too short (minimum is 5 rows)"}, allow_blank: true
 
   #CALLBACKS
   before_save :before_save_set

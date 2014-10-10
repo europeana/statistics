@@ -11,10 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141008112646) do
+ActiveRecord::Schema.define(:version => 20141009073508) do
 
 # Could not dump table "cms_articles" because of following StandardError
-#   Unknown type 'hstore' for column 'nested_pages'
+#   Unknown type 'json' for column 'nested_pages'
 
   create_table "cms_images", :force => true do |t|
     t.string   "slug"

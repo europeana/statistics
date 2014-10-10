@@ -22,10 +22,13 @@ class Provider < ActiveRecord::Base
     # provider_name_slug = URI.escape(provider_name)
     # provider_type = args[:provider_type]
 
-    provider_name = "Netherlands Institute for Sound and Vision"
-    provider_ids = "09209 2021601 2022102 2021610".split(" ")
+    # provider_name = "Netherlands Institute for Sound and Vision"
+    # provider_ids = "09209 2021601 2022102 2021610".split(" ")
+    provider_name = "The Wellcome Library"
+    provider_ids = "9200105".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
+
     
     #GA Authentication
     ga_client_id = "79004200365-im8ha2tnhhq01j2qr0d4i7dodhctqaua.apps.googleusercontent.com"
@@ -418,7 +421,7 @@ class Provider < ActiveRecord::Base
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
     end    
-
+    sssssssssssssssss
 
 
     file_name = provider_name + " Top 10 Digital Objects"
@@ -429,6 +432,7 @@ class Provider < ActiveRecord::Base
       Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
     end
     
+
     # params[:top_ten_digital_objects] = data_filz.slug
     # params[:wiki_name] = args[:wiki_name]
   end
@@ -456,23 +460,20 @@ class Provider < ActiveRecord::Base
       size    = h["size"].to_i
 
       key = "#{year}<__>#{quarter}"
-      uniq_data[key] = {} if !uniq_data[key]
-            
+      uniq_data[key] = {"count" => 1} if !uniq_data[key]
+      count = uniq_data[key]["count"]      
+      
+      next if count >= 10      
       if !uniq_data[key][title]
-        uniq_data[key]["count"] = 1
         uniq_data[key][title]   = {"data" => h, "size" => size}
-      else
+      else        
         uniq_data[key]["count"] = count + 1
-        sss
-        count = uniq_data[key]["count"]
-        if count < 10          
-          uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size
-        end
+        uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
       end
     end
-
-    puts uniq_data.to_json    
-    ssss
+    uniq_data
+    # puts uniq_data.to_json    
+    # ssss
     
 
   end
