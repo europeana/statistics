@@ -72,7 +72,7 @@
     page_country_data = []
      
     #, max_results: 999999999
-    ga_start_date  = '2014-01-01'
+    ga_start_date  = '2005-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
