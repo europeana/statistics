@@ -56,7 +56,7 @@
         .col-sm-2
           = f.label :text_at_top
         .col-sm-4
-          = f.text_field :text_at_top,placeholder: "Text which is to be displayed at the Top of the article"
+          = f.text_area :text_at_top,placeholder: "Text which is to be displayed at the Top of the article",rows: 4,cols: 80
       .clearfix
       .row
         .field
@@ -64,7 +64,7 @@
           .col-sm-2
             = f.label :text_at_bottom,style: "margin-left:8px"
           .col-sm-4 
-            = f.text_field :text_at_bottom,placeholder: "Text which is to be displayed at the bottom of the article"
+            = f.text_area :text_at_bottom,placeholder: "Text which is to be displayed at the bottom of the article",rows: 4,cols: 80
         .clearfix
       .field
         .col-sm-3
