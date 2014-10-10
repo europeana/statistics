@@ -79,9 +79,8 @@
     ga_metrics     = "ga:pageviews"
 
     provider_ids.each do |provider_id|
-      ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"        
+      ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
-      puts "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}"
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
@@ -102,7 +101,7 @@
     ga_metrics    = "ga:totalEvents"
 
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id};ga:eventCategory=~Redirect"
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/;ga:eventCategory=~Redirect"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
@@ -133,14 +132,11 @@
     # problem while merging data
     page_view_data_quarterly = {}
     page_view_data.each do |data|
+      month = data["month"].to_i
       quarter = "Q1"
-      if data['month'].to_i >= 3 and data['month'].to_i <= 7
-        quarter = "Q2"
-      elsif data['month'].to_i >= 6 and data['month'].to_i <= 10
-       quarter = "Q3"           
-      elsif data['month'].to_i >= 9 and data['month'].to_i <= 12
-       quarter = "Q4"           
-      end
+      quarter = "Q2" if month.between?(4,6)
+      quarter = "Q3" if month.between?(7,9)
+      quarter = "Q4" if month.between?(10,12)
 
       if data['pageviews'].to_i > 0 || data['events'].to_i > 0
         quarter1 = "#{data['year']}<__>Pageviews"
@@ -410,6 +406,54 @@
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
     end
+
+    hash_data = []
+    headers = top_ten_digital_objects.shift
+    top_ten_digital_objects.each do |d|
+      tmp_arr = {}
+      headers.each_with_index do |h,i|
+        tmp_arr[h] = d[i]
+      end
+      hash_data << tmp_arr
+    end
+
+    uniq_data = {}
+    hash_data.each do |h|
+      title   = h["title"]
+      year    = h["year"]
+      quarter = h["quarter"]
+      size    = h["size"].to_i
+
+      key = "#{year}<__>#{quarter}"
+      uniq_data[key] = {"count" => 1} if !uniq_data[key]
+      count = uniq_data[key]["count"]      
+      
+      next if count >= 10      
+      if !uniq_data[key][title]
+        uniq_data[key][title]   = {"data" => h, "size" => size}
+      else        
+        uniq_data[key]["count"] = count + 1
+        uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
+      end
+    end
+    
+    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    count = 0
+    uniq_data.each do |k,u|
+      keys = u.keys
+      keys.shift
+      keys.each do |key|
+        d_data = u[key]["data"]
+        title = d_data["title"]
+        image_url = d_data["image_url"]
+        size =  d_data["size"].to_i
+        title_url = d_data["title_url"]
+        year = d_data["year"].to_i
+        quarter = d_data["quarter"] 
+        format_data << [title, image_url, size, title_url, year, quarter]      
+      end
+    end
+    top_ten_digital_objects = format_data    
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first

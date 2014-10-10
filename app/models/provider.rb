@@ -24,8 +24,8 @@ class Provider < ActiveRecord::Base
 
     # provider_name = "Netherlands Institute for Sound and Vision"
     # provider_ids = "09209 2021601 2022102 2021610".split(" ")
-    provider_name = "The Wellcome Library"
-    provider_ids = "9200105".split(" ")
+    provider_name = "Durham county council"
+    provider_ids = "2022316".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
 
@@ -35,7 +35,6 @@ class Provider < ActiveRecord::Base
     ga_client_secret = "rBi6Aqu1x9o4gBj7ByydxeK7"
     ga_scope = "https://www.googleapis.com/auth/analytics"
     ga_refresh_token = "1/R96LIdJ7mepE1WVdhi9WtPxZI9JTh2FmIzYcrTaGRnQ"
-    ga_ids         = "25899454"
 
     get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
     access_token = JSON.parse(get_access_token.to_json)['access_token']    
@@ -47,20 +46,18 @@ class Provider < ActiveRecord::Base
     page_event_data = []
     page_country_aggr = {}
     page_country_data = []
-    
-        
-=begin
-      
-
+     
     #, max_results: 999999999
-    ga_start_date  = '2005-01-01'
-    ga_end_date    = Date.today.strftime("%Y-%m-%d")
+    # ga_start_date  = '2005-01-01'
+    # ga_end_date    = Date.today.strftime("%Y-%m-%d")
+    ga_start_date  = '2012-01-01'
+    ga_end_date    = '2014-10-10'
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
-    ga_metrics     = "ga:pageviews"
+    ga_metrics     = "ga:pageViews"
 
     provider_ids.each do |provider_id|
-      ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"        
+      ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
@@ -74,15 +71,15 @@ class Provider < ActiveRecord::Base
         end      
       end
     end
+    sss
 
     ##################################################################  
     #           For events                                           #
     ##################################################################  
     ga_dimension  = "ga:month,ga:year"
     ga_metrics    = "ga:totalEvents"
-
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id};ga:eventCategory=~Redirect"
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/;ga:eventCategory=~Redirect"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
@@ -110,17 +107,15 @@ class Provider < ActiveRecord::Base
       end
       page_view_data << final_value
     end
-
+    
+    # problem while merging data
     page_view_data_quarterly = {}
     page_view_data.each do |data|
+      month = data["month"].to_i
       quarter = "Q1"
-      if data['month'].to_i > 3 and data['month'].to_i < 7
-        quarter = "Q2"
-      elsif data['month'].to_i > 6 and data['month'].to_i < 10
-       quarter = "Q3"           
-      elsif data['month'].to_i > 9 and data['month'].to_i < 13
-       quarter = "Q4"           
-      end
+      quarter = "Q2" if month.between?(4,6)
+      quarter = "Q3" if month.between?(7,9)
+      quarter = "Q4" if month.between?(10,12)
 
       if data['pageviews'].to_i > 0 || data['events'].to_i > 0
         quarter1 = "#{data['year']}<__>Pageviews"
@@ -142,7 +137,7 @@ class Provider < ActiveRecord::Base
       end
     end    
     
-    page_view_data_arr2 = [["Quarter", "Q1", "Q2", "Q3", "Q4","Label", "Size"]]
+    page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
     page_view_data_quarterly.each do |q_key, q_value|
       qx_value = q_key.split("<__>")
       year  = qx_value[0]
@@ -152,7 +147,7 @@ class Provider < ActiveRecord::Base
       itmp  << year.to_i
       page_view_data_arr2 << itmp
     end
-
+    sss
     # Adding to data_filz           
     file_name = provider_name + " Traffic"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -161,7 +156,7 @@ class Provider < ActiveRecord::Base
     else
       Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
     end
-
+        ssss
     #adding to viz
     viz_viz = Viz::Viz.where(title: file_name).first    
     if viz_viz.nil?
@@ -169,9 +164,6 @@ class Provider < ActiveRecord::Base
     else
       Viz::Viz.find(viz_viz.id).update_attributes({chart: "Grouped Column Chart - Filter", data_filz_id: data_filz.id})
     end
-
-    #params = {name: provider_name, pageviews: data_filz.slug, id: provider_id }
-    params = {name: provider_name, pageviews: data_filz.slug}
 
     #Get Media type    
     api_provider_type = "DATA_PROVIDER"
@@ -198,16 +190,6 @@ class Provider < ActiveRecord::Base
       else
         Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_s})
       end
-
-      #adding to viz
-      viz_viz = Viz::Viz.where(title: file_name).first
-      viz_map = {:"Type" => "X", :"Size" => "Y"}.to_json
-      if viz_viz.nil?
-        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json )
-      else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json })
-      end
-      params[:media_types] = data_filz.slug
     end
 
     #Get Reusable        
@@ -231,19 +213,7 @@ class Provider < ActiveRecord::Base
       else
         Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
       end
-
-      #adding to viz
-      viz_viz = Viz::Viz.where(title: file_name).first
-      viz_map = {:"Type" => "Dimension", :"Size" => "Size"}.to_json
-      if viz_viz.nil?
-        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json )
-      else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json })
-      end
-      params[:reusable] = data_filz.slug
     end
-
-#=end # comment end
 
     # For top 25 countries
     ga_dimension  = "ga:month,ga:year,ga:country"
@@ -305,10 +275,10 @@ class Provider < ActiveRecord::Base
         code = ""
         continent = ""
       end      
-      page_country_data_arr << [kvalue['quarter'], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+      page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
     end
 
-    # Now add or update to top 20 countries table      
+    # Now add or update to top 25 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
@@ -318,17 +288,10 @@ class Provider < ActiveRecord::Base
     end
 
     # Now adding to viz
-    viz_viz = Viz::Viz.where(title: file_name).first
-    if viz_viz.nil?
-      viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
-    else
-      Viz::Viz.find(viz_viz.id).update_attributes({chart: "Maps", data_filz_id: data_filz.id})
-    end
-    params[:top_countries] = data_filz.slug
-#end # comment end
-=end
-    #Get Top Ten Digital Objects
+    Viz::Viz.where(title: file_name).destroy_all
+    viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
 
+    #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
@@ -417,12 +380,59 @@ class Provider < ActiveRecord::Base
         title   = value["title"] || ""
         img_url = value["img_url_path"] || ""
         size    = value["views"] || 0
-        title_url = value["page_path"] || ""                        
+        title_url = value["page_path"] || ""
+        title   = title.gsub(","," ")
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
-    end    
-    sssssssssssssssss
+    end
 
+    hash_data = []
+    headers = top_ten_digital_objects.shift
+    top_ten_digital_objects.each do |d|
+      tmp_arr = {}
+      headers.each_with_index do |h,i|
+        tmp_arr[h] = d[i]
+      end
+      hash_data << tmp_arr
+    end
+
+    uniq_data = {}
+    hash_data.each do |h|
+      title   = h["title"]
+      year    = h["year"]
+      quarter = h["quarter"]
+      size    = h["size"].to_i
+
+      key = "#{year}<__>#{quarter}"
+      uniq_data[key] = {"count" => 1} if !uniq_data[key]
+      count = uniq_data[key]["count"]      
+      
+      next if count >= 10      
+      if !uniq_data[key][title]
+        uniq_data[key][title]   = {"data" => h, "size" => size}
+      else        
+        uniq_data[key]["count"] = count + 1
+        uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
+      end
+    end
+    
+    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    count = 0
+    uniq_data.each do |k,u|
+      keys = u.keys
+      keys.shift
+      keys.each do |key|
+        d_data = u[key]["data"]
+        title = d_data["title"]
+        image_url = d_data["image_url"]
+        size =  d_data["size"].to_i
+        title_url = d_data["title_url"]
+        year = d_data["year"].to_i
+        quarter = d_data["quarter"] 
+        format_data << [title, image_url, size, title_url, year, quarter]      
+      end
+    end
+    top_ten_digital_objects = format_data    
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -430,8 +440,7 @@ class Provider < ActiveRecord::Base
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
     else
       Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
-    end
-    
+    end    
 
     # params[:top_ten_digital_objects] = data_filz.slug
     # params[:wiki_name] = args[:wiki_name]
@@ -471,7 +480,24 @@ class Provider < ActiveRecord::Base
         uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
       end
     end
-    uniq_data
+    
+    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    count = 0
+    uniq_data.each do |k,u|
+      keys = u.keys
+      keys.shift
+      keys.each do |key|
+        d_data = u[key]["data"]
+        title = d_data["title"]
+        image_url = d_data["image_url"]
+        size =  d_data["size"].to_i
+        title_url = d_data["title_url"]
+        year = d_data["year"].to_i
+        quarter = d_data["quarter"] 
+        format_data << [title, image_url, size, title_url, year, quarter]      
+      end
+    end
+    format_data    
     # puts uniq_data.to_json    
     # ssss
     
