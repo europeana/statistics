@@ -55,7 +55,7 @@
           %a.filter-data-chart{target: "blank",id: "#{year}"}=year
         -else 
           %a.filter-data-chart.selected{target: "blank",id: "#{year}"}=year
-    #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traf  fic", style: "width: 100%; height: 400px;"}
+    #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
     =link_to "Get The Data", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
     / %img{src: "images/views_and_clickthroughs.png"}
     %br
