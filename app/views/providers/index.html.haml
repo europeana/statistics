@@ -36,8 +36,8 @@
                   %p= "<b>Error:</b>(#{provider.error_message})".html_safe
 
             %td= provider.wiki_name
-            %td= provider.requested_at.strftime("%d, %b, %Y - %H:%I:%M") unless provider.requested_at.nil?
-            %td= provider.request_end.strftime("%d, %b, %Y - %H:%I:%M") unless provider.request_end.nil?
+            %td= time_ago_in_words(provider.requested_at, true)+" ago" unless provider.requested_at.nil?
+            %td= time_ago_in_words(provider.request_end)+" ago" unless provider.request_end.nil?
             -if provider.provider_type == "PR"
               - provider_provider_type = "Provider"
             -else
