@@ -81,6 +81,7 @@
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"        
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      puts "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}"
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
@@ -429,7 +430,6 @@
   desc "Add Data To Article"
   task :article, :params  do |t, args|        
     params    = args[:params]
-    wiki_name = params[:wiki_name]
     name      = params[:name]
     article = Cms::Article.where(title: name).first
     wiki_name = params[:wiki_name]
@@ -439,8 +439,10 @@
       unless wiki_name.blank?
         wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
         wiki_json = JSON.parse(open(wiki_url).read)
-        wiki_context = wiki_json["query"]["pages"].values.shift["extract"][0..300]
-        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'><p>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a><p></div></div></div>"
+        wiki_context = wiki_json["query"]["pages"].values.shift["extract"]
+        length = wiki_context.length > 300? 300 : wiki_context.length
+        wiki_context = wiki_context[0..length].gsub("\n","").gsub("<p></p>","").gsub("</p>","")
+        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a></p></div></div></div>"
       end      
       article = Cms::Article.where(title: name).first
       if article.nil?
