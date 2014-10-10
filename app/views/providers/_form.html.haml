@@ -57,6 +57,9 @@
           = f.label :text_at_top
         .col-sm-4
           = f.text_area :text_at_top,placeholder: "Text which is to be displayed at the Top of the article",rows: 4,cols: 80
+      %br
+      %br
+      %br
       .clearfix
       .row
         .field
@@ -65,19 +68,24 @@
             = f.label :text_at_bottom,style: "margin-left:8px"
           .col-sm-4 
             = f.text_area :text_at_bottom,placeholder: "Text which is to be displayed at the bottom of the article",rows: 4,cols: 80
-        .clearfix
+      %br
+      %br
+      %br
+      .clearfix
       .field
         .col-sm-3
         .col-sm-2
           = f.label :provider_type
         .col-sm-4
           = f.select :provider_type,[["Data Provider","DR"],["Provider","PR"]],{},{class: "btn cstm-btn"}
-      .clearfix
-      .actions.field
-        .col-sm-3
-        .col-sm-6
-          %input{type: "checkbox",id: "run_builder", name: "run_builder"} Do you want to run the Page Builder for this provider?
-          %br
+      %br
+      %br
+      .row
+        .actions.field{style: "margin-top:15px"}
+          .col-sm-3
+          .col-sm-6
+            %input{type: "checkbox",id: "run_builder", name: "run_builder"} Do you want to run the Page Builder for this provider?
+            %br
       .clearfix
       .col-sm-5
       .col-sm-2.field  
