@@ -421,8 +421,54 @@ class Provider < ActiveRecord::Base
         top_ten_digital_objects << [title, img_url, size, title_url, year, quarter]
       end
     end    
-    sssssssssssssssss
 
+    hash_data = []
+    headers = top_ten_digital_objects.shift
+    top_ten_digital_objects.each do |d|
+      tmp_arr = {}
+      headers.each_with_index do |h,i|
+        tmp_arr[h] = d[i]
+      end
+      hash_data << tmp_arr
+    end
+
+    uniq_data = {}
+    hash_data.each do |h|
+      title   = h["title"]
+      year    = h["year"]
+      quarter = h["quarter"]
+      size    = h["size"].to_i
+
+      key = "#{year}<__>#{quarter}"
+      uniq_data[key] = {"count" => 1} if !uniq_data[key]
+      count = uniq_data[key]["count"]      
+      
+      next if count >= 10      
+      if !uniq_data[key][title]
+        uniq_data[key][title]   = {"data" => h, "size" => size}
+      else        
+        uniq_data[key]["count"] = count + 1
+        uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
+      end
+    end
+    
+    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    count = 0
+    uniq_data.each do |k,u|
+      keys = u.keys
+      keys.shift
+      keys.each do |key|
+        d_data = u[key]["data"]
+        title = d_data["title"]
+        image_url = d_data["image_url"]
+        size =  d_data["size"].to_i
+        title_url = d_data["title_url"]
+        year = d_data["year"].to_i
+        quarter = d_data["quarter"] 
+        format_data << [title, image_url, size, title_url, year, quarter]      
+      end
+    end
+    top_ten_digital_objects = format_data    
 
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
