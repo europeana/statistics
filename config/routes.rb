@@ -22,7 +22,7 @@ Pykhub::Application.routes.draw do
   post "/sort/tags", to: "cms_articles#sort", as: "sort_tags"
   get "/all-articles", to: "cms_articles#allArticles", as: "all_articles"
   get "/article/:file_id/:type", to: "cms_articles#publish_or_archieve", as: "pub_arch_article"
-  get "/:parent_article/:nested_article_name/:nested_article", to: "cms_articles#nested_article", as: "nested_article"
+  get "page/:parent_article/:nested_article_name/:nested_article", to: "cms_articles#nested_article", as: "nested_article"
   
   #files
   get "/data", to: "data_filzs#index", as: "data_filzs"

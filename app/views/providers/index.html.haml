@@ -1,7 +1,7 @@
 :css
-  table {
-    table-layout: fixed;
-  }
+  / table {
+  /   table-layout: fixed;
+  / }
 .container
   .row
     %br
@@ -14,8 +14,8 @@
           %th Provider
           %th Name
           %th Wiki Name
-          %th Text at Top
-          %th Text at Bottom
+          %th Last Requested At
+          %th Last Updated At
           %th Provider type
           %th
           %th
@@ -36,8 +36,8 @@
                   %p= "<b>Error:</b>(#{provider.error_message})".html_safe
 
             %td= provider.wiki_name
-            %td= provider.text_at_top
-            %td= provider.text_at_bottom
+            %td= provider.requested_at.strftime("%d, %b, %Y - %H:%I:%M") unless provider.requested_at.nil?
+            %td= provider.request_end.strftime("%d, %b, %Y - %H:%I:%M") unless provider.request_end.nil?
             -if provider.provider_type == "PR"
               - provider_provider_type = "Provider"
             -else
