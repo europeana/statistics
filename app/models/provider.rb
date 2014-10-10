@@ -419,6 +419,8 @@ class Provider < ActiveRecord::Base
       end
     end    
 
+
+
     file_name = provider_name + " Top 10 Digital Objects"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
@@ -429,6 +431,50 @@ class Provider < ActiveRecord::Base
     
     # params[:top_ten_digital_objects] = data_filz.slug
     # params[:wiki_name] = args[:wiki_name]
+  end
+
+  def self.testcsv
+    data = CSV.read("test.csv")
+    hash_data = []
+    head = data.shift
+    headers = []
+    head.each {|d| headers << d.split(":")[0]}
+
+    data.each do |d|
+      tmp_arr = {}
+      headers.each_with_index do |h,i|
+        tmp_arr[h] = d[i]
+      end
+      hash_data << tmp_arr
+    end
+
+    uniq_data = {}
+    hash_data.each do |h|
+      title   = h["title"]
+      year    = h["year"]
+      quarter = h["quarter"]
+      size    = h["size"].to_i
+
+      key = "#{year}<__>#{quarter}"
+      uniq_data[key] = {} if !uniq_data[key]
+            
+      if !uniq_data[key][title]
+        uniq_data[key]["count"] = 1
+        uniq_data[key][title]   = {"data" => h, "size" => size}
+      else
+        uniq_data[key]["count"] = count + 1
+        sss
+        count = uniq_data[key]["count"]
+        if count < 10          
+          uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size
+        end
+      end
+    end
+
+    puts uniq_data.to_json    
+    ssss
+    
+
   end
 
 end
