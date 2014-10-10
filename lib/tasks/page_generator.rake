@@ -100,9 +100,6 @@
     ga_dimension  = "ga:month,ga:year"
     ga_metrics    = "ga:totalEvents"
 
-    ga_dimension  = "ga:month,ga:year"
-    ga_metrics    = "ga:totalEvents"
-
     provider_ids.each do |provider_id|
       ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id};ga:eventCategory=~Redirect"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
