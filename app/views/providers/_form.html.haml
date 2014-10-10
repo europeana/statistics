@@ -35,16 +35,20 @@
         .col-sm-2
           = f.label :name
         .col-sm-4
-          = f.text_field :name, placeholder: "Name of the Provider"
+          = f.text_field :name
       .clearfix
       .field
         .col-sm-3
         .col-sm-2
           = f.label :provider_id
         .col-sm-4
-          = f.text_field :provider_id, placeholder: "Multiple Providers must be seperated by spaces"
+          = f.text_field :provider_id
+          .pull-right
+            %p{style: "color:lightgray;font-size:0.8em"}Multiple Provider IDs must be seperated by spaces
+      %br
+      %br
       .clearfix
-      .field
+      .field{style: "margin-top:5px"}
         .col-sm-3
         .col-sm-2
           = f.label :wiki_name
@@ -54,9 +58,9 @@
       .field
         .col-sm-3
         .col-sm-2
-          = f.label :text_at_top
+          = f.label "text_at_top of the Provider report"
         .col-sm-4
-          = f.text_area :text_at_top,placeholder: "Text which is to be displayed at the Top of the article",rows: 4,cols: 80
+          = f.text_area :text_at_top,rows: 4,cols: 80
       %br
       %br
       %br
@@ -65,9 +69,9 @@
         .field
           .col-sm-3
           .col-sm-2
-            = f.label :text_at_bottom,style: "margin-left:8px"
+            = f.label "text_at_bottom of the Provider report",style: "margin-left:8px"
           .col-sm-4 
-            = f.text_area :text_at_bottom,placeholder: "Text which is to be displayed at the bottom of the article",rows: 4,cols: 80
+            = f.text_area :text_at_bottom,rows: 4,cols: 80
       %br
       %br
       %br

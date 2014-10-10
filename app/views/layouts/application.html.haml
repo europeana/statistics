@@ -48,7 +48,7 @@
 
       - if flash.present?
         - if flash.first.present?
-          .row
+          .row{style: "margin-top:60px"}
             .col-sm-12
               - flash.each do |name, msg|
                 - if name.to_s == "error"
