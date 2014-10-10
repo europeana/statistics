@@ -29,13 +29,13 @@
       %br
       = @template["media_types_description"]
       %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type"}
-      =link_to "Download CSV", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
+      =link_to "Get The Data", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
 
     .col-sm-6
       %h4= @template["reusable_title"]
       =@template["reusable_description"]
       %div{class: "pykih-viz pie-chart",:"data-slug-id" => "#{@selected_article}-reusable",id: "#{@selected_article}-reusable"}
-      =link_to "Download CSV", "/articles/#{@selected_article}-reusable/csv", class: 'pull-right' 
+      =link_to "Get The Data", "/articles/#{@selected_article}-reusable/csv", class: 'pull-right' 
 %br
 %br  
 .row
@@ -55,8 +55,8 @@
           %a.filter-data-chart{target: "blank",id: "#{year}"}=year
         -else 
           %a.filter-data-chart.selected{target: "blank",id: "#{year}"}=year
-    #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
-    =link_to "Download CSV", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
+    #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traf  fic", style: "width: 100%; height: 400px;"}
+    =link_to "Get The Data", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
     / %img{src: "images/views_and_clickthroughs.png"}
     %br
 .row
