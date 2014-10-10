@@ -1,6 +1,6 @@
 class CmsArticlesController < ApplicationController
   
-  before_filter :authenticate_user!, except: [:show, :index]
+  before_filter :authenticate_user!, except: [:show, :index,:nested_pages]
   before_filter :find_objects
   helper_method :sort_column, :sort_direction
 
@@ -48,7 +48,7 @@ class CmsArticlesController < ApplicationController
     if !Data::Filz.where(slug: "#{@selected_article}-traffic").last.nil?
       @all_years = JSON.parse(Data::Filz.where(slug: "#{@selected_article}-traffic").last.content)
       @all_years.shift
-      @all_years = @all_years.collect{|k| k[5]}.uniq.sort{|k| -k}
+      @all_years = @all_years.collect{|k| k[5]}.uniq.sort{|k| k}
     end
     @provider = Provider.where(name: @cms_article.title).first
     gon.width = ""
