@@ -471,7 +471,24 @@ class Provider < ActiveRecord::Base
         uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
       end
     end
-    uniq_data
+    
+    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    count = 0
+    uniq_data.each do |k,u|
+      keys = u.keys
+      keys.shift
+      keys.each do |key|
+        d_data = u[key]["data"]
+        title = d_data["title"]
+        image_url = d_data["image_url"]
+        size =  d_data["size"].to_i
+        title_url = d_data["title_url"]
+        year = d_data["year"].to_i
+        quarter = d_data["quarter"] 
+        format_data << [title, image_url, size, title_url, year, quarter]      
+      end
+    end
+    format_data    
     # puts uniq_data.to_json    
     # ssss
     

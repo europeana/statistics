@@ -72,7 +72,7 @@
     page_country_data = []
      
     #, max_results: 999999999
-    ga_start_date  = '2014-01-01'
+    ga_start_date  = '2005-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
@@ -132,14 +132,11 @@
     # problem while merging data
     page_view_data_quarterly = {}
     page_view_data.each do |data|
+      month = data["month"].to_i
       quarter = "Q1"
-      if data['month'].to_i >= 3 and data['month'].to_i <= 7
-        quarter = "Q2"
-      elsif data['month'].to_i >= 6 and data['month'].to_i <= 10
-       quarter = "Q3"           
-      elsif data['month'].to_i >= 9 and data['month'].to_i <= 12
-       quarter = "Q4"           
-      end
+      quarter = "Q2" if month.between?(4,6)
+      quarter = "Q3" if month.between?(7,9)
+      quarter = "Q4" if month.between?(10,12)
 
       if data['pageviews'].to_i > 0 || data['events'].to_i > 0
         quarter1 = "#{data['year']}<__>Pageviews"
