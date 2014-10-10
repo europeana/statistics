@@ -3,8 +3,8 @@ class ProvidersController < ApplicationController
   # GET /providers.json
   before_filter :authenticate_user!
   def index
-    Provider.testing
-    sss
+    # Provider.testing
+    # sss
     #render json: Provider.testcsv
     # sssss
     @providers = Provider.all
