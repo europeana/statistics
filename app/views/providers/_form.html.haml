@@ -35,36 +35,36 @@
         .col-sm-2
           = f.label :name
         .col-sm-4
-          = f.text_field :name
+          = f.text_field :name, placeholder: "Name of the Provider"
       .clearfix
       .field
         .col-sm-3
         .col-sm-2
           = f.label :provider_id
         .col-sm-4
-          = f.text_field :provider_id
+          = f.text_field :provider_id, placeholder: "Multiple Providers must be seperated by spaces"
       .clearfix
       .field
         .col-sm-3
         .col-sm-2
           = f.label :wiki_name
         .col-sm-4
-          = f.text_field :wiki_name    
+          = f.text_field :wiki_name, placeholder: "Specific Wiki-name of the Provider"   
       .clearfix
       .field
         .col-sm-3
         .col-sm-2
           = f.label :text_at_top
         .col-sm-4
-          = f.text_field :text_at_top
+          = f.text_field :text_at_top,placeholder: "Text which is to be displayed at the Top of the article"
       .clearfix
       .row
         .field
           .col-sm-3
           .col-sm-2
-            = f.label :text_at_bottom
+            = f.label :text_at_bottom,style: "margin-left:8px"
           .col-sm-4 
-            = f.text_field :text_at_bottom
+            = f.text_field :text_at_bottom,placeholder: "Text which is to be displayed at the bottom of the article"
         .clearfix
       .field
         .col-sm-3

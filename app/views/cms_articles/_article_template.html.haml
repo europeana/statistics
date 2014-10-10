@@ -16,8 +16,7 @@
 -if !@provider.text_at_top.nil? 
   .row
     .col-sm-12
-      %strong
-        %p=@provider.text_at_top
+      %p=@provider.text_at_top
 .row
   .col-sm-12
     %h3= @template["collection_in_europeana_title"]
@@ -78,8 +77,7 @@
 -if !@provider.text_at_bottom.nil?
   .row
     .col-sm-12
-      %strong
-        %p= @provider.text_at_bottom
+      %p= @provider.text_at_bottom
 
 -quarter = "q1"
 -quarter = "q2" if Date.today.month.between?(4,6)
