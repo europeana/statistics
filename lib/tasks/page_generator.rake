@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
+    
     begin      
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -75,7 +75,7 @@
     page_country_aggr = {}
     page_country_data = []
      
-    #, max_results: 999999999
+    # #, max_results: 999999999
     ga_start_date  = '2005-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
@@ -347,7 +347,6 @@
     Viz::Viz.where(title: file_name).destroy_all
     viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
 
-
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath,ga:month,ga:year"    
@@ -398,16 +397,14 @@
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
           if g["success"]
+            if g["object"]["proxies"][0]['dcTitle']
+            end
             if g["object"]["title"]
               title = g["object"]["title"][0] 
-            elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-              title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["def"]
-              title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-              title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["de"]
-              title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']
+              g["object"]["proxies"][0]['dcTitle'].each do |x,c|
+                title = c
+              end
             else
               title = "No Title Found"
             end
