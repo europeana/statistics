@@ -45,11 +45,8 @@ class CmsArticlesController < ApplicationController
     @selected_article = @cms_article.slug
     @setting = Setting.first
     @template = JSON.parse(@setting.page_builder_config)
-    if !Data::Filz.where(slug: "#{@selected_article}-traffic").last.nil?
-      @all_years = JSON.parse(Data::Filz.where(slug: "#{@selected_article}-traffic").last.content)
-      @all_years.shift
-      @all_years = @all_years.collect{|k| k[5]}.uniq.sort_by{|k| k}
-    end
+    @all_years = []
+    2012.upto(Date.today.year) { |i| @all_years << i }
     @provider = Provider.where(name: @cms_article.title).first
     gon.width = ""
     gon.height = ""

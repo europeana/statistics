@@ -24,8 +24,8 @@ class Provider < ActiveRecord::Base
 
     # provider_name = "Netherlands Institute for Sound and Vision"
     # provider_ids = "09209 2021601 2022102 2021610".split(" ")
-    provider_name = "Durham county council"
-    provider_ids = "2022316".split(" ")
+    provider_name = "The British Library"
+    provider_ids = "920025".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
 
@@ -59,19 +59,22 @@ class Provider < ActiveRecord::Base
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      next if tmp_data["totalsForAllResults"]["ga:pageViews"].to_i <= 0
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
         custom_regex = "#{d[0]}<__>#{d[1]}"
-        if !page_view_aggr[custom_regex]
-          page_view_aggr[custom_regex] = d[2].to_i
-        else  
-          page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
-        end      
+        if d[2].to_i > 0
+          if !page_view_aggr[custom_regex]
+            page_view_aggr[custom_regex] = d[2].to_i
+          else  
+            page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
+          end      
+        end
       end
     end
-    sss
+    
 
     ##################################################################  
     #           For events                                           #
@@ -81,20 +84,22 @@ class Provider < ActiveRecord::Base
     provider_ids.each do |provider_id|
       ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/;ga:eventCategory=~Redirect"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      next if tmp_data["totalsForAllResults"]["ga:totalEvents"].to_i <= 0      
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
         custom_regex = "#{d[0]}<__>#{d[1]}"
-        if !page_event_aggr[custom_regex]
-          page_event_aggr[custom_regex] = d[2].to_i
-        else  
-          page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+        if d[2].to_i > 0
+          if !page_event_aggr[custom_regex]
+            page_event_aggr[custom_regex] = d[2].to_i
+          else  
+            page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+          end
         end
       end
     end
-
-
+    
     page_view_aggr.each do |px, y|
       final_value = {}
       x = px.split("<__>")
@@ -137,17 +142,20 @@ class Provider < ActiveRecord::Base
       end
     end    
     
-    page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
-    page_view_data_quarterly.each do |q_key, q_value|
-      qx_value = q_key.split("<__>")
-      year  = qx_value[0]
-      ttype = qx_value[1]
-      itmp  = [ttype]
-      q_value.each {|qv,vv| itmp << vv}
-      itmp  << year.to_i
-      page_view_data_arr2 << itmp
+    if page_view_data_quarterly.count > 0    
+      page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
+      page_view_data_quarterly.each do |q_key, q_value|
+        qx_value = q_key.split("<__>")
+        year  = qx_value[0]
+        ttype = qx_value[1]
+        itmp  = [ttype]
+        q_value.each {|qv,vv| itmp << vv}
+        itmp  << year.to_i
+        page_view_data_arr2 << itmp
+      end
+    else
+      page_view_data_arr2 = "[]"
     end
-    sss
     # Adding to data_filz           
     file_name = provider_name + " Traffic"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -156,7 +164,7 @@ class Provider < ActiveRecord::Base
     else
       Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
     end
-        ssss
+
     #adding to viz
     viz_viz = Viz::Viz.where(title: file_name).first    
     if viz_viz.nil?
@@ -235,10 +243,10 @@ class Provider < ActiveRecord::Base
 
         counter = 1
         provider_ids.each do |provider_id|
-          ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+          ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
           tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
           tmp_data = JSON.parse(tmp_data.to_json)["rows"]
-          next if tmp_data.nil?
+          next if tmp_data.nil?          
           page_country_aggr = {}
           tmp_data.each do |d|
             #custom_regex = "#{provider_id}"
@@ -263,19 +271,23 @@ class Provider < ActiveRecord::Base
         end # End of provider
       end # End of Quarter
     end # End of Year
-
-    page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
-    page_country_data.each do |kvalue|
-      country = kvalue['country']
-      iso_code = IsoCode.where(country: country).first
-      if !iso_code.nil?        
-        code = iso_code.code
-        continent = iso_code.continent
-      else
-        code = ""
-        continent = ""
-      end      
-      page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+    
+    if page_country_data.count > 0
+      page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      page_country_data.each do |kvalue|
+        country = kvalue['country']
+        iso_code = IsoCode.where(country: country).first
+        if !iso_code.nil?        
+          code = iso_code.code
+          continent = iso_code.continent
+        else
+          code = ""
+          continent = ""
+        end      
+        page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+      end
+    else
+      page_country_data_arr = []
     end
 
     # Now add or update to top 25 countries table      

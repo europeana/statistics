@@ -24,13 +24,17 @@
       provider.save!      
     end
 
-    begin
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
+    begin      
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
       provider.save!      
     rescue Exception => e
+      puts "==============================="
+      puts "oppssss something went wrong"
+      puts e.to_s
+      puts "==============================="
       provider.error_message = e.to_s
       provider.request_end = Time.now
       provider.is_processed = nil
@@ -78,44 +82,51 @@
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
 
+
     provider_ids.each do |provider_id|
-      ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
+      ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      next if tmp_data["totalsForAllResults"]["ga:pageViews"].to_i <= 0
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
         custom_regex = "#{d[0]}<__>#{d[1]}"
-        if !page_view_aggr[custom_regex]
-          page_view_aggr[custom_regex] = d[2].to_i
-        else  
-          page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
-        end      
+        if d[2].to_i > 0
+          if !page_view_aggr[custom_regex]
+            page_view_aggr[custom_regex] = d[2].to_i
+          else  
+            page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d[2].to_i
+          end      
+        end
       end
     end
+    
 
     ##################################################################  
     #           For events                                           #
     ##################################################################  
     ga_dimension  = "ga:month,ga:year"
     ga_metrics    = "ga:totalEvents"
-
     provider_ids.each do |provider_id|
       ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/;ga:eventCategory=~Redirect"
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
+      next if tmp_data["totalsForAllResults"]["ga:totalEvents"].to_i <= 0      
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
         #custom_regex += "<__>#{d[0]}"
         custom_regex = "#{d[0]}<__>#{d[1]}"
-        if !page_event_aggr[custom_regex]
-          page_event_aggr[custom_regex] = d[2].to_i
-        else  
-          page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+        if d[2].to_i > 0
+          if !page_event_aggr[custom_regex]
+            page_event_aggr[custom_regex] = d[2].to_i
+          else  
+            page_event_aggr[custom_regex] = page_event_aggr[custom_regex] + d[2].to_i
+          end
         end
       end
     end
-
+    
     page_view_aggr.each do |px, y|
       final_value = {}
       x = px.split("<__>")
@@ -128,7 +139,7 @@
       end
       page_view_data << final_value
     end
-
+    
     # problem while merging data
     page_view_data_quarterly = {}
     page_view_data.each do |data|
@@ -158,17 +169,20 @@
       end
     end    
     
-    page_view_data_arr2 = [["Quarter", "Q1", "Q2", "Q3", "Q4","Label", "Size"]]
-    page_view_data_quarterly.each do |q_key, q_value|
-      qx_value = q_key.split("<__>")
-      year  = qx_value[0]
-      ttype = qx_value[1]
-      itmp  = [ttype]
-      q_value.each {|qv,vv| itmp << vv}
-      itmp  << year.to_i
-      page_view_data_arr2 << itmp
+    if page_view_data_quarterly.count > 0    
+      page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
+      page_view_data_quarterly.each do |q_key, q_value|
+        qx_value = q_key.split("<__>")
+        year  = qx_value[0]
+        ttype = qx_value[1]
+        itmp  = [ttype]
+        q_value.each {|qv,vv| itmp << vv}
+        itmp  << year.to_i
+        page_view_data_arr2 << itmp
+      end
+    else
+      page_view_data_arr2 = nil
     end
-
     # Adding to data_filz           
     file_name = provider_name + " Traffic"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -202,15 +216,23 @@
       values_data = media_type_data.to_a
       values_data.unshift(['Type', 'Size'])
       media_type_data_formatted =  values_data
-
+      
       # Now add or update to Media type table      
       file_name = provider_name + " Media Type"
-      data_filz = Data::Filz.where(file_file_name: file_name).first
+      data_filz = Data::Filz.where(file_file_name: file_name).first      
       if data_filz.nil?
-        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: media_type_data_formatted.to_s )
+        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: media_type_data_formatted.to_json )
       else
-        Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_s})
+        Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_json})
       end
+
+      #adding to viz
+      viz_viz = Viz::Viz.where(title: file_name).first      
+      if viz_viz.nil?
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", mapped_output: media_type_data_formatted.to_json )
+      else
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", mapped_output: media_type_data_formatted.to_json, data_filz_id: data_filz.id })
+      end 
     end
 
     #Get Reusable        
@@ -234,6 +256,14 @@
       else
         Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
       end
+
+      viz_viz = Viz::Viz.where(title: file_name).first      
+      if viz_viz.nil?
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json )
+      else
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json, data_filz_id: data_filz.id })
+      end
+
     end
 
     # For top 25 countries
@@ -256,10 +286,10 @@
 
         counter = 1
         provider_ids.each do |provider_id|
-          ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+          ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
           tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
           tmp_data = JSON.parse(tmp_data.to_json)["rows"]
-          next if tmp_data.nil?
+          next if tmp_data.nil?          
           page_country_aggr = {}
           tmp_data.each do |d|
             #custom_regex = "#{provider_id}"
@@ -284,33 +314,39 @@
         end # End of provider
       end # End of Quarter
     end # End of Year
-
-    page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
-    page_country_data.each do |kvalue|
-      country = kvalue['country']
-      iso_code = IsoCode.where(country: country).first
-      if !iso_code.nil?        
-        code = iso_code.code
-        continent = iso_code.continent
-      else
-        code = ""
-        continent = ""
-      end      
-      page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+    
+    if page_country_data.count > 0
+      page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      page_country_data.each do |kvalue|
+        country = kvalue['country']
+        iso_code = IsoCode.where(country: country).first
+        if !iso_code.nil?        
+          code = iso_code.code
+          continent = iso_code.continent
+        else
+          code = ""
+          continent = ""
+        end      
+        page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+      end
+      page_country_data_arr = page_country_data_arr.to_s
+    else
+      page_country_data_arr = nil
     end
-
+    
     # Now add or update to top 25 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr.to_s )
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr.to_s})
+      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr})
     end
-
+    
     # Now adding to viz
     Viz::Viz.where(title: file_name).destroy_all
     viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
+
 
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"

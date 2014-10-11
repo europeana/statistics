@@ -1,6 +1,7 @@
 class Data::FilzColumn
 
   def self.get_headers(data)
+    return false if data.count <= 0
     headings = data.shift
     stats = []
     headings.size.times do |i|
