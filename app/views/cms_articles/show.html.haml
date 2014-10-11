@@ -46,7 +46,8 @@
         var provider_id = $("#collection-in-europeana-api").attr("provider-id");
         var url = decodeURI("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query="+api_provider_type+"%3a%22"+provider_id+"%22&rows=0")
         $.get(url, function (vdata, status) {
-          if (status == "success") $("#collection-in-europeana-api").html(vdata['totalResults']);
+          var result = vdata['totalResults'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          if (status == "success") $("#collection-in-europeana-api").html(result);
         });
       }
     },500);
