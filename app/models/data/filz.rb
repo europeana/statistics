@@ -503,6 +503,7 @@ class Data::Filz < ActiveRecord::Base
   def before_save_set        
     if self.content.present?
       con = self.content.class.to_s == "String" ? JSON.parse(self.content) : self.content
+      return false if con.count <= 0
       con.delete_if{ |row| row.flatten.compact.empty? }
       new_header = Data::FilzColumn.get_headers(con)
       newa = []

@@ -29,6 +29,8 @@
               -elsif provider.is_processed == nil
                 = provider.name
                 .tag Need to be Processed...
+                -if !provider.error_message.nil? || !provider.error_message.blank?
+                  %p= "<b>Error:</b>(#{provider.error_message})".html_safe                
               -else
                 = provider.name
                 .tag Processing...
