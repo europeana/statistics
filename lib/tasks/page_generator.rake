@@ -24,18 +24,18 @@
       provider.save!      
     end
 
-    #begin
+    begin
       Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
       provider.save!      
-    # rescue Exception => e
-    #   provider.error_message = e.to_s
-    #   provider.request_end = Time.now
-    #   provider.is_processed = nil
-    #   provider.save!            
-    # end
+    rescue Exception => e
+      provider.error_message = e.to_s
+      provider.request_end = Time.now
+      provider.is_processed = nil
+      provider.save!            
+    end
 
   end
 
