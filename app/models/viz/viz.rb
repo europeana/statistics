@@ -251,7 +251,7 @@ class Viz::Viz < ActiveRecord::Base
   
   def before_save_set
     if self.map.present?     
-      raw_data = JSON.parse(self.data_filz.content) 
+      raw_data = JSON.parse(self.data_filz.content)       
       headings = raw_data.shift
       headings = headings.collect{|h| h.split(":").first}
       map_json = JSON.parse(self.map).invert

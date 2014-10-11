@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-    
+
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
     begin      
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -216,7 +216,7 @@
       values_data = media_type_data.to_a
       values_data.unshift(['Type', 'Size'])
       media_type_data_formatted =  values_data
-
+      
       # Now add or update to Media type table      
       file_name = provider_name + " Media Type"
       data_filz = Data::Filz.where(file_file_name: file_name).first      
@@ -227,13 +227,12 @@
       end
 
       #adding to viz
-      viz_viz = Viz::Viz.where(title: file_name).first
-      viz_map = {:"Type" => "X", :"Size" => "Y"}.to_json
+      viz_viz = Viz::Viz.where(title: file_name).first      
       if viz_viz.nil?
-        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json )
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", mapped_output: media_type_data_formatted.to_json )
       else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", map: viz_map, mapped_output: media_type_data_formatted.to_json })
-      end      
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", mapped_output: media_type_data_formatted.to_json, data_filz_id: data_filz.id })
+      end 
     end
 
     #Get Reusable        
@@ -258,12 +257,11 @@
         Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
       end
 
-      viz_viz = Viz::Viz.where(title: file_name).first
-      viz_map = {:"Type" => "Dimension", :"Size" => "Size"}.to_json
+      viz_viz = Viz::Viz.where(title: file_name).first      
       if viz_viz.nil?
-        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json )
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json )
       else
-        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", map: viz_map, mapped_output: reusable_data_formatted.to_json })
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json, data_filz_id: data_filz.id })
       end
 
     end
@@ -335,7 +333,7 @@
     else
       page_country_data_arr = nil
     end
-
+    
     # Now add or update to top 25 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -344,10 +342,11 @@
     else
       Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr})
     end
-
+    
     # Now adding to viz
     Viz::Viz.where(title: file_name).destroy_all
     viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
+
 
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
