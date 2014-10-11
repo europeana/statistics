@@ -48,7 +48,7 @@ class CmsArticlesController < ApplicationController
     if !Data::Filz.where(slug: "#{@selected_article}-traffic").last.nil?
       @all_years = JSON.parse(Data::Filz.where(slug: "#{@selected_article}-traffic").last.content)
       @all_years.shift
-      @all_years = @all_years.collect{|k| k[5]}.uniq.sort{|k| k}
+      @all_years = @all_years.collect{|k| k[5]}.uniq.sort_by{|k| k}
     end
     @provider = Provider.where(name: @cms_article.title).first
     gon.width = ""
