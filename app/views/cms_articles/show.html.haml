@@ -24,9 +24,9 @@
     .col-sm-10
       %h3{style: "padding-top:50px;"}
         = @cms_article.title
-        %hr{style: "margin: 0px 0px 30px 0px;height: 1px;"}
-        #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
-        #preview.wmd-previews
+      %hr{style: "margin: 0px 0px 30px 0px;height: 1px;"}
+      #editor= text_area(:entry, :body, value: "#{@cms_article.description}", hidden: 'true', id: "input", class: "wmd-input")
+      #preview.wmd-previews
 
 :css
   .menu {
