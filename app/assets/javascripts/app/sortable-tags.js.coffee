@@ -5,9 +5,10 @@ jQuery ->
     update: (event, ui) ->
       neworder = new Array()
       $(this).children().each ->
+        console.log(this)
         id = $(this).attr("id")
         neworder.push(id)
       $.ajax
-        url: "sort/tags"
+        url: "/sort/tags"
         type: "POST"
         data: { sort: neworder }

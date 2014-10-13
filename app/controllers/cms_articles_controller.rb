@@ -1,6 +1,6 @@
 class CmsArticlesController < ApplicationController
   
-  before_filter :authenticate_user!, except: [:show, :index,:nested_pages]
+  before_filter :authenticate_user!, except: [:show, :index,:nested_article]
   before_filter :find_objects
   helper_method :sort_column, :sort_direction
 
@@ -119,17 +119,15 @@ class CmsArticlesController < ApplicationController
     render nothing: true
   end  
   
-  def nested_article
+  def nested_article    
+    @cms_article = Cms::Article.where(slug: "#{params[:nested_article]}").first
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
-    @cms_article  = Cms::Article.where(slug: "#{params[:nested_article]}").first
     @selected_article = @cms_article.slug
     @setting = Setting.first
     @template = JSON.parse(@setting.page_builder_config)
-    if !Data::Filz.where(slug: "#{@selected_article}-traffic").last.nil?
-      @all_years = JSON.parse(Data::Filz.where(slug: "#{@selected_article}-traffic").last.content)
-      @all_years.shift
-      @all_years = @all_years.collect{|k| k[5]}.uniq.sort{|k| -k}
-    end
+    @selected_menu = {parent: params[:parent_article], child: params[:nested_article_name]}.to_json
+    @all_years = []
+    2012.upto(Date.today.year) { |i| @all_years << i }
     @provider = Provider.where(name: @cms_article.title).first
     gon.width = ""
     gon.height = ""
