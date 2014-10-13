@@ -223,9 +223,8 @@ class Viz::Viz < ActiveRecord::Base
     data.each do |d|
       c = d.pop
       new_data << d if c == filter_on.to_i
-    end
+    end    
     headers.each  {|d| keys << d.split(":")[0]}
-    keys.pop
     keys.pop
     new_data.unshift(keys)
     new_data
