@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-    
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+        
     begin                              
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -76,17 +76,16 @@
     page_country_data = []
      
     # #, max_results: 999999999
-    ga_start_date  = '2005-01-01'
+    ga_start_date  = '2010-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
 
-
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
-      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
-      next if tmp_data["totalsForAllResults"]["ga:pageViews"].to_i <= 0
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)      
+      next if tmp_data["totalsForAllResults"]["ga:pageviews"].to_i <= 0
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
@@ -102,7 +101,6 @@
       end
     end
     
-
     ##################################################################  
     #           For events                                           #
     ##################################################################  
@@ -168,7 +166,7 @@
        end       
       end
     end    
-    
+
     if page_view_data_quarterly.count > 0    
       page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
       page_view_data_quarterly.each do |q_key, q_value|
@@ -205,10 +203,15 @@
     #Get Media type    
     api_provider_type = "DATA_PROVIDER"
     if provider_type == "PR"
-      api_provider_type = "PROVIDER"
+      api_provider_type = "PROVIDER" 
     end
-    
-    media_type =  open(URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0")).read
+
+    e_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0"
+    if provider_name_slug.include?("&")
+      e_url = URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0")  
+    end
+
+    media_type =  open(e_url).read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
       media_type_data = {}
@@ -238,8 +241,13 @@
       end 
     end
 
-    #Get Reusable        
-    reusable = open(URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")).read
+    #Get Reusable
+    e_url = "http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY"
+    if provider_name_slug.include?("&")
+      e_url = URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")  
+    end
+
+    reusable = open(e_url).read
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
       reusable_data = {}
