@@ -24,8 +24,8 @@
       provider.save!      
     end
         
-    begin                  
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+    begin                        
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -189,7 +189,9 @@
     if data_filz.nil?
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_view_data_arr2 )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
+      if !page_view_data_arr2.nil?
+        Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
+      end
     end
 
     #adding to viz
@@ -205,6 +207,7 @@
     if provider_type == "PR"
       api_provider_type = "PROVIDER"
     end
+    
     media_type =  open(URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0")).read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
