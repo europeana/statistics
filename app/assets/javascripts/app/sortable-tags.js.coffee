@@ -5,7 +5,6 @@ jQuery ->
     update: (event, ui) ->
       neworder = new Array()
       $(this).children().each ->
-        console.log(this)
         id = $(this).attr("id")
         neworder.push(id)
       $.ajax

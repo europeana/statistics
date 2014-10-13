@@ -238,32 +238,13 @@
   $("#more_pages").click(function(){
     $(".pages").append("<br><div class=row>"+new_html+"</div><br>")
   });
-  $("#submit").click(function(){
-    var json_data = [],link_array = [],page_array = []
-    $(".nested_input").each(function(){
-      link_array.push(this.value);
-    });
-    $(".nested_page").each(function(){
-      page_array.push(this.value);
-    });
-    var length = page_array.length 
-    for(i=0;i<length;i++){
-      if(link_array[i] !== "" && page_array[i] !== ""){
-      tmp_object = {} 
-      tmp_object["name"] = link_array[i];
-      tmp_object["page"] = page_array[i];
-      json_data.push(tmp_object);
-      }
-    }
-    $("#nested_pages").val(JSON.stringify(json_data));
-  })
   $(".submit").click(function(){
     var json_data = [],link_array = [],page_array = []
     $(".nested_input").each(function(){
-      link_array.push(this.value);
+      link_array.push(this.value.trim());
     });
     $(".nested_page").each(function(){
-      page_array.push(this.value);
+      page_array.push(this.value.trim());
     });
     var length = page_array.length 
     for(i=0;i<length;i++){
