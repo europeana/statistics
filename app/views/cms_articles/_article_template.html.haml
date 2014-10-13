@@ -27,13 +27,13 @@
       %h4= @template["media_types_title"]
       %br
       = @template["media_types_description"]
-      %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type"}
+      %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type",style:"min-height:250px"}
       =link_to "Get The Data", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
 
     .col-sm-6
       %h4= @template["reusable_title"]
       =@template["reusable_description"]
-      %div{class: "pykih-viz pie-chart",:"data-slug-id" => "#{@selected_article}-reusable",id: "#{@selected_article}-reusable"}
+      %div{class: "pykih-viz pie-chart",:"data-slug-id" => "#{@selected_article}-reusable",id: "#{@selected_article}-reusable",style:"min-height:250px"}
       =link_to "Get The Data", "/articles/#{@selected_article}-reusable/csv", class: 'pull-right' 
 .clearfix
 .row
