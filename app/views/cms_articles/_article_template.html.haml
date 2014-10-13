@@ -1,9 +1,8 @@
 :css
   .filter-data-chart{
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 1.4em;
     margin-left: 5px;
-    font-style: italic;
   }
   .selected{
     text-decoration: underline;
@@ -41,19 +40,23 @@
   .col-sm-12
     %h2= @template["views_on_europeana_title"]
     =@template["views_on_europeana_description"]
-  %br
-.row
-  .col-sm-12
-    %h4= @template["views_and_clickthroughs_title"]
-    =@template["views_and_clickthroughs_description"]
-    .br
-    .br
+    %br
+    %br
+    %span{style: "font-size:1.4em"}Select year to view collection statistics on a per-year basis:
     -@all_years.each do |year|
       %span
         -if @all_years.index(year) != @all_years.length-1 
           %a.filter-data-chart{target: "blank",id: "#{year}"}=year
         -else 
           %a.filter-data-chart.selected{target: "blank",id: "#{year}"}=year
+  %br
+
+.row
+  .col-sm-12
+    %h4= @template["views_and_clickthroughs_title"]
+    =@template["views_and_clickthroughs_description"]
+    .br
+    .br
     #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
     =link_to "Get The Data", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
     / %img{src: "images/views_and_clickthroughs.png"}
