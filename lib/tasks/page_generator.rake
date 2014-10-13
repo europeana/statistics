@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
-    begin      
+        
+    begin            
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -75,7 +75,7 @@
     page_country_aggr = {}
     page_country_data = []
      
-    #, max_results: 999999999
+    # #, max_results: 999999999
     ga_start_date  = '2005-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
@@ -205,7 +205,7 @@
     if provider_type == "PR"
       api_provider_type = "PROVIDER"
     end
-    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
+    media_type =  open(URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0")).read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
       media_type_data = {}
@@ -236,7 +236,7 @@
     end
 
     #Get Reusable        
-    reusable = open("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY").read
+    reusable = open(URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")).read
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
       reusable_data = {}
@@ -347,7 +347,6 @@
     Viz::Viz.where(title: file_name).destroy_all
     viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
 
-
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath,ga:month,ga:year"    
@@ -367,7 +366,7 @@
     min_year = Date.today.year
     provider_ids.each do |provider_id|
       ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-      g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
+      g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
       data = g['rows']
       
       total_records = data.count
@@ -398,16 +397,14 @@
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
           if g["success"]
+            if g["object"]["proxies"][0]['dcTitle']
+            end
             if g["object"]["title"]
               title = g["object"]["title"][0] 
-            elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-              title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["def"]
-              title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-              title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["de"]
-              title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']
+              g["object"]["proxies"][0]['dcTitle'].each do |x,c|
+                title = c
+              end
             else
               title = "No Title Found"
             end
