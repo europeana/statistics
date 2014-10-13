@@ -251,6 +251,7 @@ class Viz::Viz < ActiveRecord::Base
   
   def before_save_set
     if self.map.present?     
+      return false if self.data_filz.content.nil? or self.data_filz.content.blank?
       raw_data = JSON.parse(self.data_filz.content)       
       headings = raw_data.shift
       headings = headings.collect{|h| h.split(":").first}

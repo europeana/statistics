@@ -501,7 +501,7 @@ class Data::Filz < ActiveRecord::Base
   private
   
   def before_save_set        
-    if self.content.present?
+    if self.content.present? and !self.content.nil?
       con = self.content.class.to_s == "String" ? JSON.parse(self.content) : self.content
       return false if con.count <= 0
       con.delete_if{ |row| row.flatten.compact.empty? }
