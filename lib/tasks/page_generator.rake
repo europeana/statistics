@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-        
-    begin                        
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)
+    
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+    begin                              
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -406,7 +406,7 @@
               title = g["object"]["title"][0] 
             elsif g["object"]['proxies'][0]['dcTitle']
               g["object"]["proxies"][0]['dcTitle'].each do |x,c|
-                title = c
+                title = c[0]
               end
             else
               title = "No Title Found"
