@@ -91,9 +91,14 @@ class Viz::Viz < ActiveRecord::Base
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
       elsif self.chart == "Grouped Column Chart"
-        label = row[headings.index(map_json["X"])]
-        value = row[headings.index(map_json["Y"])]
-        group = row[headings.index(map_json["Group"])]
+        label = 0
+        value = 0
+        group = 0
+        unless headings.index(map_json["X"]).nil?
+          label = row[headings.index(map_json["X"])]
+          value = row[headings.index(map_json["Y"])]
+          group = row[headings.index(map_json["Group"])]
+        end
       elsif self.chart == "Stacked Column Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
