@@ -1,6 +1,6 @@
 class CmsArticlesController < ApplicationController
   
-  before_filter :authenticate_user!, except: [:show, :index,:nested_article]
+  before_filter :authenticate_user!, except: [:show, :index,:nested_article,:embed_article]
   before_filter :find_objects
   helper_method :sort_column, :sort_direction
 
@@ -48,6 +48,7 @@ class CmsArticlesController < ApplicationController
     @all_years = []
     2012.upto(Date.today.year) { |i| @all_years << i }
     @provider = Provider.where(name: @cms_article.title).first
+    @embed_url = "<iframe width='560' height='315' src='#{request.host_with_port}/report/#{params[:file_id]}/embed' frameborder='0' allowfullscreen></iframe>"
     gon.width = ""
     gon.height = ""
   end
@@ -132,6 +133,18 @@ class CmsArticlesController < ApplicationController
     gon.width = ""
     gon.height = ""
     render action: "show"
+  end
+
+  def embed_article
+    @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
+    @selected_article = @cms_article.slug
+    @setting = Setting.first
+    @template = JSON.parse(@setting.page_builder_config)
+    @all_years = []
+    2012.upto(Date.today.year) { |i| @all_years << i }
+    @provider = Provider.where(name: @cms_article.title).first
+    gon.width = ""
+    gon.height = ""
   end
   private
   

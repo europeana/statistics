@@ -8,6 +8,7 @@
     text-decoration: underline;
     font-weight: bold
   }
+-sss
 -if !@cms_article.description.nil?
   .row
     .col-sm-12
@@ -80,6 +81,11 @@
   .row
     .col-sm-12
       %p= @provider.text_at_bottom
+
+/ .row
+/   .col-sm-12
+/     .pull-left{style: "font-size:1em;font-weight:bold"}
+/       =
 
 -quarter = "q1"
 -quarter = "q2" if Date.today.month.between?(4,6)

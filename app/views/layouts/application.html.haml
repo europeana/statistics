@@ -14,56 +14,57 @@
   %body
     .container
       .row
-        - row_1 = "col-sm-12"
-        - style_down = "20px"
-        - if params[:file_id] or params[:tag] == "other" and !current_user.present?
-          - row_1 = "col-sm-2"
-          - row_2 = "col-sm-10"
-          - style_down = "55px"
+        -unless action_name == "embed_article"
+          - row_1 = "col-sm-12"
+          - style_down = "20px"
+          - if params[:file_id] or params[:tag] == "other" and !current_user.present?
+            - row_1 = "col-sm-2"
+            - row_2 = "col-sm-10"
+            - style_down = "55px"
 
-        %div{class: "#{row_1}", style: "height: #{style_down};"}         
-          -unless controller_name == "viz_vizs" and action_name == "embed"
-            = link_to "Europeana", root_url, class: "lc logo ir"
-            %nav#nav.nav
-              %ul
-                %li= link_to "Home", root_url, class: (controller_name == "cms_articles" and (action_name == "index" or action_name == "show")) ? "current" : nil
-                - if current_user.present?
-                  %li= link_to "Data", data_filzs_path, class: controller_name == "data_filzs" ? "current" : nil
-                  %li= link_to "Visualize", viz_vizs_path, class: controller_name == "viz_vizs" ? "current" : nil
-                  %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
-                  %li= link_to "All Articles", "/all-articles", class: (controller_name == "cms_articles" and (action_name == "allArticles" )) ? "current" : nil
-                  %li= link_to "Settings", edit_settings_path, class: (controller_name == "settings") ? "current" : nil
-                  %li= link_to "Providers", providers_path, class: (controller_name == "providers") ? "current" : nil
-                  %li= link_to "Logout", "/logout"
+          %div{class: "#{row_1}", style: "height: #{style_down};"}         
+            -unless controller_name == "viz_vizs" and action_name == "embed"
+              = link_to "Europeana", root_url, class: "lc logo ir"
+              %nav#nav.nav
+                %ul
+                  %li= link_to "Home", root_url, class: (controller_name == "cms_articles" and (action_name == "index" or action_name == "show")) ? "current" : nil
+                  - if current_user.present?
+                    %li= link_to "Data", data_filzs_path, class: controller_name == "data_filzs" ? "current" : nil
+                    %li= link_to "Visualize", viz_vizs_path, class: controller_name == "viz_vizs" ? "current" : nil
+                    %li= link_to "Compose", "/new", class: (controller_name == "cms_articles" and (action_name == "new" or action_name == "create" or action_name == "edit" or action_name == "update")) ? "current" : nil
+                    %li= link_to "All Articles", "/all-articles", class: (controller_name == "cms_articles" and (action_name == "allArticles" )) ? "current" : nil
+                    %li= link_to "Settings", edit_settings_path, class: (controller_name == "settings") ? "current" : nil
+                    %li= link_to "Providers", providers_path, class: (controller_name == "providers") ? "current" : nil
+                    %li= link_to "Logout", "/logout"
 
-        - if params[:file_id] or params[:tag] == "other" and !current_user.present?
-          %div{class: "#{row_2}"}
-            #header-box                          
-              -if !@setting.header_name.blank?  
-                %h3= @setting.header_name
-              -elsif !@setting.image.blank?   
-                %img{src: "#{@setting.image}", style: "height: 50px;width: 100%:"}
-              -else
-                %h3 Europeana Statistics  
+          - if params[:file_id] or params[:tag] == "other" and !current_user.present?
+            %div{class: "#{row_2}"}
+              #header-box                          
+                -if !@setting.header_name.blank?  
+                  %h3= @setting.header_name
+                -elsif !@setting.image.blank?   
+                  %img{src: "#{@setting.image}", style: "height: 50px;width: 100%:"}
+                -else
+                  %h3 Europeana Statistics  
 
-      - if flash.present?
-        - if flash.first.present?
-          .row{style: "margin-top:60px"}
-            .col-sm-12
-              - flash.each do |name, msg|
-                - if name.to_s == "error"
-                  %p.alert.alert-danger
-                    %span.icon-alert= msg
-                - elsif name.to_s == "notice"
-                  %p.alert.alert-warning
-                    %span.icon-yes= msg
-                - else
-                  %p.alert.alert-info
-                    %span.icon-info= msg
-      -if current_user.present? 
-        %hr{style: "height: 5px; background: #333; margin-bottom:0px;"}              
+          - if flash.present?
+            - if flash.first.present?
+              .row{style: "margin-top:60px"}
+                .col-sm-12
+                  - flash.each do |name, msg|
+                    - if name.to_s == "error"
+                      %p.alert.alert-danger
+                        %span.icon-alert= msg
+                    - elsif name.to_s == "notice"
+                      %p.alert.alert-warning
+                        %span.icon-yes= msg
+                    - else
+                      %p.alert.alert-info
+                        %span.icon-info= msg
+          -if current_user.present? 
+            %hr{style: "height: 5px; background: #333; margin-bottom:0px;"}              
       = yield
-      -unless controller_name == "viz_vizs" and action_name == "embed"      
+      -unless controller_name == "viz_vizs" and action_name == "embed" or action_name == "embed_article"     
         %footer.footer{role: "contentinfo"}
           .lc
             %ul.nav-footer
