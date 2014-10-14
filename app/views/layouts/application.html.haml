@@ -38,7 +38,10 @@
                     %li= link_to "Logout", "/logout"
 
           - if params[:file_id] or params[:tag] == "other" or params[:parent_article] and !current_user.present?
-            %div{class: "#{row_2}"}
+            - style = ""
+            -if !@setting.image.blank?   
+              -style = "margin-bottom: 70px;"
+            %div{class: "#{row_2}", style: "#{style}"}
               #header-box                          
                 -if !@setting.header_name.blank?  
                   %h3= @setting.header_name
@@ -46,7 +49,7 @@
                   %h3 Europeana Statistics  
 
                 -if !@setting.image.blank?   
-                  %img{src: "#{@setting.image}", style: "height: 200px;width: 100%:"}
+                  %img{src: "#{@setting.image}", style: "height: 100px;width: 100%;"}
 
           - if flash.present?
             - if flash.first.present?

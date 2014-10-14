@@ -48,12 +48,16 @@
           - JSON.parse(cms_article.nested_pages).each do |page|
             %span{style: ""}=link_to page["name"], nested_article_path(cms_article.slug,page['name'],page['page']), class: "sub-heading-style",id: "#{page['name']}"
     %li{id: "Other", class: @selected_article == "other"  ? "active": nil}= link_to "Archive", root_url(tag: "other")
+- affix_top = 55    
+-if !@setting.image.blank?   
+  -affix_top = 100
+
 :javascript
   var parent_menu = #{@selected_menu}['parent']
   var child_menu = #{@selected_menu}['child']
   $(".fix-side-bar").affix({
     offset: { 
-     top: 55
+     top: #{affix_top}
     , bottom: function () {
         return (this.bottom = $('.col-sm-10').outerHeight(true))
       }
