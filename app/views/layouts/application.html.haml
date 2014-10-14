@@ -17,7 +17,7 @@
         -unless action_name == "embed_article"
           - row_1 = "col-sm-12"
           - style_down = "20px"
-          - if params[:file_id] or params[:tag] == "other" and !current_user.present?
+          - if params[:file_id] or params[:tag] == "other" or params[:parent_article] and !current_user.present?
             - row_1 = "col-sm-2"
             - row_2 = "col-sm-10"
             - style_down = "55px"
@@ -37,15 +37,16 @@
                     %li= link_to "Providers", providers_path, class: (controller_name == "providers") ? "current" : nil
                     %li= link_to "Logout", "/logout"
 
-          - if params[:file_id] or params[:tag] == "other" and !current_user.present?
+          - if params[:file_id] or params[:tag] == "other" or params[:parent_article] and !current_user.present?
             %div{class: "#{row_2}"}
               #header-box                          
                 -if !@setting.header_name.blank?  
                   %h3= @setting.header_name
-                -elsif !@setting.image.blank?   
-                  %img{src: "#{@setting.image}", style: "height: 50px;width: 100%:"}
                 -else
                   %h3 Europeana Statistics  
+
+                -if !@setting.image.blank?   
+                  %img{src: "#{@setting.image}", style: "height: 200px;width: 100%:"}
 
           - if flash.present?
             - if flash.first.present?
