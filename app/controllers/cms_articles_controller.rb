@@ -48,7 +48,7 @@ class CmsArticlesController < ApplicationController
     @all_years = []
     2012.upto(Date.today.year) { |i| @all_years << i }
     @provider = Provider.where(name: @cms_article.title).first
-    @embed_url = "<iframe width='560' height='315' src='#{request.host_with_port}/report/#{params[:file_id]}/embed' frameborder='0' allowfullscreen></iframe>"
+    @embed_url = "<iframe width='560' height='315' src='http://#{request.host_with_port}/report/#{params[:file_id]}/embed' frameborder='0' allowfullscreen></iframe>"
     gon.width = ""
     gon.height = ""
   end
