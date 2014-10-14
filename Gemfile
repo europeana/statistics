@@ -51,3 +51,8 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 end
+
+# Production
+group :production do 
+  gem "rack-timeout"
+end
