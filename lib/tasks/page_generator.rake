@@ -24,8 +24,8 @@
       provider.save!      
     end
         
-    begin                              
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+    begin                                    
+      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)        
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -376,10 +376,11 @@
     ten_records_arr = {}
     min_year = Date.today.year
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
       g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
       data = g['rows']
       
+      next if data.nil?
       total_records = data.count
       qx_counter = 0
       data.each do |data_element|

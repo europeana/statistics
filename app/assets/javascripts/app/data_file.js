@@ -348,7 +348,7 @@ function get_html_template(layout_type, style) {
   }
   if($("#allow-grid-view-box").prop("checked")) class_name += " grid-view-layout";
   for(var i = 1; i <= algorithm; i++) {
-    html_tag = html_tag + "<div class='" + class_name + "'></div>";
+    html_tag = html_tag + "<div class='" + class_name + "'><h3>My Heading - "+i+"</h3><p>Some content ....</p></div>";
   }
   return html_tag = html_tag + "</div>";
 }
