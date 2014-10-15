@@ -10,7 +10,6 @@
         render: function(el) {
             var me = this;
             me.setRoot(el);
-
             // init datawrapper style for jquery.qtip
             $.fn.qtip.defaults.style.classes = 'ui-tooltip-datawrapper';
 
@@ -24,7 +23,7 @@
                 } else {
                     me.notifications = [];
                 }
-                if (me.get('map') !== undefined && me.get('map-path') !== undefined) {
+                if (me.get('map') == undefined && me.get('map-path') == undefined) {
                     me.loadMap(el);
                 }
             }
@@ -56,7 +55,7 @@
         */
         getSVG: function() {
             var me = this;
-            return 'assets/' + me.get('map-path') + "/map.svg";
+            return "/datasets/map-json/map.svg";
         },
 
         /*
@@ -72,7 +71,7 @@
             * Parse and return the map's json
             */
             function getMapMeta() {
-                return $.getJSON('assets/' + map_path + "/map.json")
+                return $.getJSON("/datasets/map-json/map.json")
                     .done(function(res) { me.map_meta = res; });
             }
 
@@ -83,15 +82,12 @@
                 var mapOpt = _.find(me.meta.options.map.options, function(m) {
                     return m['path'] == map_path;
                 });
-                if (mapOpt.has_locale) {
-                    return $.getJSON('assets/' + map_path + '/locale.json')
-                        .done(function(res) {
-                            me._all_locales = res;
-                            var loc = me.chart().locale().slice(0,2);
-                            if (res[loc]) me._localized_labels = res[loc];
-                        });
-                }
-                return false;
+                return $.getJSON('/datasets/map-json/locale.json')
+                    .done(function(res) {
+                        me._all_locales = res;
+                        var loc = me.chart().locale().slice(0,2);
+                        if (res[loc]) me._localized_labels = res[loc];
+                });
             }
 
             // initialize kartograph instance
@@ -243,7 +239,7 @@
                         var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
                         var css = {
                             color: fill,
-                            'font-size': '0.813em',
+                            'font-size': '13px',
                             'line-height': '15px',
                             'text-shadow': ('0 1px 0 %, 1px 0 0 %, 0 -1px 0 %, -1px 0 0 %,'+
                                 '1px 1px 0 %, 1px -1px 0 %, -1px -1px 0 %, -1px 1px 0 %,'+
@@ -286,10 +282,10 @@
              */
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
-
+                
                 var data = me.data[path_data['key']],
-                    no_data_color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
-
+                    no_data_color = "url('/images/stripped.png')";
+                    
                 if (data !== undefined) {
                     var color;
                     if (_.isNumber(data.raw) || !colorByNumbers()) {
@@ -490,6 +486,7 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
+                mobile = me.__w < 400,
                 $legend = $('#chart .scale, #chart .legend').remove();
 
             if (me.axes(true).color.type() != 'number') {
@@ -523,8 +520,10 @@
             } else {
                 // show legend for numeric data
                 $legend = $("<div />").addClass('scale');
+                if (mobile) $legend.addClass('mobile');
+
                 var domains = scale.domain(),
-                    legend_size = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
+                    legend_size = Math.min(Math.max(Math.min(mobile ? 250 : 300, me.__w), me.__w*0.6), 500),
                     domains_delta = domains[domains.length-1] - domains[0],
                     offset = 0,
                     max_height = 0,
