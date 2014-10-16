@@ -12,7 +12,7 @@
   .row
     .col-sm-12
       =@cms_article.description.html_safe
--if !@provider.text_at_top.nil? 
+-if @provider and !@provider.text_at_top.nil? 
   .row
     .col-sm-12
       %p=@provider.text_at_top
@@ -76,7 +76,7 @@
     %br
     #top-viewed-items-europena{:"data-src" =>"#{@selected_article}-top-10-digital-objects" }
     /%img{src: "images/top_10_digital_objects.png"}    
--if !@provider.text_at_bottom.nil?
+-if @provider and !@provider.text_at_bottom.nil?
   .row
     .col-sm-12
       %p= @provider.text_at_bottom

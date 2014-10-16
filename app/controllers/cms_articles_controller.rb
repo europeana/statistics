@@ -124,6 +124,7 @@ class CmsArticlesController < ApplicationController
     @cms_article = Cms::Article.where(slug: "#{params[:nested_article]}").first
     @cms_articles = Cms::Article.where("tag IS NOT null AND tag <> '' AND is_published = true").order(:position)
     @selected_article = @cms_article.slug
+    @embed_url = "<iframe width='560' height='315' src='http://#{request.host_with_port}/report/#{params[:nested_article]}/embed' frameborder='0' allowfullscreen></iframe>"
     @setting = Setting.first
     @template = JSON.parse(@setting.page_builder_config)
     @selected_menu = {parent: params[:parent_article], child: params[:nested_article_name]}.to_json
