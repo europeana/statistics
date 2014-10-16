@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-        
-    begin                                    
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)        
+    
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)            
+    begin                                          
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -251,8 +251,8 @@
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
       reusable_data = {}
-      all_types.each do |type|
-        reusable_data[type["label"]] = type["count"].to_i
+      all_types.each do |type|        
+        reusable_data[type["label"]] = type["count"].to_i if type["count"].to_i > 0
       end
       
       values_data = reusable_data.to_a
@@ -344,7 +344,7 @@
     else
       page_country_data_arr = nil
     end
-    
+  
     # Now add or update to top 25 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
@@ -507,13 +507,17 @@
     end
     top_ten_digital_objects = format_data    
 
-    file_name = provider_name + " Top 10 Digital Objects"
-    data_filz = Data::Filz.where(file_file_name: file_name).first
-    if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
-    else
-      Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
+    if top_ten_digital_objects.count > 1 
+      file_name = provider_name + " Top 10 Digital Objects"
+      data_filz = Data::Filz.where(file_file_name: file_name).first
+      if data_filz.nil?
+        ssss
+        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
+      else
+        Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
+      end
     end
+
     params = {name: provider_name}
     #adding to Article
     if args[:wiki_name] and (!args[:wiki_name].nil? or !args[:wiki_name].blank?)

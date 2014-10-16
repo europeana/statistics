@@ -110,7 +110,8 @@ class VizVizsController < ApplicationController
         mapped_output2 = mapped_output        
       else
         mapped_output = JSON.parse(@viz_viz.mapped_output)
-        mapped_output << [" ", 0.00001] if @viz_viz.chart == "Pie Chart" and mapped_output.count < 3          
+        mapped_output << [" ", 0.01] if @viz_viz.chart == "Pie Chart" and mapped_output.count < 3
+        
         mapped_output2 = mapped_output        
         mapped_output = Core::Services.twod_to_csv(mapped_output)
       end            
