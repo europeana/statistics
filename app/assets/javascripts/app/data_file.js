@@ -157,8 +157,8 @@ function GenereteChartInMarkdown() {
     //addCustomColumnGroupChart("#page_view_click_chart");
   }
   if($("#top-25-countries-map").attr("chart") == "custom-maps-chart") {
-    var slug_id = $("#top-25-countries-map").attr("data-slug-id");
-    $.get("/generate/chart/" + slug_id +"?mapschart=2013&mapschartquarter=q1", function(vdata, status) {
+    var slug_id = $("#top-25-countries-map").attr("data-slug-id");    
+    $.get("/generate/chart/" + slug_id +"?mapschart=nil&mapschartquarter=nil", function(vdata, status) {
       addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
     });  
   }
@@ -243,7 +243,7 @@ function GenereteChartInMarkdown() {
         var provider = new_data[i].provider;
         if(tmp_arr.indexOf(provider) < 0) {
           tmp_arr.push(provider);
-          html_template += "<option value='" + provider + "' " + selected + ">" + provider + "</option>";
+          //html_template += "<option value='" + provider + "' " + selected + ">" + provider + "</option>";
           selected = "";
         }
       }

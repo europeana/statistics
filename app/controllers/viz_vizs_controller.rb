@@ -98,10 +98,11 @@ class VizVizsController < ApplicationController
         end        
         mapped_output = Core::Services.twod_to_csv(Viz::Viz.formatInColumnGroupChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:gcolchart]))
         mapped_output2 = mapped_output        
-      elsif params[:mapschart].present?        
+      elsif params[:mapschart].present? 
         if params[:mapschart].blank? || params[:mapschart].nil? || params[:mapschart] == "0"
           params[:mapschart] = Date.today.year
-        end
+        end        
+        params[:mapschart] = params[:mapschart].to_i
         if params[:mapschartquarter].blank? || params[:mapschartquarter].nil? || params[:mapschartquarter] == "0"
           params[:mapschartquarter] = "q#{((((Date.today.at_beginning_of_month).month - 1) / 3) + 1)}"
         end
