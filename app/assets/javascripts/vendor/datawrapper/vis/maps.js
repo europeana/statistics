@@ -488,7 +488,6 @@
             var me = this,
                 mobile = me.__w < 400,
                 $legend = $('#chart .scale, #chart .legend').remove();
-
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
                 var lvalues = [];
@@ -496,7 +495,7 @@
                 _.each(_.unique(me.axes(true).color.values()), function(val) {
                     var d = $('<div />')
                         .html(val)
-                        .css({ 'border-left-color': me.scale(val) })
+                        .css({ 'border-left-color': me.scale(val).toString()})
                         .addClass('legend-item')
                         .appendTo($legend);
 

@@ -78,8 +78,12 @@
     =@template["top_10_digital_objects_description"]
     %br
     #top-viewed-items-europena{:"data-src" =>"#{@selected_article}-top-10-digital-objects" }
-    /%img{src: "images/top_10_digital_objects.png"}    
+    /%img{src: "images/top_10_digital_objects.png"}
+    =link_to "Get The Data", "/articles/#{@selected_article}-top-10-digital-objects/csv", class: 'pull-right' 
+    
 -if @provider and !@provider.text_at_bottom.nil?
+  %br
+  .clearfix
   .row
     .col-sm-12
       %p= @provider.text_at_bottom
