@@ -405,7 +405,14 @@
           puts skip_value
           puts "============================="          
           b = pg_path.split("/") 
-          record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+          begin
+            record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
+            a = 1  
+          rescue Exception => e
+            a = 0
+          end
+          next if a == 0
+          
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           begin
             g = JSON.parse(open(euro_api_url).read)  
@@ -511,7 +518,6 @@
       file_name = provider_name + " Top 10 Digital Objects"
       data_filz = Data::Filz.where(file_file_name: file_name).first
       if data_filz.nil?
-        ssss
         data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
       else
         Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
