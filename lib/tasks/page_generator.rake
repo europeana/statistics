@@ -363,7 +363,7 @@
     ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
     ga_max_result = 10000
-    ga_start_date = "2014-01-01"
+    ga_start_date = "2010-01-01"
     ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
     header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
@@ -407,7 +407,14 @@
           b = pg_path.split("/") 
           record_provider_id = "#{b[2]}/#{b[3]}/#{b[4].split(".")[0]}"
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
-          g = JSON.parse(open(euro_api_url).read)
+          begin
+            g = JSON.parse(open(euro_api_url).read)  
+            a = 1
+          rescue Exception => e
+            a = 0
+          end
+          next if a == 0
+          
           if g["success"]
             if g["object"]["proxies"][0]['dcTitle']
             end
