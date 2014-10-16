@@ -28,7 +28,16 @@ class Provider < ActiveRecord::Base
     provider_ids = "920025".split(" ")
     provider_name_slug = URI.escape(provider_name)
     provider_type = "DR"
+    exec_type = "cron"
 
+    ga_end_date =  (Date.today.at_beginning_of_month - 1)
+    if exec_type == "cron"  
+      ga_start_date = ga_end_date.at_beginning_of_month      
+      ga_start_date = ga_start_date.strftime("%Y-%m-%d")
+    else
+      ga_start_date  = '2010-01-01'
+    end
+    ga_end_date = ga_end_date.strftime("%Y-%m-%d")
     
     #GA Authentication
     ga_client_id = "79004200365-im8ha2tnhhq01j2qr0d4i7dodhctqaua.apps.googleusercontent.com"
@@ -47,19 +56,15 @@ class Provider < ActiveRecord::Base
     page_country_aggr = {}
     page_country_data = []
      
-    #, max_results: 999999999
-    # ga_start_date  = '2005-01-01'
-    # ga_end_date    = Date.today.strftime("%Y-%m-%d")
-    ga_start_date  = '2012-01-01'
-    ga_end_date    = '2014-10-10'
+    # #, max_results: 999999999
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
-    ga_metrics     = "ga:pageViews"
+    ga_metrics     = "ga:pageviews"
 
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
-      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)
-      next if tmp_data["totalsForAllResults"]["ga:pageViews"].to_i <= 0
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)      
+      next if tmp_data["totalsForAllResults"]["ga:pageviews"].to_i <= 0
       tmp_data = JSON.parse(tmp_data.to_json)["rows"]
       tmp_data.each do |d|
         #custom_regex = "#{provider_id}"
@@ -75,7 +80,6 @@ class Provider < ActiveRecord::Base
       end
     end
     
-
     ##################################################################  
     #           For events                                           #
     ##################################################################  
@@ -141,9 +145,13 @@ class Provider < ActiveRecord::Base
        end       
       end
     end    
-    
+
     if page_view_data_quarterly.count > 0    
-      page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
+      if exec_type != "cron"
+        page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
+      else
+        page_view_data_arr2 = []
+      end
       page_view_data_quarterly.each do |q_key, q_value|
         qx_value = q_key.split("<__>")
         year  = qx_value[0]
@@ -154,7 +162,7 @@ class Provider < ActiveRecord::Base
         page_view_data_arr2 << itmp
       end
     else
-      page_view_data_arr2 = "[]"
+      page_view_data_arr2 = nil
     end
     # Adding to data_filz           
     file_name = provider_name + " Traffic"
@@ -162,11 +170,13 @@ class Provider < ActiveRecord::Base
     if data_filz.nil?
       data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_view_data_arr2 )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
+      if !page_view_data_arr2.nil?
+        Data::Filz.find(data_filz.id).update_attributes({content: page_view_data_arr2})
+      end
     end
 
     #adding to viz
-    viz_viz = Viz::Viz.where(title: file_name).first    
+    viz_viz = Viz::Viz.where(title: file_name).first
     if viz_viz.nil?
       viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Grouped Column Chart - Filter")
     else
@@ -176,9 +186,15 @@ class Provider < ActiveRecord::Base
     #Get Media type    
     api_provider_type = "DATA_PROVIDER"
     if provider_type == "PR"
-      api_provider_type = "PROVIDER"
+      api_provider_type = "PROVIDER" 
     end
-    media_type = open("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0").read
+
+    e_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0"
+    if provider_name_slug.include?("&")
+      e_url = URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=TYPE&profile=facets&rows=0")  
+    end
+
+    media_type =  open(e_url).read
     if media_type["facets"].present?
       all_types = JSON.parse(media_type)["facets"][0]["fields"]
       media_type_data = {}
@@ -189,19 +205,32 @@ class Provider < ActiveRecord::Base
       values_data = media_type_data.to_a
       values_data.unshift(['Type', 'Size'])
       media_type_data_formatted =  values_data
-
+      
       # Now add or update to Media type table      
       file_name = provider_name + " Media Type"
-      data_filz = Data::Filz.where(file_file_name: file_name).first
+      data_filz = Data::Filz.where(file_file_name: file_name).first      
       if data_filz.nil?
-        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: media_type_data_formatted.to_s )
+        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: media_type_data_formatted.to_json)
       else
-        Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_s})
+        Data::Filz.find(data_filz.id).update_attributes({content: media_type_data_formatted.to_json})
       end
+
+      #adding to viz
+      viz_viz = Viz::Viz.where(title: file_name).first      
+      if viz_viz.nil?
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Column Chart", mapped_output: media_type_data_formatted.to_json )
+      else
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Column Chart", mapped_output: media_type_data_formatted.to_json, data_filz_id: data_filz.id })
+      end 
     end
 
-    #Get Reusable        
-    reusable = open("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY").read
+    #Get Reusable
+    e_url = "http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY"
+    if provider_name_slug.include?("&")
+      e_url = URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")  
+    end
+
+    reusable = open(e_url).read
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
       reusable_data = {}
@@ -221,8 +250,16 @@ class Provider < ActiveRecord::Base
       else
         Data::Filz.find(data_filz.id).update_attributes({content: reusable_data_formatted.to_s})
       end
-    end
 
+      viz_viz = Viz::Viz.where(title: file_name).first      
+      if viz_viz.nil?
+        viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json )
+      else
+        Viz::Viz.find(viz_viz.id).update_attributes({chart: "Pie Chart", mapped_output: reusable_data_formatted.to_json, data_filz_id: data_filz.id })
+      end
+
+    end
+    ssss
     # For top 25 countries
     ga_dimension  = "ga:month,ga:year,ga:country"
     ga_metrics    = "ga:pageviews"    
@@ -286,19 +323,20 @@ class Provider < ActiveRecord::Base
         end      
         page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
       end
+      page_country_data_arr = page_country_data_arr.to_s
     else
-      page_country_data_arr = []
+      page_country_data_arr = nil
     end
-
+    
     # Now add or update to top 25 countries table      
     file_name = provider_name + " Top 25 Countries"
     data_filz = Data::Filz.where(file_file_name: file_name).first
     if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr.to_s )
+      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr )
     else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr.to_s})
+      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr})
     end
-
+    
     # Now adding to viz
     Viz::Viz.where(title: file_name).destroy_all
     viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
@@ -321,10 +359,11 @@ class Provider < ActiveRecord::Base
     ten_records_arr = {}
     min_year = Date.today.year
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname==www.europeana.eu;ga:pagePath=~/record/#{provider_id}"
-      g = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}").read)
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
+      g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
       data = g['rows']
       
+      next if data.nil?
       total_records = data.count
       qx_counter = 0
       data.each do |data_element|
@@ -353,16 +392,14 @@ class Provider < ActiveRecord::Base
           euro_api_url = "#{europeana_url}#{record_provider_id}.json?wskey=api2demo&profile=full"
           g = JSON.parse(open(euro_api_url).read)
           if g["success"]
+            if g["object"]["proxies"][0]['dcTitle']
+            end
             if g["object"]["title"]
               title = g["object"]["title"][0] 
-            elsif g["object"]['proxies'][0]['dcTitle']["EN"]  
-              title = g["object"]['proxies'][0]['dcTitle']["EN"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["def"]
-              title = g["object"]['proxies'][0]['dcTitle']["def"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["fr"]
-              title = g["object"]['proxies'][0]['dcTitle']["fr"][0]
-            elsif g["object"]['proxies'][0]['dcTitle']["de"]
-              title = g["object"]['proxies'][0]['dcTitle']["de"][0]
+            elsif g["object"]['proxies'][0]['dcTitle']
+              g["object"]["proxies"][0]['dcTitle'].each do |x,c|
+                title = c[0]
+              end
             else
               title = "No Title Found"
             end
