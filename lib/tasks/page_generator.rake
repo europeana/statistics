@@ -529,9 +529,12 @@
         wiki_url =  URI.encode("http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{wiki_name}")
         wiki_json = JSON.parse(open(wiki_url).read)
         wiki_context = wiki_json["query"]["pages"].values.shift["extract"]
-        length = wiki_context.length > 300? 300 : wiki_context.length
-        wiki_context = wiki_context[0..length].gsub("\n","").gsub("<p></p>","").gsub("</p>","")
-        html_template = "<div class='row'><div class='col-sm-12'><div id='wiki_name'>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a></p></div></div></div>"
+        html_template = ""
+        if wiki_context.length > 0
+          length = wiki_context.length > 300? 300 : wiki_context.length
+          wiki_context = wiki_context[0..length].gsub("\n","").gsub("<p></p>","").gsub("</p>","")
+          html_template += "<div class='row'><div class='col-sm-12'><div id='wiki_name'>#{wiki_context}...<a href='http://en.wikipedia.org/wiki/#{wiki_name}' target='blank '><b>Read more on Wikipedia</b></a></p></div></div></div>"
+        end
       end      
       article = Cms::Article.where(title: name).first
       if article.nil?
