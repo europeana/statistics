@@ -7,6 +7,8 @@ class ProvidersController < ApplicationController
     # sss
     #render json: Provider.testcsv
     # sssss
+    Provider.testing_updater
+    ssss
     @providers = Provider.all
     respond_to do |format|
       format.html # index.html.erb
@@ -43,7 +45,7 @@ class ProvidersController < ApplicationController
   # POST /providers.json
   def create
     provider_name = params[:provider][:name]
-    @provider = Provider.where(name: provider_name)
+    @provider = Provider.where(name: provider_name).first
     if @provider.nil?
       @provider = Provider.new(params[:provider])
       if @provider.save
@@ -55,7 +57,6 @@ class ProvidersController < ApplicationController
         format.html { render action: "new" }
       end
     else
-      @provider = @provider.first
       provider_ids = @provider.provider_id
       new_provider_ids = params[:provider][:provider_id]
       provider_ids = provider_ids +" "+new_provider_ids
