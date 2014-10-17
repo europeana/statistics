@@ -7,8 +7,6 @@ class ProvidersController < ApplicationController
     # sss
     #render json: Provider.testcsv
     # sssss
-    Provider.testing_updater
-    ssss
     @providers = Provider.all
     respond_to do |format|
       format.html # index.html.erb

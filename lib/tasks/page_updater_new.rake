@@ -1,4 +1,4 @@
-  namespace :page_updater_new do 
+namespace :page_updater_new do 
   
   desc "Create New Provider"  
   task :add_provider, [:name, :id, :provider_type,:wiki_name] => :environment do |t, args|   
@@ -25,8 +25,8 @@
       provider.save!      
     end
         
+    Rake::Task["page_updater_new:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name,start_date,end_date)    
     begin                                                
-      Rake::Task["page_updater_new:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name,start_date,end_date)    
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -45,15 +45,15 @@
   end
 
   desc "Fetch Data From GA"
-  task :ga_queries, [:name, :id, :provider_type,:wiki_name]  do |t, args|
+  task :ga_queries, [:name, :id, :provider_type,:wiki_name,:start_date,:end_date]  do |t, args|
     provider_name = args[:name]
     provider_id = args[:id]    
     provider_type = args[:provider_type]
-    Rake::Task['page_updater_new:ga_traffic'].invoke(provider_name, provider_id, provider_type,args[:wiki_name])
+    Rake::Task['page_updater_new:ga_traffic'].invoke(provider_name, provider_id, provider_type,args[:wiki_name],args[:start_date],args[:end_date])
   end
 
   desc "Fetch Data From GA Only Traffic"
-  task :ga_traffic, [:name, :id, :provider_type,:wiki_name]  do |t, args|
+  task :ga_traffic, [:name, :id, :provider_type,:wiki_name,:start_date,:end_date]  do |t, args|
     provider_name = args[:name]
     provider_ids = args[:id].split(" ")
     provider_name_slug = URI.escape(provider_name)
@@ -64,7 +64,6 @@
     ga_client_secret = "rBi6Aqu1x9o4gBj7ByydxeK7"
     ga_scope = "https://www.googleapis.com/auth/analytics"
     ga_refresh_token = "1/R96LIdJ7mepE1WVdhi9WtPxZI9JTh2FmIzYcrTaGRnQ"
-
     get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
     access_token = JSON.parse(get_access_token.to_json)['access_token']    
     
@@ -82,7 +81,6 @@
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
-
     provider_ids.each do |provider_id|
       ga_filters     = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"        
       tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}").read)      
@@ -169,72 +167,28 @@
     end    
 
     if page_view_data_quarterly.count > 0    
-      page_view_data_arr2 = [["Label", "Q1", "Q2", "Q3", "Q4","Year"]]
-      page_view_data_quarterly.each do |q_key, q_value|
-        qx_value = q_key.split("<__>")
-        year  = qx_value[0]
-        ttype = qx_value[1]
-        itmp  = [ttype]
-        q_value.each {|qv,vv| itmp << vv}
-        itmp  << year.to_i
-        page_view_data_arr2 << itmp
-      end
-    else
-      page_view_data_arr2 = nil
-    end
-    # Adding to data_filz           
-    file_name = provider_name + " Traffic"
-    data_filz = Data::Filz.where(file_file_name: file_name).first
-    old_content  = JSON.parse(data_filz.content)
-    old_content_to_push = [old_content.shift]
-    if !page_view_data_arr2.nil?
+      file_name = provider_name + " Traffic"
+      data_filz = Data::Filz.where(file_file_name: file_name).first
+      old_content  = JSON.parse(data_filz.content)
+      old_content_to_push = [old_content.shift]
       old_content_to_change = []   
-      old_content do |k|
-        if i == 0 or k[5] != Date.parse(ga_start_date).year
-
+      old_content.each do |k|
+        if k[5] != Date.parse(ga_start_date).year
+          old_content_to_push << k
           next
-        end
-        old_content_to_change << k
-
-month = data["month"].to_i
-      quarter = "Q1"
-      quarter = "Q2" if month.between?(4,6)
-      quarter = "Q3" if month.between?(7,9)
-      quarter = "Q4" if month.between?(10,12)
-
-      if data['pageviews'].to_i > 0 || data['events'].to_i > 0
-        quarter1 = "#{data['year']}<__>Pageviews"
-        quarter2 = "#{data['year']}<__>CTR"
-
-       if !page_view_data_quarterly[quarter1]
-          page_view_data_quarterly[quarter1] = {"Q1" => 0, "Q2" => 0, "Q3" => 0, "Q4" => 0}
-          page_view_data_quarterly[quarter1][quarter] =  data['pageviews'].to_i             
-       else
-          page_view_data_quarterly[quarter1][quarter] = page_view_data_quarterly[quarter1][quarter] + data['pageviews'].to_i
-       end
-
-       if !page_view_data_quarterly[quarter2]
-          page_view_data_quarterly[quarter2] = {"Q1" => 0, "Q2" => 0, "Q3" => 0, "Q4" => 0}
-          page_view_data_quarterly[quarter2][quarter] = data['events'].to_i            
-       else
-          page_view_data_quarterly[quarter2][quarter] = page_view_data_quarterly[quarter2][quarter] + data['events'].to_i
-       end       
-      end        
+        else          
+          old_content_to_change << k            
+        end        
       end
-
-
-    else
-      page_view_data_arr2 = old_content
+      pg_view = page_view_data_quarterly.shift[1]
+      ctr_view = page_view_data_quarterly.shift[1]
+      for pi in 1..4
+        old_content_to_change[0][pi] = old_content_to_change[0][pi].to_i + pg_view["Q#{pi}"].to_i
+        old_content_to_change[1][pi] = old_content_to_change[1][pi].to_i + ctr_view["Q#{pi}"].to_i
+      end
+      old_content_to_change.each {|k| old_content_to_push << k}
+      data_filz.update_attributes({content: old_content_to_push.to_s})
     end
-    data_filz.update_attributes({content: page_view_data_arr2.to_s})
-    #adding to viz
-    viz_viz = Viz::Viz.where(title: file_name).first    
-    if viz_viz.nil?
-      viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Grouped Column Chart - Filter")
-    else
-      Viz::Viz.find(viz_viz.id).update_attributes({chart: "Grouped Column Chart - Filter", data_filz_id: data_filz.id})
-    end
-
     #Get Media type    
     api_provider_type = "DATA_PROVIDER"
     if provider_type == "PR"
@@ -281,7 +235,6 @@ month = data["month"].to_i
     if provider_name_slug.include?("&")
       e_url = URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")  
     end
-
     reusable = open(e_url).read
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
@@ -311,58 +264,51 @@ month = data["month"].to_i
       end
 
     end
-
+    
     # For top 25 countries
     ga_dimension  = "ga:month,ga:year,ga:country"
     ga_metrics    = "ga:pageviews"    
     ga_sort       = '-ga:pageviews'
     ga_max_result = 25
     quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
-    for l_year in 2012..Date.today.year
-      to_quarter = 4
-      if l_year == Date.today.year
-        to_quarter  = ((((Date.today.at_beginning_of_month - 1).month - 1) / 3) + 1)
+    l_year = Date.parse(ga_start_date).year
+    l_quarter  = ((((Date.parse(ga_start_date)).month - 1) / 3) + 1)
+    qq_s = quarter_hash["q#{l_quarter}"][0]
+    qq_e = quarter_hash["q#{l_quarter}"][1]
+    ga_start_date = "#{l_year}-#{qq_s}"
+    counter = 1
+    counter = 1
+    provider_ids.each do |provider_id|
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
+      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
+      tmp_data = tmp_data["rows"]
+      next if tmp_data.nil?          
+      page_country_aggr = {}
+      tmp_data.each do |d|
+        #custom_regex = "#{provider_id}"
+        custom_regex = "q#{l_quarter}<__>#{d[1]}<__>#{d[2]}"
+        if !page_country_aggr[custom_regex]
+          page_country_aggr[custom_regex] = d[3].to_i
+          counter += 1
+        else  
+          page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
+        end                  
+        break if counter > 25
+      end # End of GA          
+      page_country_aggr.each do |px, y|
+        final_value = {}
+        x = px.split("<__>")
+        final_value['count'] = y            
+        final_value['quarter'] = x[0]
+        final_value['year'] = x[1].to_i
+        final_value['country'] = x[2]
+        page_country_data << final_value
       end
-
-      for l_quarter in 1..to_quarter
-        qq_s = quarter_hash["q#{l_quarter}"][0]
-        qq_e = quarter_hash["q#{l_quarter}"][1]
-        ga_start_date = "#{l_year}-#{qq_s}"
-        ga_end_date   = "#{l_year}-#{qq_e}"
-
-        counter = 1
-        provider_ids.each do |provider_id|
-          ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
-          tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
-          tmp_data = JSON.parse(tmp_data.to_json)["rows"]
-          next if tmp_data.nil?          
-          page_country_aggr = {}
-          tmp_data.each do |d|
-            #custom_regex = "#{provider_id}"
-            custom_regex = "q#{l_quarter}<__>#{d[1]}<__>#{d[2]}"
-            if !page_country_aggr[custom_regex]
-              page_country_aggr[custom_regex] = d[3].to_i
-              counter += 1
-            else  
-              page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
-            end                  
-            break if counter > 25
-          end # End of GA          
-          page_country_aggr.each do |px, y|
-            final_value = {}
-            x = px.split("<__>")
-            final_value['count'] = y            
-            final_value['quarter'] = x[0]
-            final_value['year'] = x[1].to_i
-            final_value['country'] = x[2]
-            page_country_data << final_value
-          end
-        end # End of provider
-      end # End of Quarter
-    end # End of Year
-    
+    end #End of Provider
+     
     if page_country_data.count > 0
-      page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      #page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      page_country_data_arr = []
       page_country_data.each do |kvalue|
         country = kvalue['country']
         iso_code = IsoCode.where(country: country).first
@@ -373,33 +319,24 @@ month = data["month"].to_i
           code = ""
           continent = ""
         end      
-        page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+        page_country_data_arr << [kvalue['quarter'], kvalue['year'].to_i, code, country, continent, kvalue['count']]
       end
-      page_country_data_arr = page_country_data_arr.to_s
-    else
-      page_country_data_arr = nil
-    end
-  
-    # Now add or update to top 25 countries table      
-    file_name = provider_name + " Top 25 Countries"
-    data_filz = Data::Filz.where(file_file_name: file_name).first
-    if data_filz.nil?
-      data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: page_country_data_arr )
-    else
-      Data::Filz.find(data_filz.id).update_attributes({content: page_country_data_arr})
-    end
-    
-    # Now adding to viz
-    Viz::Viz.where(title: file_name).destroy_all
-    viz_viz = Viz::Viz.create!(title: file_name, data_filz_id: data_filz.id, chart: "Maps")
 
+      file_name = provider_name + " Top 25 Countries"
+      data_filz = Data::Filz.where(file_file_name: file_name).first
+      old_content = JSON.parse(data_filz.content)
+      old_content_to_push = [old_content.shift]
+      old_content.each do |k|
+        old_content_to_push << k  unless k[0] == "q#{l_quarter}" and k[1].to_i == l_year
+      end
+      page_country_data_arr.each {|k| old_content_to_push << k} 
+      data_filz.update_attributes({content: old_content_to_push.to_s})
+    end
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
     ga_max_result = 10000
-    ga_start_date = "2012-01-01"
-    ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
     header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
     top_ten_digital_objects = []
@@ -411,8 +348,16 @@ month = data["month"].to_i
     ten_records_arr = {}
     min_year = Date.today.year
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
-      g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"      
+
+      begin
+        g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
+      rescue Exception => e
+        get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
+        access_token = JSON.parse(get_access_token.to_json)['access_token']    
+        g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)        
+      end
+
       data = g['rows']
       
       next if data.nil?
@@ -547,18 +492,19 @@ month = data["month"].to_i
         format_data << [title, image_url, size, title_url, year, quarter]      
       end
     end
-    top_ten_digital_objects = format_data    
-
+    top_ten_digital_objects = format_data
     if top_ten_digital_objects.count > 1 
+      top_ten_digital_objects.shift
       file_name = provider_name + " Top 10 Digital Objects"
       data_filz = Data::Filz.where(file_file_name: file_name).first
-      if data_filz.nil?
-        data_filz = Data::Filz.create!(genre: "API", file_file_name: file_name, content: top_ten_digital_objects.to_s )
-      else
-        Data::Filz.find(data_filz.id).update_attributes({content: top_ten_digital_objects.to_s})
+      old_content = JSON.parse(data_filz.content)
+      old_content_to_push = [old_content.shift]
+      old_content.each do |k|
+        old_content_to_push << k  unless k[5] == "q#{l_quarter}" and k[4].to_i == l_year
       end
+      top_ten_digital_objects.each{|k| old_content_to_push << k}
+      data_filz.update_attributes({content:old_content_to_push.to_s})
     end
-
     params = {name: provider_name}
     #adding to Article
     if args[:wiki_name] and (!args[:wiki_name].nil? or !args[:wiki_name].blank?)
