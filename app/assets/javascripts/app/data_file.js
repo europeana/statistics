@@ -157,10 +157,12 @@ function GenereteChartInMarkdown() {
     //addCustomColumnGroupChart("#page_view_click_chart");
   }
   if($("#top-25-countries-map").attr("chart") == "custom-maps-chart") {
-    var slug_id = $("#top-25-countries-map").attr("data-slug-id");    
-    $.get("/generate/chart/" + slug_id +"?mapschart=nil&mapschartquarter=nil", function(vdata, status) {
+    var slug_id = $("#top-25-countries-map").attr("data-slug-id");
+    var qtr_val = $(".filter-quarter-data.selected")[0].innerText;
+    var year    = parseInt($(".filter-data-chart.selected")[0].innerHTML);
+    $.get("/generate/chart/" + slug_id +"?mapschart="+year+"&mapschartquarter="+qtr_val, function(vdata, status) {
       addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
-    });  
+    });    
   }
   gon.mapped_output = {}
   gon.lineChartData = {}

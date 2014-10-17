@@ -28,7 +28,6 @@
   .col-sm-12
     .col-sm-6
       %h4= @template["media_types_title"]
-      %br
       = @template["media_types_description"]
       %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type",style:"min-height:250px"}
       =link_to "Get The Data", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
@@ -97,9 +96,9 @@
 /       =
 
 -quarter = "q1"
--quarter = "q2" if Date.today.month.between?(4,6)
--quarter = "q3" if Date.today.month.between?(7,9)
--quarter = "q4" if Date.today.month.between?(10,12)
+-quarter = "q2" if (Date.today.month - 1).between?(4,6)
+-quarter = "q3" if (Date.today.month - 1).between?(7,9)
+-quarter = "q4" if (Date.today.month - 1).between?(10,12)
 
 // Click filter to change chart as per year
 // add class name filter-data-chart
@@ -116,15 +115,14 @@
       $(this).addClass("selected")
       $.get("/generate/chart/#{@selected_article}-traffic?gcolchart="+this.id, function(vdata, status) {
         addCustomColumnGroupChart("#page_view_click_chart", vdata);      
-     });
+      });
 
      $("#top-25-countries-map").empty();
-      var slug_id = $("#top-25-countries-map").attr("data-slug-id");    
+      var slug_id = $("#top-25-countries-map").attr("data-slug-id");
       var qtr_val = $(".filter-quarter-data.selected")[0].innerText;
       $.get("/generate/chart/" + slug_id +"?mapschart="+this.id+"&mapschartquarter="+qtr_val, function(vdata, status) {
         addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
       });  
-
     })
 
     var quarter = "#{quarter}";
@@ -142,7 +140,7 @@
       $(".filter-quarter-data").removeClass("selected");
       $(this).addClass("selected");
 
-      var slug_id = $("#top-25-countries-map").attr("data-slug-id");    
+      var slug_id = $("#top-25-countries-map").attr("data-slug-id");
       var qtr_val = $(".filter-quarter-data.selected")[0].innerText;
       var year    = parseInt($(".filter-data-chart.selected")[0].innerHTML);
       $("#top-25-countries-map").empty();
