@@ -168,7 +168,7 @@
     end    
 
     if page_view_data_quarterly.count > 0    
-      page_view_data_arr2 = [["Year", "Q1", "Q2", "Q3", "Q4","Label"]]
+      page_view_data_arr2 = [["Label", "Q1", "Q2", "Q3", "Q4","Year"]]
       page_view_data_quarterly.each do |q_key, q_value|
         qx_value = q_key.split("<__>")
         year  = qx_value[0]
@@ -376,8 +376,16 @@
     ten_records_arr = {}
     min_year = Date.today.year
     provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
-      g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
+      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"      
+
+      begin
+        g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)
+      rescue Exception => e
+        get_access_token =  Nestful.post "https://accounts.google.com/o/oauth2/token?method=POST&grant_type=refresh_token&refresh_token=#{ga_refresh_token}&client_id=#{ga_client_id}&client_secret=#{ga_client_secret}"
+        access_token = JSON.parse(get_access_token.to_json)['access_token']    
+        g = JSON.parse(open(URI.encode("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_result}")).read)        
+      end
+
       data = g['rows']
       
       next if data.nil?

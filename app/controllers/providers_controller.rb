@@ -43,7 +43,7 @@ class ProvidersController < ApplicationController
   # POST /providers.json
   def create
     provider_name = params[:provider][:name]
-    @provider = Provider.where(name: provider_name)
+    @provider = Provider.where(name: provider_name).first
     if @provider.nil?
       @provider = Provider.new(params[:provider])
       if @provider.save
@@ -55,19 +55,14 @@ class ProvidersController < ApplicationController
         format.html { render action: "new" }
       end
     else
-      @provider = @provider.first
-      provider_ids = @provider.provider_id
-      new_provider_ids = params[:provider][:provider_id]
-      provider_ids = provider_ids +" "+new_provider_ids
-      provider_ids = provider_ids.split(" ").uniq.join(" ")
-      @provider.update_attributes(name: provider_name, provider_id: provider_ids, provider_type: params[:provider][:provider_type])
+      @provider.update_attributes(name: provider_name, provider_id: params[:provider][:provider_id], provider_type: params[:provider][:provider_type])
       if params[:run_builder].present?
         @provider.start_page_builder_process
         notice = "Page is started generating, take several seconds"
       else
         notice = "Provider Already Present. Updated Attributes"
       end
-        redirect_to providers_path, notice: "#{notice}"
+      redirect_to providers_path, notice: "#{notice}"
     end
   end
 
