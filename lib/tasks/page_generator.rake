@@ -24,8 +24,8 @@
       provider.save!      
     end
     
-    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)            
-    begin                                          
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+    begin                                                
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -76,7 +76,7 @@
     page_country_data = []
      
     # #, max_results: 999999999
-    ga_start_date  = '2010-01-01'
+    ga_start_date  = '2012-01-01'
     ga_end_date    = Date.today.strftime("%Y-%m-%d")
     ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
@@ -283,7 +283,7 @@
     ga_sort       = '-ga:pageviews'
     ga_max_result = 25
     quarter_hash  = {"q1" => ["01-01", "03-31"], "q2" => ["04-01", "06-30"], "q3" => ["07-01","09-30"], "q4" => ["10-01", "12-31"]}
-    for l_year in 2010..Date.today.year
+    for l_year in 2012..Date.today.year
       to_quarter = 4
       if l_year == Date.today.year
         to_quarter  = ((((Date.today.at_beginning_of_month - 1).month - 1) / 3) + 1)
@@ -363,7 +363,7 @@
     ga_dimension="ga:pagePath,ga:month,ga:year"    
     ga_sort= "-ga:pageviews"
     ga_max_result = 10000
-    ga_start_date = "2010-01-01"
+    ga_start_date = "2012-01-01"
     ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
     header_data = ["title","image_url","size","title_url","year","quarter"]
     europeana_url = "http://europeana.eu/api/v2/"
