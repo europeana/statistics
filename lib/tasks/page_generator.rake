@@ -242,9 +242,10 @@
     end
 
     #Get Reusable
-    e_url = "http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY"
+    
+    e_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=REUSABILITY&profile=facets&rows=0"
     if provider_name_slug.include?("&")
-      e_url = URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")  
+      e_url = URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=REUSABILITY&profile=facets&rows=0")  
     end
 
     reusable = open(e_url).read
@@ -503,15 +504,14 @@
         uniq_data[key][title]["size"]  = uniq_data[key][title]["size"] + size      
       end
     end
-    
-    format_data = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    format_data = []
     count = 0
     uniq_data.each do |k,u|
       keys = u.keys
       keys.shift
       keys.each do |key|
         d_data = u[key]["data"]
-        title = d_data["title"]
+        title = d_data["title"].class == "Array" ? d_data["title"][0] : d_data["title"]
         image_url = d_data["image_url"]
         size =  d_data["size"].to_i
         title_url = d_data["title_url"]
@@ -520,8 +520,21 @@
         format_data << [title, image_url, size, title_url, year, quarter]      
       end
     end
-    top_ten_digital_objects = format_data    
-
+    format_data = format_data.sort_by{|k| [-k[4],-k[5][1].to_i,-k[2]]}
+    top_ten_digital_objects = [["title", "image_url", "size", "title_url", "year", "quarter"]]
+    for year in 2012..Date.parse(ga_end_date).year  
+      for quarter in 1..4
+        data_to_push = format_data.select{|l| l if l[5] == "q#{quarter}" and l[4] == "#{year}".to_i}
+        if !data_to_push.nil?  
+          count = 1
+          data_to_push.each do |k|
+            top_ten_digital_objects << k
+            count += 1
+            break if count > 10
+          end
+        end
+      end
+    end
     if top_ten_digital_objects.count > 1 
       file_name = provider_name + " Top 10 Digital Objects"
       data_filz = Data::Filz.where(file_file_name: file_name).first

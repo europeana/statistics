@@ -76,9 +76,9 @@ namespace :page_updater_new do
     page_country_data = []
      
     # #, max_results: 999999999
+    ga_ids         = "25899454"
     ga_start_date     = args[:start_date]
     ga_end_date       = args[:end_date]
-    ga_ids         = "25899454"
     ga_dimension   = "ga:month,ga:year"
     ga_metrics     = "ga:pageviews"
     provider_ids.each do |provider_id|
@@ -231,9 +231,9 @@ namespace :page_updater_new do
     end
 
     #Get Reusable
-    e_url = "http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY"
+    e_url = "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=REUSABILITY&profile=facets&rows=0"
     if provider_name_slug.include?("&")
-      e_url = URI.encode("http://europeana.eu/api//v2/search.json?wskey=api2demo&query=*%3A*%22#{provider_name_slug}%22&start=1&rows=24&profile=facets&facet=REUSABILITY")  
+      e_url = URI.encode("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{api_provider_type}%3a%22#{provider_name_slug}%22&facet=REUSABILITY&profile=facets&rows=0")  
     end
     reusable = open(e_url).read
     if reusable["facets"].present?
@@ -276,62 +276,61 @@ namespace :page_updater_new do
     qq_s = quarter_hash["q#{l_quarter}"][0]
     qq_e = quarter_hash["q#{l_quarter}"][1]
     ga_start_date = "#{l_year}-#{qq_s}"
-    counter = 1
-    counter = 1
-    provider_ids.each do |provider_id|
-      ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
-      tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
-      tmp_data = tmp_data["rows"]
-      next if tmp_data.nil?          
-      page_country_aggr = {}
-      tmp_data.each do |d|
-        #custom_regex = "#{provider_id}"
-        custom_regex = "q#{l_quarter}<__>#{d[1]}<__>#{d[2]}"
-        if !page_country_aggr[custom_regex]
-          page_country_aggr[custom_regex] = d[3].to_i
-          counter += 1
-        else  
-          page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
-        end                  
-        break if counter > 25
-      end # End of GA          
-      page_country_aggr.each do |px, y|
-        final_value = {}
-        x = px.split("<__>")
-        final_value['count'] = y            
-        final_value['quarter'] = x[0]
-        final_value['year'] = x[1].to_i
-        final_value['country'] = x[2]
-        page_country_data << final_value
-      end
-    end #End of Provider
-     
-    if page_country_data.count > 0
-      #page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
-      page_country_data_arr = []
-      page_country_data.each do |kvalue|
-        country = kvalue['country']
-        iso_code = IsoCode.where(country: country).first
-        if !iso_code.nil?        
-          code = iso_code.code
-          continent = iso_code.continent
-        else
-          code = ""
-          continent = ""
-        end      
-        page_country_data_arr << [kvalue['quarter'], kvalue['year'].to_i, code, country, continent, kvalue['count']]
-      end
+      counter = 1
+      provider_ids.each do |provider_id|
+        ga_filters    = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider_id}/"
+        tmp_data = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{ga_ids}&metrics=#{ga_metrics}&dimensions=#{ga_dimension}&filters=#{ga_filters}&sort=#{ga_sort}&max_results=#{ga_max_result}").read)
+        tmp_data = tmp_data["rows"]
+        next if tmp_data.nil?          
+        page_country_aggr = {}
+        tmp_data.each do |d|
+          #custom_regex = "#{provider_id}"
+          custom_regex = "q#{l_quarter}<__>#{d[1]}<__>#{d[2]}"
+          if !page_country_aggr[custom_regex]
+            page_country_aggr[custom_regex] = d[3].to_i
+            counter += 1
+          else  
+            page_country_aggr[custom_regex] = page_country_aggr[custom_regex] + d[3].to_i
+          end                  
+          break if counter > 25
+        end # End of GA          
+        page_country_aggr.each do |px, y|
+          final_value = {}
+          x = px.split("<__>")
+          final_value['count'] = y            
+          final_value['quarter'] = x[0]
+          final_value['year'] = x[1].to_i
+          final_value['country'] = x[2]
+          page_country_data << final_value
+        end
+      end #End of Provider
+       
+      if page_country_data.count > 0
+        #page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+        page_country_data_arr = []
+        page_country_data.each do |kvalue|
+          country = kvalue['country']
+          iso_code = IsoCode.where(country: country).first
+          if !iso_code.nil?        
+            code = iso_code.code
+            continent = iso_code.continent
+          else
+            code = ""
+            continent = ""
+          end      
+          page_country_data_arr << [kvalue['quarter'], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+        end
 
-      file_name = provider_name + " Top 25 Countries"
-      data_filz = Data::Filz.where(file_file_name: file_name).first
-      old_content = JSON.parse(data_filz.content)
-      old_content_to_push = [old_content.shift]
-      old_content.each do |k|
-        old_content_to_push << k  unless k[0] == "q#{l_quarter}" and k[1].to_i == l_year
+        file_name = provider_name + " Top 25 Countries"
+        data_filz = Data::Filz.where(file_file_name: file_name).first
+        old_content = JSON.parse(data_filz.content)
+        old_content_to_push = [old_content.shift]
+        old_content.each do |k|
+          old_content_to_push << k  unless k[0] == "q#{l_quarter}" and k[1].to_i == l_year
+        end
+        page_country_data_arr.each {|k| old_content_to_push << k} 
+        data_filz.update_attributes({content: old_content_to_push.to_s})
       end
-      page_country_data_arr.each {|k| old_content_to_push << k} 
-      data_filz.update_attributes({content: old_content_to_push.to_s})
-    end
     #Get Top Ten Digital Objects
     ga_metrics="ga:pageviews"
     ga_dimension="ga:pagePath,ga:month,ga:year"    
@@ -502,6 +501,7 @@ namespace :page_updater_new do
       old_content.each do |k|
         old_content_to_push << k  unless k[5] == "q#{l_quarter}" and k[4].to_i == l_year
       end
+      top_ten_digital_objects.sort_by{|k| -k[2]}
       top_ten_digital_objects.each{|k| old_content_to_push << k}
       data_filz.update_attributes({content:old_content_to_push.to_s})
     end
