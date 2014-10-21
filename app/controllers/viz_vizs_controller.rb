@@ -107,6 +107,7 @@ class VizVizsController < ApplicationController
           params[:mapschartquarter] = "q#{((((Date.today.at_beginning_of_month).month - 1) / 3) + 1)}"
         end
         mapped_output = Core::Services.twod_to_csv(Viz::Viz.formatInMapsChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:mapschart], params[:mapschartquarter]))
+        #mapped_output = Viz::Viz.formatInMapsChart(JSON.parse(Data::Filz.find(@viz_viz.data_filz_id).content), params[:mapschart], params[:mapschartquarter])
         mapped_output2 = mapped_output        
       else
         mapped_output = JSON.parse(@viz_viz.mapped_output)

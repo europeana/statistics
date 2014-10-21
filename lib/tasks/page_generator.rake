@@ -335,6 +335,7 @@
         if !iso_code.nil?        
           code = iso_code.code
           continent = iso_code.continent
+          #continent = ""
         else
           code = ""
           continent = ""

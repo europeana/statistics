@@ -330,7 +330,30 @@ function addCustomDataWrapperMap(selector, data) {
     container: $(selector),
     datasource:   dw.datasource.delimited({csv: data})
   });
-
+  //var id = $("#page_view_country_chart").attr("data-slug-id");
+  // var content = data;
+  // var ultimateGroupColumn2 = [];
+  // for(i in content) {        
+  //   if(i > 0) {
+  //     var cc = content[i];     
+  //     if (cc[0] !== "") {
+  //       var tooltip = "<table class='PykCharts'><tr><th>" + cc[1] + "</th></tr><tr><td>" + cc[2] + "</td></tr></table>";
+  //       ultimateGroupColumn2.push({
+  //         iso2: cc[0],
+  //         size: parseInt(cc[2]),
+  //         tooltip: tooltip
+  //       });
+  //     }
+  //   }
+  // }
+  // var width = $("#top-25-countries-map").parent("div").width();
+  // var k = new PykCharts.maps.oneLayer({
+  //   selector: selector,
+  //   data: ultimateGroupColumn2,
+  //   chart_width: 1000,
+  //   chart_height: 500
+  // });
+  // k.execute();
 }
 function addCustomColumnGroupChart(selector, data) {
   dw.visualize({

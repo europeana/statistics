@@ -6,10 +6,14 @@
   }
   .selected{
     text-decoration: underline;
-    font-weight: bold
+    font-weight: bold;
   }
   .scale_title{
     margin-top: 10px
+  }
+  .PykCharts-map{
+    border:none !important;
+    margin-top: -100px;
   }
 -if !@cms_article.description.nil?
   .row
@@ -60,6 +64,7 @@
     .br
     .br
     #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
+    -#page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 600px;"}
     =link_to "Get The Data", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
     / %img{src: "images/views_and_clickthroughs.png"}
     %br
@@ -68,8 +73,10 @@
     %h4= @template["top_25_countries_title"]
     =@template["top_25_countries_description"]    
     %p
-      #quarter-filter    
-    #top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "width: 100%; height: 600px;"}   
+      #quarter-filter  
+    #top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "width: 100%; height: 600px;"}
+    -#top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "height: 500px;"}  
+    %br 
     =link_to "Get The Data", "/articles/#{@selected_article}-top-25-countries/csv", class: 'pull-right' 
     %br
     /%img{src: "images/top_25_countries.png"}
