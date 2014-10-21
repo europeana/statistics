@@ -1,6 +1,6 @@
 class DataFilzsController < ApplicationController
   
-  before_filter :authenticate_user!, :find_objects, except: [:json_data, :euro_api]
+  before_filter :authenticate_user!, :find_objects, except: [:json_data, :euro_api,:csv]
   before_filter :find_objects
 
   def index
