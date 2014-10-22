@@ -248,6 +248,14 @@ class Viz::Viz < ActiveRecord::Base
     new_data
   end
 
+  def self.formatInKartoMapsChart(data, year, quarter)
+    year = year.to_i
+    data.shift()
+    new_data = {}        
+    data.each  {|d| new_data[d[2]] = d[4] if quarter.downcase == d[0].downcase and year == d[1] and !d[2].blank?}
+    new_data
+  end
+
   #UPSERT
   #JOBS
   #PRIVATE

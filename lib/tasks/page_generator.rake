@@ -321,7 +321,8 @@
     end # End of Year
 
     if page_country_data.count > 0
-      page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      #page_country_data_arr = [["quarter", "year", "iso3", "country", "continent", "count"]]
+      page_country_data_arr = [["quarter", "year", "iso3", "country", "count"]]
       page_country_data.each do |kvalue|
         country = kvalue['country']
         iso_code = IsoCode.where(country: country).first
@@ -333,7 +334,8 @@
           code = ""
           continent = ""
         end      
-        page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+        #page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, continent, kvalue['count']]
+        page_country_data_arr << [kvalue['quarter'  ], kvalue['year'].to_i, code, country, kvalue['count']]
       end
       page_country_data_arr = page_country_data_arr.to_s
     else

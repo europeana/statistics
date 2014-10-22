@@ -324,12 +324,13 @@ function GenereteChartInMarkdown() {
 }
 
 function addCustomDataWrapperMap(selector, data) {
-  dw.visualize({
-    type: 'maps', 
-    theme: 'default', 
-    container: $(selector),
-    datasource:   dw.datasource.delimited({csv: data})
-  });
+  addKartoGraphMapChart(selector,data)
+  // dw.visualize({
+  //   type: 'maps', 
+  //   theme: 'default', 
+  //   container: $(selector),
+  //   datasource:   dw.datasource.delimited({csv: data})
+  // });
   //var id = $("#page_view_country_chart").attr("data-slug-id");
   // var content = data;
   // var ultimateGroupColumn2 = [];
@@ -1206,3 +1207,47 @@ function beforCrossfilterAppendHtml(options) {
       });
     };
   })(jQuery);
+
+function addKartoGraphMapChart(selector, json_data) {
+  console.log(json_data,"sssssssss")
+  $(selector).empty();
+  var map, colorscale,dep_data = {}, w = $(selector).width()
+
+  $.fn.qtip.defaults.style.classes = 'ui-tooltip-bootstrap';
+  $.fn.qtip.defaults.style.def = false;
+  
+  $.ajax({
+    url: '/map.json',
+    dataType: 'json',
+    success: function(data) {
+      pop_density = {};
+      data["keys"].forEach(function(i,v) {
+        //pop_density[i] = Math.floor((Math.random() * 100000 + Math.random() * 100000));
+        if (json_data[i]) pop_density[i] = json_data[i];
+      });
+
+      dep_data = pop_density;
+      
+      map = kartograph.map(selector, w, (w/2));
+      color = chroma.scale("Greens").domain(dep_data, 7, 'quantiles');
+
+      map.loadMap('/worldmap.svg', function() {
+        
+        map.addLayer('layer0', {
+          titles: function(d) { return d.key },
+          styles: {
+            stroke: '0.5px',
+            fill: function(d) {
+              if (isNaN(d.key)) return color(dep_data[d.key]); 
+            }
+           },
+          tooltips: function(d) {
+            return [d.label, pop_density[d.key]];             
+          }
+        });        
+      });
+    }
+  });
+
+
+}
