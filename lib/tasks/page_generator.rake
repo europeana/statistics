@@ -23,9 +23,9 @@
       provider.error_message = nil
       provider.save!      
     end
-        
-    begin                                                
-      Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)    
+    
+    Rake::Task["page_generator:ga_queries"].invoke(provider_name, provider_id,provider_type,provider_wiki_name)        
+    begin                                                      
       provider.request_end = Time.now
       provider.is_processed = true
       provider.error_message = nil
@@ -249,10 +249,10 @@
     if reusable["facets"].present?
       all_types = JSON.parse(reusable)["facets"][0]["fields"]
       reusable_data = {}
-      all_types.each do |type|        
-        reusable_data[type["label"]] = type["count"].to_i if type["count"].to_i > 0
+      new_label = {"open" => "With Attribution", "permission" => "Only with permission", "restricted" => "With restrictions"}
+      all_types.each do |type|
+        reusable_data[new_label[type["label"]]] = type["count"].to_i if type["count"].to_i > 0
       end
-      
       values_data = reusable_data.to_a
       values_data.unshift(['Type', 'Size'])
       reusable_data_formatted =  values_data
