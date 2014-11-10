@@ -10,6 +10,7 @@
   .col-sm-6           
     = simple_form_for(@cms_article, url: url, html: {role: "form"}) do |f|
       = f.input :title, autofocus: true, label: false, placeholder: "Title", input_html: {class: "col-sm-12"}
+      %input{value: "", id: "nested_pages", name: "nested_pages", type: "hidden"}        
       #editor
         %table.table-horizontal
           %td
@@ -26,13 +27,73 @@
         = f.input :tag, label: false, placeholder: "Tag the article", input_html: {class: "col-sm-12"}
         %br
         %div{style: "margin-top: 5px;"}
-        %span= f.check_box :home_page
+        %span{style: "margin-left:10px"}= f.check_box :home_page
         %span Make Default page
-        %br
-        %br
+        %hr{style: "margin:10px"}
+        -if action_name == "new"
+          %span{style: "margin-left:10px"}= f.check_box :has_nested_pages, id: "nested_pages_box"
+          %span Make Nested pages
+          %br
+          %br
+          .nested{style: "display:none"}
+            .pages
+              .row.pages_options
+                .col-sm-12
+                  .col-sm-6
+                    %input{type: "text", class: "nested_input", placeholder: "Provide title for menu"}
+                  .col-sm-6
+                    %select{class: "nested_page", style: "width:80%;height:27px;"}
+                      %option{value: ""} 
+                      -@all_articles_titles.each do |article|
+                        %option{value: article.slug}=article.title
+            %br
+            .row{style: "margin-top:10px; margin-left:5px"}
+              .col-sm-12
+                .pull-left
+                  %span#more_pages{style: "cursor:pointer"} More
+
+        -if action_name == "edit"
+          %span{style: "margin-left:10px"}= f.check_box :has_nested_pages, id: "nested_pages_box"
+          %span Make Nested pages
+          - display = "none"
+          - display = "block" if @cms_article.has_nested_pages?
+          .nested{style: "display:#{display}"}
+            .pages
+              .row.pages_options
+                .col-sm-12.option{style: "display:none"}
+                  .col-sm-6
+                    %input{type: "text", class: "nested_input", placeholder: "Provide title for menu"}
+                  .col-sm-6
+                    %select{class: "nested_page", style: "width:80%;height:27px;"}
+                      %option{value: ""} 
+                      -@all_articles_titles.each do |article|
+                        %option{value: article.slug}=article.title
+              -if @csm_article_nested_content
+                .row
+                  .col-sm-12
+                    -@csm_article_nested_content.each do |nested_data|
+                      %br
+                      %br
+                      .col-sm-6
+                        %input{type: "text", class: "nested_input", value: "#{nested_data['name']}"}
+                      .col-sm-6
+                        %select{class: "nested_page", style: "width:80%;height:27px;"}
+                          %option{value: ""} 
+                          -@all_articles_titles.each do |article|
+                            -if nested_data['page'] == article.slug
+                              %option{value: article.slug,selected: "selected"}=article.title
+                            -else
+                              %option{value: article.slug}=article.title
+                    %br
+            .row{style: "margin-top:10px;"}
+              .col-sm-12
+                .pull-left
+                  %span#more_pages{style: "cursor:pointer"} More
+        %br 
+        %hr{style:"margin-top:10px"}
         - if !@cms_article.is_published
-          = f.submit 'Save as Draft', class: "btn alt", id: "submit", style: "width: 150px;"
-        = f.submit "Publish", class: "btn alt", id: "submit", style: "width: 100px;"
+          = f.submit 'Save as Draft', class: "btn alt submit", id: "submit", style: "width: 150px;"
+        = f.submit "Publish", class: "btn alt submit", id: "submit", style: "width: 100px;"
     
   .col-sm-6
     #preview.wmd-preview{:style => "height: 690px; overflow:auto; background: #F2F2F2;"} Live preview
@@ -64,22 +125,24 @@
             %tr
               %td Box one with 50% width
               %td Box two with 50% width
-        %a{class: "layout-chart", src: "1x3", style: "color: white;"}
-          %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
-            %tr
-              %td Box one with 33% width
-              %td Box two with 33% width
-              %td Box three with 33% width
+        - if 1 == 2      
+          %a{class: "layout-chart", src: "1x3", style: "color: white;"}
+            %table.table.table-bordered{style: "background-color:steelblue;height:100px;"}
+              %tr
+                %td Box one with 33% width
+                %td Box two with 33% width
+                %td Box three with 33% width
+        %input{name: "vehicle", type: "checkbox", id: "allow-grid-view-box"}With Grid View
 
 - chart_type = ""
 - if @viz_viz.present?
   - chart_type = @viz_viz.chart
-
+- new_html = ""
 :javascript
   
   var $textBox;
   $(document).ready(function() {    
-
+    new_html = $(".pages_options").html().replace('style="display:none"','');
     if (1==2)  {
       $.ajaxSetup({ 
         'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")} 
@@ -163,3 +226,34 @@
   });
 
   $("#input").trigger("keyup");
+
+  $("#nested_pages_box").click(function(){
+    if($(this).prop("checked") == true){
+      $(".nested").show();
+    }
+    else{
+      $(".nested").hide();
+    }
+  });
+  $("#more_pages").click(function(){
+    $(".pages").append("<br><div class=row>"+new_html+"</div><br>")
+  });
+  $(".submit").click(function(){
+    var json_data = [],link_array = [],page_array = []
+    $(".nested_input").each(function(){
+      link_array.push(this.value.trim());
+    });
+    $(".nested_page").each(function(){
+      page_array.push(this.value.trim());
+    });
+    var length = page_array.length 
+    for(i=0;i<length;i++){
+      if(link_array[i] !== "" && page_array[i] !== ""){
+      tmp_object = {} 
+      tmp_object["name"] = link_array[i];
+      tmp_object["page"] = page_array[i];
+      json_data.push(tmp_object);
+      }
+    }
+    $("#nested_pages").val(JSON.stringify(json_data));
+  })

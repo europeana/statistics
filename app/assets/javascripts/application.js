@@ -25,6 +25,8 @@
 //Datawrapper js files
 //= require vendor/datawrapper/underscore-min
 //= require vendor/datawrapper/globalize.min
+//= require vendor/datawrapper/kartograph.min
+//= require vendor/datawrapper/jquery.qtip.min
 //= require vendor/datawrapper/raphael-min
 //= require vendor/datawrapper/d3-light.min
 //= require vendor/datawrapper/chroma.min

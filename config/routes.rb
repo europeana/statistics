@@ -1,7 +1,13 @@
 Pykhub::Application.routes.draw do
 
+  resources :providers
+
+
   #resource
-  resource :settings, only: [:show, :edit, :update]
+  resource :settings
+  #Settings
+  get "/template", to: "settings#template", as: "template_settings"
+  post "/template/save", to: "settings#update_template", as: "update_template"
 
   post '/login', to: "users#login", as: "login"  
   get '/login', to: "users#login", as: "login"
@@ -16,6 +22,8 @@ Pykhub::Application.routes.draw do
   post "/sort/tags", to: "cms_articles#sort", as: "sort_tags"
   get "/all-articles", to: "cms_articles#allArticles", as: "all_articles"
   get "/article/:file_id/:type", to: "cms_articles#publish_or_archieve", as: "pub_arch_article"
+  get "page/:parent_article/:nested_article_name/:nested_article", to: "cms_articles#nested_article", as: "nested_article"
+  get "report/:file_id/embed", to: "cms_articles#embed_article", as: "embed_article"
   
   #files
   get "/data", to: "data_filzs#index", as: "data_filzs"
@@ -47,6 +55,7 @@ Pykhub::Application.routes.draw do
   
   get "/:file_id", to: "cms_articles#show", as: "cms_article"
 
+  
   #Embed
   get "/embed/:file_id", to: "viz_vizs#embed", as: "embed_viz"
   

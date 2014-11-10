@@ -16,7 +16,7 @@ class Data::Filz < ActiveRecord::Base
 
   #VALIDATIONS
   validate :file_file_name, presence: true, uniqueness: true, length: {minimum: 2}
-  validates :content, length: {minimum: 5, message: "is too short (minimum is 5 rows)"}, allow_blank: true
+  #validates :content, length: {minimum: 5, message: "is too short (minimum is 5 rows)"}, allow_blank: true
 
   #CALLBACKS
   before_save :before_save_set
@@ -46,7 +46,7 @@ class Data::Filz < ActiveRecord::Base
 
     uri = URI("http://europeana.eu/api//v2/record/#{data_prodvier}/#{jsurl}.json?wskey=api2demo&profile=full")
     total_obj = JSON.parse(Net::HTTP.get(uri))['totalResults']
-
+    
     dump = []
     counter = 0 
     json_url.each do |jsurl|
@@ -355,14 +355,155 @@ class Data::Filz < ActiveRecord::Base
     total_views = [7, 7, 3, 3, 3, 2, 2, 2, 2, 1 ]      
     
   end
+
+  def self.ga_fetch_data
+    data_prodviers = {
+        :"9200105" => "Wellcome Library",
+        :"90402" => "Rijksmuseum",
+        :"92081" => "French National Library",
+        :"920025" => "British Library",
+        :"09102" => "MIMO",
+        :"9200182" => "National Library of Wales",
+        :"91909" => "Biblioteca de Catalunya",
+        :"91910" => "Biblioteca de Catalunya",
+        :"2020601" => "Europeana 1914-1918",
+        :"20238" => "Linked Heritage",
+        :"20220" => "HOPE",
+        :"92039" => "National Library of Portugal",
+        :"20261" => "Partage Plus",
+        :"2026005" => "Macedonian Museum of Contemporary Art for Greece",
+        :"11622" => "Naturkunde Museum Berlin",
+        :"2022360" =>"Imperial War Museum",
+        :"09209" => "Netherlands Institute for Sound and Vision", 
+        :"2021601" => "Netherlands Institute for Sound and Vision",
+        :"2022102" => "Netherlands Institute for Sound and Vision",
+        :"2021610" => "Netherlands Institute for Sound and Vision"
+    }
+
+    
+    ga.profile_id = 25899454
+    page_view_data = []
+    page_view_country = []
+    page_path_data = []
+    page_events = []
+    data_prodviers.each do |key, value|      
+      key = key.to_s
+      # First query
+      # page_view_aggr = {}
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"]})
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   custom_regex = "#{key}"
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|            
+      #       if k.to_s == "month" or k.to_s == "year"
+      #         require_fld[k] = v
+      #         custom_regex += "<__>#{v}"
+      #       end
+      #     end
+      #   end
+      #   if !page_view_aggr[custom_regex]
+      #     page_view_aggr[custom_regex] = d.metrics[0][:pageviews].to_i
+      #   else  
+      #     page_view_aggr[custom_regex] = page_view_aggr[custom_regex] + d.metrics[0][:pageviews].to_i
+      #   end
+
+      #   require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      # end
+
+      # final_value = {}
+      # page_view_aggr.each do |x, y|
+      #   x = x.split("<__>")
+      #   final_value['pageviews'] = y
+      #   final_value['provider_id'] = x[0]
+      #   final_value['month'] = x[1]
+      #   final_value['year'] = x[2]
+      #   final_value['country'] = x[3]
+      #   page_view_data << final_value
+      # end
+
+      #second query
+      page_view_country_aggr = {}
+      tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'country'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'] })
+      tmp_data.points.each do |d|
+        require_fld = {}  
+        custom_regex = "#{key}"
+        d.dimensions.each do |c|          
+          c.each do |k,v|            
+            if k.to_s == "year" or k.to_s == "country"
+              require_fld[k] = v
+              custom_regex += "<__>#{v}"
+            end
+          end
+        end
+        
+        if !page_view_country_aggr[custom_regex]
+          page_view_country_aggr[custom_regex] = d.metrics[0][:pageviews].to_i
+        else  
+          page_view_country_aggr[custom_regex] = page_view_country_aggr[custom_regex] + d.metrics[0][:pageviews].to_i
+        end        
+        require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+        require_fld["provider_id"] = key
+        require_fld["provider_name"] = value
+      end
+
+      page_view_country_aggr.each do |pk, pv|        
+        final_value = {}
+        pp = pk.split("<__>")
+        final_value['pageviews'] = pv
+        final_value['provider_id'] = pp[0]
+        #final_value['month'] = pp[1]
+        final_value['year'] = pp[1]
+        final_value['country'] = pp[2]
+        page_view_country << final_value
+    
+      end
+      
+      # #third query
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['pageTitle', 'hostname', 'pagePath'], :metrics => ['pageviews'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}"], :sort => ['-pageviews'], :max_results => 10 })      
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|                        
+      #       require_fld[k] = v
+      #     end
+      #   end
+      #   require_fld["pageviews"] = d.metrics[0][:pageviews].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      #   page_path_data << require_fld
+      # end
+
+      # # fourth query
+      # tmp_data = ga.get({ :start_date => '2005-01-01', :end_date => '2014-09-16', :dimensions => ['month', 'year', 'hostname', 'pagePath', 'eventCategory'], :metrics => ['totalEvents'],:filters => ['hostname == www.europeana.eu', "pagePath =~ /record/#{key}", 'eventCategory == Europeana Redirects']})      
+      # tmp_data.points.each do |d|
+      #   require_fld = {}  
+      #   d.dimensions.each do |c|          
+      #     c.each do |k,v|                        
+      #       require_fld[k] = v
+      #     end
+      #   end
+      #   require_fld["total_events"] = d.metrics[0][:totalEvents].to_i
+      #   require_fld["provider_id"] = key
+      #   require_fld["provider_name"] = value
+      #   page_events << require_fld
+      # end
+
+    end
+    all_data = {page_views: page_view_data.to_json, page_country: page_view_country, page_path: page_path_data, page_events: page_events}
+    all_data
+  end
   #UPSERT
   #JOBS
   #PRIVATE
   private
   
-  def before_save_set    
-    if self.content.present?
+  def before_save_set        
+    if self.content.present? and !self.content.nil?
       con = self.content.class.to_s == "String" ? JSON.parse(self.content) : self.content
+      return false if con.count <= 0
       con.delete_if{ |row| row.flatten.compact.empty? }
       new_header = Data::FilzColumn.get_headers(con)
       newa = []

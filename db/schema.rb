@@ -11,24 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140416135233) do
+ActiveRecord::Schema.define(:version => 20141009073508) do
 
-  create_table "cms_articles", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.date     "published_at"
-    t.boolean  "is_published"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-    t.string   "slug"
-    t.string   "tag"
-    t.boolean  "home_page"
-    t.integer  "position"
-    t.boolean  "archieved"
-    t.boolean  "is_deleted"
-  end
-
-  add_index "cms_articles", ["slug"], :name => "index_cms_articles_on_slug"
+# Could not dump table "cms_articles" because of following StandardError
+#   Unknown type 'json' for column 'nested_pages'
 
   create_table "cms_images", :force => true do |t|
     t.string   "slug"
@@ -71,10 +57,52 @@ ActiveRecord::Schema.define(:version => 20140416135233) do
 
   add_index "data_filzs", ["slug"], :name => "index_data_filzs_on_slug"
 
-  create_table "settings", :force => true do |t|
-    t.boolean  "masonry"
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0, :null => false
+    t.integer  "attempts",   :default => 0, :null => false
+    t.text     "handler",                   :null => false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "iso_codes", :force => true do |t|
+    t.string   "code"
+    t.string   "country"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "continent"
+  end
+
+  create_table "providers", :force => true do |t|
+    t.string   "provider_id"
+    t.string   "name"
+    t.string   "provider_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.datetime "requested_at"
+    t.datetime "request_end"
+    t.boolean  "is_processed"
+    t.string   "wiki_name"
+    t.string   "error_message"
+    t.text     "text_at_top"
+    t.text     "text_at_bottom"
+  end
+
+  create_table "settings", :force => true do |t|
+    t.boolean  "masonry"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "image"
+    t.string   "header_name"
+    t.text     "page_builder_config"
   end
 
   create_table "users", :force => true do |t|

@@ -91,9 +91,14 @@ class Viz::Viz < ActiveRecord::Base
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
       elsif self.chart == "Grouped Column Chart"
-        label = row[headings.index(map_json["X"])]
-        value = row[headings.index(map_json["Y"])]
-        group = row[headings.index(map_json["Group"])]
+        label = 0
+        value = 0
+        group = 0
+        unless headings.index(map_json["X"]).nil?
+          label = row[headings.index(map_json["X"])]
+          value = row[headings.index(map_json["Y"])]
+          group = row[headings.index(map_json["Group"])]
+        end
       elsif self.chart == "Stacked Column Chart"
         label = row[headings.index(map_json["X"])]
         value = row[headings.index(map_json["Y"])]
@@ -215,7 +220,42 @@ class Viz::Viz < ActiveRecord::Base
     end  
     transformed_data[0].to_json
   end
-  
+
+  def self.formatInColumnGroupChart(data, filter_on)
+    headers = data.shift()
+    keys    = []
+    new_data = []
+    data.each do |d|
+      c = d.pop
+      new_data << d if c == filter_on.to_i
+    end    
+    headers.each  {|d| keys << d.split(":")[0]}
+    keys.pop
+    new_data.unshift(keys)
+    new_data
+  end
+
+  def self.formatInMapsChart(data, year, quarter)
+    year = year.to_i
+    # quarter = "q1"
+    headers = data.shift()
+    keys    = []
+    new_data = []
+    headers = [headers[2], headers[3], headers[5]]
+    data.each  {|d| new_data << [d[2], d[3], d[5]]  if quarter.downcase == d[0].downcase and year == d[1] and !d[2].blank?}
+    headers.map  {|d| keys << d.split(":")[0] if !d.nil? }
+    new_data.unshift(keys)
+    new_data
+  end
+
+  def self.formatInKartoMapsChart(data, year, quarter)
+    year = year.to_i
+    data.shift()
+    new_data = {}        
+    data.each  {|d| new_data[d[2]] = d[4] if quarter.downcase == d[0].downcase and year == d[1] and !d[2].blank?}
+    new_data
+  end
+
   #UPSERT
   #JOBS
   #PRIVATE
@@ -223,7 +263,8 @@ class Viz::Viz < ActiveRecord::Base
   
   def before_save_set
     if self.map.present?     
-      raw_data = JSON.parse(self.data_filz.content) 
+      return false if self.data_filz.content.nil? or self.data_filz.content.blank?
+      raw_data = JSON.parse(self.data_filz.content)       
       headings = raw_data.shift
       headings = headings.collect{|h| h.split(":").first}
       map_json = JSON.parse(self.map).invert

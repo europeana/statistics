@@ -18,7 +18,6 @@
                     }
                 }),
                 vis = dw.visualization(opts.type);
-
             vis.meta = dw.__visMeta[opts.type];
             vis.lang = locale;
 

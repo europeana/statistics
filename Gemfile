@@ -16,14 +16,13 @@ gem 'unf' #brother of fog
 gem 'gon'
 gem 'acts_as_list'
 gem 'jquery-ui-rails'
-
+gem "whenever"
 # User Interface
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  gem 'jquery-rails'
-  
+  gem 'jquery-rails'  
 end
 gem 'haml'
 gem "bcrypt-ruby", :require => "bcrypt"
@@ -51,4 +50,9 @@ gem "carrierwave"
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
+end
+
+# Production
+group :production do 
+  gem "rack-timeout"
 end

@@ -1,0 +1,82 @@
+.container
+  .row
+    .col-sm-2
+      %br
+      %br
+      %br
+      %p{style: "color: gray;"}
+        %b Help:
+        %br
+        %br
+        Click on any of the items. It opens a text box. For single line text boxes, edit the text and press enter. For multi-line text area paragraphs, press Ctrl+Enter.
+    .col-sm-10{"ng-app" => "app", "ng-controller" => "Ctrl"} 
+      %br
+      %br
+      %h3{style: "color: lightgray;"} Title of the Article
+      %hr
+      .row
+        %h3
+          %a{"editable-text" => "template.collection_in_europeana_title", :href => "#" ,buttons:"no" } {{ template.collection_in_europeana_title || 'empty' }}
+        %h2 
+          123456
+        %p
+          %a{"editable-textarea" => "template.collection_in_europeana_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.collection_in_europeana_description || 'empty' }}
+      .row
+        .col-sm-6
+          %h4
+            %a{"editable-text" => "template.media_types_title", :href => "#",buttons:"no"} {{ template.media_types_title || 'empty' }}
+          %a{"editable-textarea" => "template.media_types_description", :href => "#","e-rows"=>"4","e-cols"=>"40",buttons:"no"} {{ template.media_types_description || 'empty' }}
+          %img{src: "images/media_types.png"}
+        .col-sm-6
+          %h4
+            %a{"editable-text" => "template.reusable_title", :href => "#",buttons:"no"} {{ template.reusable_title || 'empty' }}
+          %a{"editable-textarea" => "template.reusable_description", :href => "#","e-rows"=>"4","e-cols"=>"40",buttons:"no"} {{ template.reusable_description || 'empty' }}
+          %img{src: "images/reusable.png"}
+      .row
+        %br
+        %h2 
+          %a{"editable-text" => "template.views_on_europeana_title", :href => "#",buttons:"no"} {{ template.views_on_europeana_title || 'empty' }}
+        %a{"editable-textarea" => "template.views_on_europeana_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.views_on_europeana_description || 'empty' }}
+        %br
+        %br
+      .row
+        %h4
+          %a{"editable-text" => "template.views_and_clickthroughs_title", :href => "#",buttons:"no"} {{ template.views_and_clickthroughs_title || 'empty' }}
+        %a{"editable-textarea" => "template.views_and_clickthroughs_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.views_and_clickthroughs_description || 'empty' }}
+        %img{src: "images/views_and_clickthroughs.png"}
+        %br
+      .row
+        %h4
+          %a{"editable-text" => "template.top_25_countries_title", :href => "#",buttons:"no"} {{ template.top_25_countries_title || 'empty' }}
+        %a{"editable-textarea" => "template.top_25_countries_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.top_25_countries_description || 'empty' }}
+        %img{src: "images/top_25_countries.png"}        
+      .row
+        %h4
+          %a{"editable-text" => "template.top_10_digital_objects_title", :href => "#",buttons:"no"} {{ template.top_10_digital_objects_title || 'empty' }}
+        %a{"editable-textarea" => "template.top_10_digital_objects_description", :href => "#","e-rows"=>"4","e-cols"=>"100",buttons:"no"} {{ template.top_10_digital_objects_description || 'empty' }}
+        %br
+        %img{src: "images/top_10_digital_objects.png"}
+
+      .row
+        #json_div{style: "display:none"}{{template | json}}
+      .row
+        = form_tag("#{update_template_path}") do
+          %input{type: "hidden",name: "json_data", id: "json_data"}
+          = submit_tag 'Save', class: "btn", style: "width:20%;background:transparent;margin:20px", id: "save_template"
+
+:javascript
+  var app = angular.module("app", ["xeditable"]);
+  app.run(function(editableOptions) {
+    editableOptions.theme = 'bs3';
+  });
+  json_data = #{@template.to_json};
+  app.controller('Ctrl', function($scope) {
+    $scope.template = json_data
+  });
+
+  $("#save_template").click(function() {
+    var tt = JSON.stringify(JSON.parse($("#json_div").text()));
+    $("#json_data").val(tt);
+  });
+
+  

@@ -1,0 +1,99 @@
+:css
+  .cstm-btn{
+    height: 30px;
+    color: black;
+    font-size:0.9em;
+    padding: 0;
+    border-width:1px;
+    margin-bottom:10px;
+  }
+  .field{
+    margin: 5px;
+    margin-top:20px;
+  }
+  #save{
+    background: none;
+    height: 50px;
+    color: black;
+    border-width:1px;
+    margin-bottom:10px;
+    border-radius:0;
+    border:5px solid grey;
+  }
+
+= form_for @provider do |f| 
+  .row
+    .col-sm-12
+      - if @provider.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@provider.errors.count, "error")} prohibited this provider from being saved:"
+          %ul
+            - @provider.errors.full_messages.each do |msg|
+              %li= msg
+      .field
+        .col-sm-3
+        .col-sm-2
+          = f.label :name
+        .col-sm-4
+          = f.text_field :name
+      .clearfix
+      .field
+        .col-sm-3
+        .col-sm-2
+          = f.label :provider_id
+        .col-sm-4
+          = f.text_field :provider_id
+          .pull-right
+            %p{style: "color:lightgray;font-size:0.8em"}Multiple Provider IDs must be seperated by spaces
+      %br
+      %br
+      .clearfix
+      .field{style: "margin-top:5px"}
+        .col-sm-3
+        .col-sm-2
+          = f.label :wiki_name
+        .col-sm-4
+          = f.text_field :wiki_name, placeholder: "Specific Wiki-name of the Provider"   
+      .clearfix
+      .field
+        .col-sm-3
+        .col-sm-2
+          = f.label "text_at_top of the Provider report"
+        .col-sm-4
+          = f.text_area :text_at_top,rows: 4,cols: 80
+      %br
+      %br
+      %br
+      .clearfix
+      .row
+        .field
+          .col-sm-3
+          .col-sm-2
+            = f.label "text_at_bottom of the Provider report",style: "margin-left:8px"
+          .col-sm-4 
+            = f.text_area :text_at_bottom,rows: 4,cols: 80
+      %br
+      %br
+      %br
+      .clearfix
+      .field
+        .col-sm-3
+        .col-sm-2
+          = f.label :provider_type
+        .col-sm-4
+          = f.select :provider_type,[["Data Provider","DR"],["Provider","PR"]],{},{class: "btn cstm-btn"}
+      %br
+      %br
+      .row
+        .actions.field{style: "margin-top:15px"}
+          .col-sm-3
+          .col-sm-6
+            %input{type: "checkbox",id: "run_builder", name: "run_builder"} Do you want to run the Page Builder for this provider?
+            %br
+      .clearfix
+      .col-sm-5
+      .col-sm-2.field  
+        = f.submit 'Save',id: "save",class: ""
+
+      %br
+      %br

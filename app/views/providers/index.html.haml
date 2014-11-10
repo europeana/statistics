@@ -1,0 +1,53 @@
+:css
+  / table {
+  /   table-layout: fixed;
+  / }
+.container
+  .row
+    %br
+    %h1.pull-left Listing providers 
+    %h4= link_to "Edit Provider Report Template", template_settings_path, class: "pull-right"
+    %br
+    %table.table
+      %thead
+        %tr
+          %th Provider
+          %th Name
+          %th Wiki Name
+          %th Last Requested At
+          %th Last Data Pulled At
+          %th Provider type
+          %th
+          %th
+      %tbody
+        - @providers.each do |provider|
+          %tr
+            %td= provider.provider_id
+            %td
+              -if provider.is_processed
+                = link_to "#{provider.name}", provider
+              -elsif provider.is_processed == nil
+                = provider.name
+                .tag Need to be Processed...
+                -if !provider.error_message.nil? || !provider.error_message.blank?
+                  %p= "<b>Error:</b>(#{provider.error_message})".html_safe                
+              -else
+                = provider.name
+                .tag Processing...
+                -if !provider.error_message.nil? || !provider.error_message.blank?
+                  %p= "<b>Error:</b>(#{provider.error_message})".html_safe
+
+            %td= provider.wiki_name
+            %td= time_ago_in_words(provider.requested_at, true)+" ago" unless provider.requested_at.nil?
+            %td= time_ago_in_words(provider.request_end)+" ago" unless provider.request_end.nil?
+            -if provider.provider_type == "PR"
+              - provider_provider_type = "Provider"
+            -else
+              - provider_provider_type = "Data Provider"
+            %td= provider_provider_type
+            %td= link_to 'Edit', edit_provider_path(provider)
+            %td= link_to 'Destroy', provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+    = link_to 'New Provider', new_provider_path
+    %br
+    %br

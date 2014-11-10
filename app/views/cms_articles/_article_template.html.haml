@@ -1,0 +1,161 @@
+:css
+  .filter-data-chart{
+    cursor: pointer;
+    font-size: 1.4em;
+    margin-left: 5px;
+  }
+  .selected{
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  .scale_title{
+    margin-top: 10px
+  }
+  .PykCharts-map{
+    border:none !important;
+    margin-top: -100px;
+  }
+-if !@cms_article.description.nil?
+  .row
+    .col-sm-12
+      =@cms_article.description.html_safe
+-if @provider and !@provider.text_at_top.nil? 
+  .row
+    .col-sm-12
+      %p=@provider.text_at_top
+.row
+  .col-sm-12
+    %h3= @template["collection_in_europeana_title"]
+    %h2{id: "collection-in-europeana-api",:"provider-id" => "#{@cms_article.title}"}
+    %p=@template["collection_in_europeana_description"]
+.row
+  .col-sm-12
+    .col-sm-6
+      %h4= @template["media_types_title"]
+      = @template["media_types_description"]
+      %div{class: "pykih-viz column-chart",:"data-slug-id" => "#{@selected_article}-media-type",id: "#{@selected_article}-media-type",style:"min-height:250px"}
+      =link_to "Get The Data", "/articles/#{@selected_article}-media-type/csv", class: 'pull-left' 
+
+    .col-sm-6
+      %h4= @template["reusable_title"]
+      =@template["reusable_description"]
+      %div{class: "pykih-viz pie-chart",:"data-slug-id" => "#{@selected_article}-reusable",id: "#{@selected_article}-reusable",style:"min-height:250px"}
+      =link_to "Get The Data", "/articles/#{@selected_article}-reusable/csv", class: 'pull-right' 
+.clearfix
+.row
+  .col-sm-12
+    %h2= @template["views_on_europeana_title"]
+    =@template["views_on_europeana_description"]
+    %br
+    %br
+    %span{style: "font-size:1.4em"}Select year to view collection statistics on a per-year basis:
+    -@all_years.each do |year|
+      %span
+        -if @all_years.index(year) != @all_years.length-1 
+          %a.filter-data-chart{target: "blank",id: "#{year}"}=year
+        -else 
+          %a.filter-data-chart.selected{target: "blank",id: "#{year}"}=year
+  %br
+
+.row
+  .col-sm-12
+    %h4= @template["views_and_clickthroughs_title"]
+    =@template["views_and_clickthroughs_description"]
+    .br
+    .br
+    #page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 400px;"}
+    -#page_view_click_chart{chart: "custom-column-group-chart", :"data-slug-id" => "#{@selected_article}-traffic", style: "width: 100%; height: 600px;"}
+    =link_to "Get The Data", "/articles/#{@selected_article}-traffic/csv", class: 'pull-right'
+    / %img{src: "images/views_and_clickthroughs.png"}
+    %br
+.row
+  .col-sm-12
+    %h4= @template["top_25_countries_title"]
+    =@template["top_25_countries_description"]    
+    %p
+      #quarter-filter  
+    #top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "width: 100%; height: 600px;"}
+    -#top-25-countries-map{chart: "custom-maps-chart", :"data-slug-id" => "#{@selected_article}-top-25-countries", style: "height: 500px;"}  
+    %br 
+    =link_to "Get The Data", "/articles/#{@selected_article}-top-25-countries/csv", class: 'pull-right' 
+    %br
+    /%img{src: "images/top_25_countries.png"}
+.clearfix
+.row
+  .col-sm-12
+    %h4= @template["top_10_digital_objects_title"]
+    =@template["top_10_digital_objects_description"]
+    %br
+    #top-viewed-items-europena{:"data-src" =>"#{@selected_article}-top-10-digital-objects" }
+    /%img{src: "images/top_10_digital_objects.png"}
+    =link_to "Get The Data", "/articles/#{@selected_article}-top-10-digital-objects/csv", class: 'pull-right' 
+    
+-if @provider and !@provider.text_at_bottom.nil?
+  %br
+  .clearfix
+  .row
+    .col-sm-12
+      %p= @provider.text_at_bottom
+
+/ .row
+/   .col-sm-12
+/     .pull-left{style: "font-size:1em;font-weight:bold"}
+/       =
+
+-quarter = "q1"
+-quarter = "q2" if (Date.today.month - 1).between?(4,6)
+-quarter = "q3" if (Date.today.month - 1).between?(7,9)
+-quarter = "q4" if (Date.today.month - 1).between?(10,12)
+
+// Click filter to change chart as per year
+// add class name filter-data-chart
+/ $.get("/generate/chart/" + slug_id +"?gcolchart=2014", function(vdata, status) {
+/   addCustomColumnGroupChart("#page_view_click_chart", vdata);      
+/ });  
+
+:javascript
+  
+  $(document).ready(function(){
+    $(".filter-data-chart").click(function(){
+      $("#page_view_click_chart").html("");
+      $(".filter-data-chart").removeClass("selected")
+      $(this).addClass("selected")
+      $.get("/generate/chart/#{@selected_article}-traffic?gcolchart="+this.id, function(vdata, status) {
+        addCustomColumnGroupChart("#page_view_click_chart", vdata);      
+      });
+
+     $("#top-25-countries-map").empty();
+      var slug_id = $("#top-25-countries-map").attr("data-slug-id");
+      var qtr_val = $(".filter-quarter-data.selected")[0].innerText;
+      $.get("/generate/chart/" + slug_id +"?mapschart="+this.id+"&mapschartquarter="+qtr_val, function(vdata, status) {
+        addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
+      });  
+    })
+
+    var quarter = "#{quarter}";
+    var html_template = "";
+    for(var i = 1; i <=4; i++) {
+      var iclass = "";
+      var cc = "q"+i;
+      if (cc == quarter) iclass ="selected";
+
+      html_template += "<a href='q"+i+"' class='filter-quarter-data "+iclass+"' >Q"+i+"</a>";
+    }
+    $("#quarter-filter").html(html_template);
+
+    $(".filter-quarter-data").click(function(e) {
+      $(".filter-quarter-data").removeClass("selected");
+      $(this).addClass("selected");
+
+      var slug_id = $("#top-25-countries-map").attr("data-slug-id");
+      var qtr_val = $(".filter-quarter-data.selected")[0].innerText;
+      var year    = parseInt($(".filter-data-chart.selected")[0].innerHTML);
+      $("#top-25-countries-map").empty();
+      $.get("/generate/chart/" + slug_id +"?mapschart="+year+"&mapschartquarter="+qtr_val, function(vdata, status) {
+        addCustomDataWrapperMap("#top-25-countries-map", vdata.chart_data);      
+      });  
+
+      e.preventDefault();
+    });
+
+  }) 
