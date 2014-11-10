@@ -380,7 +380,7 @@ class Data::Filz < ActiveRecord::Base
         :"2021610" => "Netherlands Institute for Sound and Vision"
     }
 
-    ga = Gattica.new({:email => 'al@pykih.com', :password => 'developer22'})
+    
     ga.profile_id = 25899454
     page_view_data = []
     page_view_country = []
