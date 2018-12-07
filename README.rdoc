@@ -1,3 +1,7 @@
+**This project is not maintained anymore**
+
+---
+
 A statistics visualization tool for Europeana-related statistics, such as
 
 * web traffic
